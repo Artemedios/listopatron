@@ -1751,28 +1751,211 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body>
   <!-- INTRO VIDEO SPLASH -->
+  <style>
+    /* Splash Screen Animations */
+    #splash-phase {
+      position: absolute; inset: 0; background: #F26000; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.5s;
+    }
+    .splash-logo-wrap { animation: splashPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .splash-logo { width: 130px; height: 130px; border-radius: 50%; box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
+    .splash-tagline { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: white; margin-top: 20px; animation: fadeUp 0.5s 0.4s ease both; }
+    .splash-loader { width: 140px; height: 4px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-top: 20px; animation: fadeUp 0.4s 0.6s ease both; overflow: hidden; }
+    .splash-bar { height: 100%; background: white; width: 0%; animation: loadBar 1.8s 0.7s ease forwards; }
+
+    @keyframes splashPop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; }}
+    @keyframes fadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); }}
+    @keyframes loadBar { 0% { width: 0%; } 60% { width: 80%; } 100% { width: 100%; }}
+
+    /* Onboarding Phases */
+    #onboarding-phase {
+      position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 60px 32px 48px; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+    }
+    .ob-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease-in-out; }
+    .ob-video.active { opacity: 1; z-index: 0; }
+    .ob-overlay { position: absolute; inset: 0; background: rgba(242, 96, 0, 0.6); z-index: 1; }
+
+    .ob-content-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; width: 100%; max-width: 400px; text-align: center; color: white; font-family: 'Inter', sans-serif; }
+    
+    .skip-btn { align-self: flex-end; background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 100px; cursor: pointer; font-weight: 600; pointer-events: auto; }
+    
+    .ob-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.3s, transform 0.3s; }
+    .ob-title { font-size: 28px; font-weight: 800; line-height: 1.2; margin: 0; }
+    .ob-sub { font-size: 16px; font-weight: 300; line-height: 1.5; color: rgba(255,255,255,0.85); margin: 0; }
+    .ob-logo { width: 180px; filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25)); animation: floatEmoji 3s ease-in-out infinite; margin-bottom: 20px; }
+
+    @keyframes floatEmoji { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); }}
+
+    .ob-footer { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; pointer-events: auto; }
+    .ob-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.25); border-radius: 2px; overflow: hidden; }
+    .ob-progress-bar { height: 100%; background: white; width: 0%; transition: width 0.1s linear; }
+    
+    .ob-dots { display: flex; gap: 8px; }
+    .ob-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.35); transition: 0.3s; }
+    .ob-dot.active { width: 24px; background: white; border-radius: 4px; }
+    
+    .ob-btn { width: 100%; background: white; color: #F26000; border: none; border-radius: 16px; padding: 16px; font-size: 17px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transition: 0.2s; }
+    .ob-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(0,0,0,0.2); }
+  </style>
+
   <div id="intro-video-container" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease-out;">
-    <div style="position: relative; width: 100%; max-width: 480px; height: 100%; box-shadow: 0 0 40px rgba(242,96,0,0.4); overflow: hidden;">
-      <video id="intro-video" src="./videos/servicios1.mp4" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
-      <div style="position: absolute; inset: 0; background: #F26000; opacity: 0.6; z-index: 1;"></div>
+    <div style="position: relative; width: 100%; max-width: 480px; height: 100%; box-shadow: 0 0 40px rgba(242,96,0,0.4); overflow: hidden; background: #000;">
+      
+      <!-- Video Backgrounds -->
+      <video id="v-0" class="ob-video active" src="./videos/servicios1.mp4" autoplay muted playsinline loop></video>
+      <video id="v-1" class="ob-video" src="./videos/profesionales1.mp4" muted playsinline loop></video>
+      <video id="v-2" class="ob-video" src="./videos/servicios3.mp4" muted playsinline loop></video>
+      <video id="v-3" class="ob-video" src="./videos/profesionales3.mp4" muted playsinline loop></video>
+      <video id="v-4" class="ob-video" src="./videos/reserva1.mp4" muted playsinline loop></video>
+      <video id="v-5" class="ob-video" src="./videos/reserva2.mp4" muted playsinline loop></video>
+
+      <div class="ob-overlay"></div>
+
+      <!-- ONBOARDING PHASE -->
+      <div id="onboarding-phase">
+        <div class="ob-content-wrapper">
+          <button class="skip-btn" onclick="closeIntro()">Omitir →</button>
+          
+          <div class="ob-content" id="ob-content">
+            <img src="./assets/logo_listo_blanco.png" class="ob-logo" onerror="this.style.display='none'">
+            <h2 class="ob-title" id="ob-title">Todos los servicios en un solo lugar</h2>
+            <p class="ob-sub" id="ob-sub">Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.</p>
+          </div>
+
+          <div class="ob-footer">
+            <div class="ob-progress"><div class="ob-progress-bar" id="ob-progress-bar"></div></div>
+            <div class="ob-dots" id="ob-dots">
+              <div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div>
+              <div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div>
+            </div>
+            <button class="ob-btn" id="ob-btn" onclick="nextSlide()">Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPLASH PHASE -->
+      <div id="splash-phase">
+        <div class="splash-logo-wrap">
+          <img src="./assets/logo_listo.png" class="splash-logo" onerror="this.style.display='none'">
+        </div>
+        <p class="splash-tagline">Listo, patrón.</p>
+        <div class="splash-loader"><div class="splash-bar"></div></div>
+      </div>
+
     </div>
   </div>
+
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var introVideo = document.getElementById("intro-video");
-      var introContainer = document.getElementById("intro-video-container");
-      if(introVideo && introContainer) {
-        introVideo.addEventListener("ended", function() {
-          introContainer.style.opacity = "0";
-          setTimeout(function() {
-            introContainer.style.display = "none";
-          }, 800);
-        });
-        // Fallback if video doesn't play or errors
-        introVideo.addEventListener("error", function() {
-          introContainer.style.display = "none";
-        });
+    const slidesData = [
+      { t: 'Todos los servicios en un solo lugar', s: 'Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.' },
+      { t: 'Profesionales verificados', s: 'Cada profesional pasa por un proceso de verificación de identidad y experiencia.' },
+      { t: 'Reserva en minutos', s: 'Selecciona, agenda y listo. Tu profesional llega a donde estás.' },
+      { t: 'Trabajo de primera', s: 'Resultados impecables y garantizados. Estamos comprometidos con tu satisfacción.' },
+      { t: 'Síguelo en el mapa', s: 'Observa en tiempo real cómo tu profesional llega directo a tu ubicación.' },
+      { t: 'Paga sin complicaciones', s: 'Transacciones 100% seguras y al instante, directamente desde la app.' },
+    ];
+
+    let currentSlide = 0;
+    const slideDuration = 8000;
+    let slideTimer;
+    let progressInterval;
+    let startTime;
+
+    function startOnboarding() {
+      const splash = document.getElementById('splash-phase');
+      const onboard = document.getElementById('onboarding-phase');
+      if(splash) splash.style.opacity = '0';
+      setTimeout(() => {
+        if(splash) splash.style.display = 'none';
+        if(onboard) {
+          onboard.style.opacity = '1';
+          onboard.style.pointerEvents = 'auto';
+        }
+        playSlide(0);
+      }, 500);
+    }
+
+    function playSlide(index) {
+      clearInterval(progressInterval);
+      clearTimeout(slideTimer);
+      
+      // Update Video
+      document.querySelectorAll('.ob-video').forEach((v, i) => {
+        if (i === index) {
+          v.classList.add('active');
+          v.play().catch(()=>{});
+        } else {
+          v.classList.remove('active');
+          v.pause();
+        }
+      });
+
+      // Update Text
+      const content = document.getElementById('ob-content');
+      if(content) {
+        content.style.opacity = '0';
+        content.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+          document.getElementById('ob-title').innerText = slidesData[index].t;
+          document.getElementById('ob-sub').innerText = slidesData[index].s;
+          content.style.transform = 'translateX(0)';
+          content.style.opacity = '1';
+        }, 300);
       }
+
+      // Update Dots
+      document.querySelectorAll('.ob-dot').forEach((d, i) => {
+        d.className = i === index ? 'ob-dot active' : 'ob-dot';
+      });
+
+      // Update Button
+      const btn = document.getElementById('ob-btn');
+      if(btn) btn.innerText = index === slidesData.length - 1 ? '¡Empezar! 🚀' : 'Siguiente →';
+
+      // Progress Bar
+      const bar = document.getElementById('ob-progress-bar');
+      if(bar) {
+        bar.style.width = '0%';
+        startTime = Date.now();
+        progressInterval = setInterval(() => {
+          let elapsed = Date.now() - startTime;
+          let percent = (elapsed / slideDuration) * 100;
+          if (percent > 100) percent = 100;
+          bar.style.width = percent + '%';
+        }, 50);
+      }
+
+      // Auto Advance
+      slideTimer = setTimeout(() => {
+        nextSlide();
+      }, slideDuration);
+    }
+
+    function nextSlide() {
+      if (currentSlide < slidesData.length - 1) {
+        currentSlide++;
+        playSlide(currentSlide);
+      } else {
+        closeIntro();
+      }
+    }
+
+    function closeIntro() {
+      clearTimeout(slideTimer);
+      clearInterval(progressInterval);
+      const container = document.getElementById('intro-video-container');
+      if(container) {
+        container.style.opacity = '0';
+        setTimeout(() => { container.style.display = 'none'; }, 800);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(() => {
+        startOnboarding();
+      }, 2500);
     });
   </script>
   <!-- PRELOADER -->
