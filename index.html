@@ -105,6 +105,25 @@ nav.scrolled{box-shadow:0 4px 30px rgba(242,96,0,0.15)}
 .burger span{display:block;width:24px;height:2.5px;background:var(--orange);border-radius:2px;transition:.3s}
 
 /* ===== HERO ===== */
+.hero-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.hero-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--orange);
+  opacity: 0.85;
+  z-index: 0;
+}
 .hero{
   min-height:auto;
   background:var(--orange);
@@ -1730,7 +1749,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Meta Pixel Code -->
 
 </head>
-<body><!-- PRELOADER -->
+<body>
+  <!-- INTRO VIDEO SPLASH -->
+  <div id="intro-video-container" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999; background: #000; transition: opacity 0.8s ease-out;">
+    <video id="intro-video" src="./videos/servicios1.mp4" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var introVideo = document.getElementById("intro-video");
+      var introContainer = document.getElementById("intro-video-container");
+      if(introVideo && introContainer) {
+        introVideo.addEventListener("ended", function() {
+          introContainer.style.opacity = "0";
+          setTimeout(function() {
+            introContainer.style.display = "none";
+          }, 800);
+        });
+        // Fallback if video doesn't play or errors
+        introVideo.addEventListener("error", function() {
+          introContainer.style.display = "none";
+        });
+      }
+    });
+  </script>
+  <!-- PRELOADER -->
   <div class="preloader" id="preloader" role="status" aria-label="Cargando">
     <div class="preloader-content">
       <div class="preloader-logo">🔧 Listo Patrón</div>
