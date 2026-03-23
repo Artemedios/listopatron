@@ -1751,8 +1751,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body>
   <!-- INTRO VIDEO SPLASH -->
-  <div id="intro-video-container" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999; background: #000; transition: opacity 0.8s ease-out;">
-    <video id="intro-video" src="./videos/servicios1.mp4" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+  <div id="intro-video-container" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease-out;">
+    <div style="position: relative; width: 100%; max-width: 480px; height: 100%; box-shadow: 0 0 40px rgba(242,96,0,0.4); overflow: hidden;">
+      <video id="intro-video" src="./videos/servicios1.mp4" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+      <div style="position: absolute; inset: 0; background: #F26000; opacity: 0.6; z-index: 1;"></div>
+    </div>
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
