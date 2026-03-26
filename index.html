@@ -153,7 +153,6 @@ nav.scrolled{box-shadow:0 4px 30px rgba(242,96,0,0.15)}
   padding-bottom:80px;
   position:relative;z-index:1;
 }
-.hero-text{}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(255,255,255,0.2);
@@ -583,7 +582,6 @@ footer{background:#F26000;padding:28px 5% 24px}
 
 /* ===== REVEAL ===== */
 .reveal{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible,
 
 /* ===== MOBILE ===== */
 @media(max-width:900px){
@@ -4522,9 +4520,11 @@ window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY
 
 // Burger menu
 const burger = document.getElementById('burger');
-const navLinks = document.getElementById('navLinks');
-burger.addEventListener('click', () => navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+const navLinksEl = document.getElementById('navLinks');
+if (burger && navLinksEl) {
+  burger.addEventListener('click', () => navLinksEl.classList.toggle('open'));
+  navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinksEl.classList.remove('open')));
+}
 
 // Scroll reveal
 const srObs = new IntersectionObserver(entries => entries.forEach(e => {
