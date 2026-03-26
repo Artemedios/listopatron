@@ -3819,68 +3819,139 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <a href="https://listopatron.vercel.app/" style="background:var(--orange);color:#fff;padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(242,96,0,0.35);transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(242,96,0,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(242,96,0,0.35)'">🚀 Descargar app</a>
     </div>
     <div class="planes-wrap" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:1100px">
+    <style>
+      .plan-3d-wrap {
+        position: relative; cursor: pointer; text-decoration: none; display: block;
+        transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), filter 0.25s;
+        transform: translateY(0) scale(1);
+      }
+      .plan-3d-inner {
+        position: relative; z-index: 1; border-radius: 18px; padding: 18px 10px 16px;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        min-height: 158px; overflow: hidden; transition: box-shadow 0.3s;
+      }
+      .plan-3d-shine-top {
+        position: absolute; top: 0; left: 8%; right: 8%; height: 38%;
+        border-radius: 0 0 50% 50%; pointer-events: none;
+      }
+      .plan-3d-badge {
+        position: absolute; top: 8px; right: 8px; color: white;
+        font-size: 7px; font-weight: 900; letter-spacing: 0.5px; padding: 2px 6px; border-radius: 5px;
+      }
+      .plan-3d-num {
+        position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.18); color: rgba(255,255,255,0.9);
+        width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 900;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .plan-3d-emoji { font-size: 32px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); }
+      .plan-3d-price-box {
+        background: rgba(0,0,0,0.18); border-radius: 8px; padding: 4px 10px;
+        margin-top: 5px; border: 1px solid rgba(255,255,255,0.2);
+      }
+      
+      /* Standard */
+      .plan-3d-standard { filter: drop-shadow(0 5px 12px rgba(46,125,50,0.55)); }
+      .plan-3d-standard:hover { transform: translateY(-7px) scale(1.05); filter: drop-shadow(0 14px 28px rgba(46,125,50,0.55)); }
+      .plan-3d-standard .plan-3d-blur { background: #2E7D32; }
+      .plan-3d-standard .plan-3d-inner { background: linear-gradient(145deg, #66BB6A 0%, #388E3C 40%, #2E7D32 70%, #4CAF50 100%); border: 1.5px solid rgba(165,214,167,0.65); box-shadow: inset 0 1px 0 rgba(165,214,167,0.65); }
+      .plan-3d-standard:hover .plan-3d-inner { box-shadow: 0 0 22px rgba(46,125,50,0.65), 0 0 44px rgba(46,125,50,0.3); }
+      .plan-3d-standard .plan-3d-shine-top { background: linear-gradient(180deg, rgba(165,214,167,0.65) 0%, transparent 100%); }
+      .plan-3d-standard .plan-3d-badge { background: #1B5E20; }
 
-      <!-- ESTÁNDAR -->
-      <div class="plan" style="background:linear-gradient(135deg,#f0fff4 0%,#dcfce7 100%);border:2px solid #22c55e">
-        <div class="plan-name" style="color:#16a34a">Plan Estándar</div>
-        <div style="font-size:36px;margin-bottom:8px">🟢</div>
-        <div class="plan-price" style="color:#16a34a">RD$500</div>
-        <div class="plan-period" style="color:#4ade80">5 contratos incluidos</div>
-        <ul class="plan-list">
-          <li>5 contratos disponibles</li>
-          <li>Perfil visible en búsquedas</li>
-          <li>Chat con clientes</li>
-          <li>Tracking en tiempo real</li>
-        </ul>
-        <a href="https://listopatron.vercel.app/" class="plan-btn solid" style="background:#22c55e;box-shadow:0 6px 20px rgba(34,197,94,0.4);color:#fff">📲 Obtener en la app</a>
-      </div>
+      /* Gold */
+      .plan-3d-gold { filter: drop-shadow(0 5px 12px rgba(212,160,23,0.55)); }
+      .plan-3d-gold:hover { transform: translateY(-7px) scale(1.05); filter: drop-shadow(0 14px 28px rgba(212,160,23,0.55)); }
+      .plan-3d-gold .plan-3d-blur { background: #D4A017; }
+      .plan-3d-gold .plan-3d-inner { background: linear-gradient(145deg, #F5C842 0%, #D4940A 40%, #B8780A 70%, #E8B832 100%); border: 1.5px solid rgba(255,240,160,0.65); box-shadow: inset 0 1px 0 rgba(255,240,160,0.65); }
+      .plan-3d-gold:hover .plan-3d-inner { box-shadow: 0 0 22px rgba(212,160,23,0.65), 0 0 44px rgba(212,160,23,0.3); }
+      .plan-3d-gold .plan-3d-shine-top { background: linear-gradient(180deg, rgba(255,240,160,0.65) 0%, transparent 100%); }
+      .plan-3d-gold .plan-3d-badge { background: #7A4D00; }
 
-      <!-- GOLD -->
-      <div class="plan" style="background:#fff;border:2px solid #D4A017">
-        <div class="plan-badge" style="background:#D4A017;color:#fff">⭐ POPULAR</div>
-        <div class="plan-name" style="color:#B8860B">Pack Gold</div>
-        <div style="font-size:36px;margin-bottom:8px">🥇</div>
-        <div class="plan-price" style="color:#B8860B">RD$1,000</div>
-        <div class="plan-period">10 contratos incluidos</div>
-        <ul class="plan-list">
-          <li>10 contratos disponibles</li>
-          <li>Prioridad en búsquedas</li>
-          <li>Badge Gold verificado</li>
-          <li>Soporte prioritario</li>
-        </ul>
-        <a href="https://listopatron.vercel.app/" class="plan-btn solid" style="background:#D4A017;box-shadow:0 6px 20px rgba(212,160,23,0.4)">📲 Obtener en la app</a>
-      </div>
+      /* Platinum */
+      .plan-3d-platinum { filter: drop-shadow(0 5px 12px rgba(110,130,155,0.55)); }
+      .plan-3d-platinum:hover { transform: translateY(-7px) scale(1.05); filter: drop-shadow(0 14px 28px rgba(110,130,155,0.55)); }
+      .plan-3d-platinum .plan-3d-blur { background: #7A8FA8; }
+      .plan-3d-platinum .plan-3d-inner { background: linear-gradient(145deg, #C8D4E0 0%, #8E9BAF 40%, #6B7A8D 70%, #B0BEC8 100%); border: 1.5px solid rgba(220,230,240,0.75); box-shadow: inset 0 1px 0 rgba(220,230,240,0.75); }
+      .plan-3d-platinum:hover .plan-3d-inner { box-shadow: 0 0 20px rgba(122,143,168,0.6), 0 0 40px rgba(122,143,168,0.25); }
+      .plan-3d-platinum .plan-3d-shine-top { background: linear-gradient(180deg, rgba(220,230,240,0.75) 0%, transparent 100%); }
+      .plan-3d-platinum .plan-3d-badge { background: #3A5068; }
 
-      <!-- PLATINUM -->
-      <div class="plan" style="background:linear-gradient(135deg,#e8e8e8 0%,#f5f5f5 100%);border:2px solid #aaa">
-        <div class="plan-badge" style="background:#888;color:#fff">✓ ACTIVO</div>
-        <div class="plan-name" style="color:#555">Pack Platinum</div>
-        <div style="font-size:36px;margin-bottom:8px">🥈</div>
-        <div class="plan-price" style="color:#555">RD$1,500</div>
-        <div class="plan-period">15 contratos incluidos</div>
-        <ul class="plan-list">
-          <li>15 contratos disponibles</li>
-          <li>Perfil Platinum destacado</li>
-          <li>Estadísticas avanzadas</li>
-          <li>Soporte prioritario 24/7</li>
-        </ul>
-        <a href="https://listopatron.vercel.app/" class="plan-btn outline" style="border-color:#888;color:#555">📲 Obtener en la app</a>
-      </div>
+      /* VIP */
+      .plan-3d-vip { filter: drop-shadow(0 5px 12px rgba(242,96,0,0.6)); }
+      .plan-3d-vip:hover { transform: translateY(-7px) scale(1.05); filter: drop-shadow(0 14px 28px rgba(242,96,0,0.6)); }
+      .plan-3d-vip .plan-3d-blur { background: #F26000; }
+      .plan-3d-vip .plan-3d-inner { background: linear-gradient(145deg, #FF8C42 0%, #F26000 35%, #C94E00 65%, #FF7020 100%); border: 1.5px solid rgba(255,200,140,0.55); box-shadow: inset 0 1px 0 rgba(255,200,140,0.55); }
+      .plan-3d-vip:hover .plan-3d-inner { box-shadow: 0 0 24px rgba(242,96,0,0.7), 0 0 52px rgba(242,96,0,0.35); }
+      .plan-3d-vip .plan-3d-shine-top { background: linear-gradient(180deg, rgba(255,200,140,0.55) 0%, transparent 100%); }
+      .plan-3d-vip .plan-3d-badge { background: #6B1D00; }
 
-      <!-- VIP -->
-      <div class="plan" style="background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);border:2px solid var(--orange)">
-        <div class="plan-badge" style="background:#222;color:#FFD700">👑 ÉLITE</div>
-        <div class="plan-name" style="color:#fff">VIP Ilimitado</div>
-        <div style="font-size:36px;margin-bottom:8px">💎</div>
-        <div class="plan-price" style="color:#fff">RD$2,000<sub style="color:rgba(255,255,255,0.7)">/mes</sub></div>
-        <div class="plan-period" style="color:rgba(255,255,255,0.75)">Contratos ilimitados</div>
-        <ul class="plan-list" style="color:#fff">
-          <li style="color:#fff">∞ contratos ilimitados</li>
-          <li style="color:#fff">Posición #1 en búsquedas</li>
-          <li style="color:#fff">Badge VIP exclusivo</li>
-          <li style="color:#fff">Atención personalizada</li>
-        </ul>
-        <a href="https://listopatron.vercel.app/" class="plan-btn solid" style="background:#fff;color:var(--orange);box-shadow:0 6px 20px rgba(0,0,0,0.2)">📲 Obtener en la app</a>
+      @keyframes twinkle { 0%{opacity:.3;transform:scale(.7) rotate(-10deg)} 100%{opacity:1;transform:scale(1.2) rotate(10deg)} }
+    </style>
+    <div class="planes-wrap" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));max-width:960px;margin:0 auto;gap:12px;display:grid;">
+
+      <!-- PLAN 1: BÁSICO / ESTÁNDAR -->
+      <a href="https://listopatron.vercel.app/" class="plan-3d-wrap plan-3d-standard">
+        <div class="plan-3d-blur" style="position:absolute;bottom:-7px;left:7px;right:-2px;height:100%;border-radius:18px;opacity:0.28;filter:blur(5px);z-index:0"></div>
+        <div class="plan-3d-inner">
+          <div class="plan-3d-shine-top"></div>
+          <div class="plan-3d-badge">BÁSICO</div>
+          <div class="plan-3d-num">1</div>
+          <div style="margin-top:12px;position:relative"><span class="plan-3d-emoji">🔹</span></div>
+          <p style="font-size:12px;font-weight:800;color:white;margin:6px 0 0;text-shadow:0 1px 4px rgba(0,0,0,0.4);text-align:center;line-height:1.2">Plan Estándar</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.85);margin:0;font-weight:600">3 contratos</p>
+          <div class="plan-3d-price-box"><p style="font-size:13px;font-weight:900;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,0.5)">RD$500</p></div>
+          <p style="font-size:8px;color:rgba(255,255,255,0.6);margin:4px 0 0;letter-spacing:0.5px">TAP PARA VER →</p>
+        </div>
+      </a>
+
+      <!-- PLAN 2: GOLD -->
+      <a href="https://listopatron.vercel.app/" class="plan-3d-wrap plan-3d-gold">
+        <div class="plan-3d-blur" style="position:absolute;bottom:-7px;left:7px;right:-2px;height:100%;border-radius:18px;opacity:0.28;filter:blur(5px);z-index:0"></div>
+        <div class="plan-3d-inner">
+          <div class="plan-3d-shine-top"></div>
+          <div class="plan-3d-badge">POPULAR</div>
+          <div class="plan-3d-num">2</div>
+          <div style="margin-top:12px;position:relative"><span class="plan-3d-emoji">🥇</span></div>
+          <p style="font-size:12px;font-weight:800;color:white;margin:6px 0 0;text-shadow:0 1px 4px rgba(0,0,0,0.4);text-align:center;line-height:1.2">Pack Gold</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.85);margin:0;font-weight:600">8 contratos</p>
+          <div class="plan-3d-price-box"><p style="font-size:13px;font-weight:900;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,0.5)">RD$1,000</p></div>
+          <p style="font-size:8px;color:rgba(255,255,255,0.6);margin:4px 0 0;letter-spacing:0.5px">TAP PARA VER →</p>
+        </div>
+      </a>
+
+      <!-- PLAN 3: PLATINUM -->
+      <a href="https://listopatron.vercel.app/" class="plan-3d-wrap plan-3d-platinum">
+        <div class="plan-3d-blur" style="position:absolute;bottom:-7px;left:7px;right:-2px;height:100%;border-radius:18px;opacity:0.28;filter:blur(5px);z-index:0"></div>
+        <div class="plan-3d-inner">
+          <div class="plan-3d-shine-top"></div>
+          <div class="plan-3d-badge">ACTIVO</div>
+          <div class="plan-3d-num">3</div>
+          <div style="margin-top:12px;position:relative"><span class="plan-3d-emoji">🥈</span></div>
+          <p style="font-size:12px;font-weight:800;color:white;margin:6px 0 0;text-shadow:0 1px 4px rgba(0,0,0,0.4);text-align:center;line-height:1.2">Pack Platinum</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.85);margin:0;font-weight:600">15 contratos</p>
+          <div class="plan-3d-price-box"><p style="font-size:13px;font-weight:900;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,0.5)">RD$1,500</p></div>
+          <p style="font-size:8px;color:rgba(255,255,255,0.6);margin:4px 0 0;letter-spacing:0.5px">TAP PARA VER →</p>
+        </div>
+      </a>
+
+      <!-- PLAN 4: VIP -->
+      <a href="https://listopatron.vercel.app/" class="plan-3d-wrap plan-3d-vip">
+        <div class="plan-3d-blur" style="position:absolute;bottom:-7px;left:7px;right:-2px;height:100%;border-radius:18px;opacity:0.28;filter:blur(5px);z-index:0"></div>
+        <div class="plan-3d-inner">
+          <div class="plan-3d-shine-top"></div>
+          <div class="plan-3d-badge">ÉLITE</div>
+          <div class="plan-3d-num">4</div>
+          <div style="margin-top:12px;position:relative">
+            <span class="plan-3d-emoji">💎</span>
+            <span style="position:absolute;top:-8px;right:-13px;font-size:13px;animation:twinkle 0.8s ease-in-out infinite alternate">✨</span>
+            <span style="position:absolute;bottom:-5px;left:-11px;font-size:11px;animation:twinkle 1.2s ease-in-out infinite alternate">⭐</span>
+          </div>
+          <p style="font-size:12px;font-weight:800;color:white;margin:6px 0 0;text-shadow:0 1px 4px rgba(0,0,0,0.4);text-align:center;line-height:1.2">VIP Ilimitado</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.85);margin:0;font-weight:600">∞ contratos</p>
+          <div class="plan-3d-price-box"><p style="font-size:13px;font-weight:900;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,0.5)">RD$2,500/mes</p></div>
+          <p style="font-size:8px;color:rgba(255,255,255,0.6);margin:4px 0 0;letter-spacing:0.5px">TAP PARA VER →</p>
+        </div>
+      </a>
       </div>
 
     </div>
@@ -3892,7 +3963,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <thead>
           <tr>
             <th style="text-align:left;padding:14px 20px;background:#f9fafb;border-radius:12px 0 0 0;font-size:13px;color:#888;font-weight:700;border-bottom:2px solid #f0f0f0">Beneficio</th>
-            <th style="text-align:center;padding:14px 16px;background:#f0fff4;color:#16a34a;font-family:'Fredoka One',cursive;font-size:15px;border-bottom:2px solid #bbf7d0">Estándar</th>
+            <th style="text-align:center;padding:14px 16px;background:#f0fff4;color:#16a34a;font-family:'Fredoka One',cursive;font-size:15px;border-bottom:2px solid #bbf7d0">Básico</th>
             <th style="text-align:center;padding:14px 16px;background:#fffbeb;color:#B8860B;font-family:'Fredoka One',cursive;font-size:15px;border-bottom:2px solid #fde68a">Gold</th>
             <th style="text-align:center;padding:14px 16px;background:#f5f5f5;color:#555;font-family:'Fredoka One',cursive;font-size:15px;border-bottom:2px solid #ddd">Platinum</th>
             <th style="text-align:center;padding:14px 16px;background:linear-gradient(135deg,#F26000,#C24D00);color:#fff;font-family:'Fredoka One',cursive;font-size:15px;border-radius:0 12px 0 0;border-bottom:2px solid rgba(255,255,255,0.3)">VIP 👑</th>
@@ -3900,74 +3971,46 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </thead>
         <tbody>
           <tr style="border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Contratos disponibles</td>
-            <td style="text-align:center;padding:14px;color:#16a34a;font-weight:800">5</td>
-            <td style="text-align:center;padding:14px;color:#B8860B;font-weight:800">10</td>
-            <td style="text-align:center;padding:14px;color:#555;font-weight:800">15</td>
-            <td style="text-align:center;padding:14px;color:var(--orange);font-weight:800">∞ Ilimitados</td>
-          </tr>
-          <tr style="background:#fafafa;border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Precio</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Precio al mes</td>
             <td style="text-align:center;padding:14px;color:#16a34a;font-weight:800">RD$500</td>
             <td style="text-align:center;padding:14px;color:#B8860B;font-weight:800">RD$1,000</td>
             <td style="text-align:center;padding:14px;color:#555;font-weight:800">RD$1,500</td>
-            <td style="text-align:center;padding:14px;color:var(--orange);font-weight:800">RD$2,000/mes</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Perfil visible en búsquedas</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
+            <td style="text-align:center;padding:14px;color:var(--orange);font-weight:800">RD$2,500</td>
           </tr>
           <tr style="background:#fafafa;border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Chat con clientes</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Contratos al mes</td>
+            <td style="text-align:center;padding:14px;color:#16a34a;font-weight:800">3</td>
+            <td style="text-align:center;padding:14px;color:#B8860B;font-weight:800">8</td>
+            <td style="text-align:center;padding:14px;color:#555;font-weight:800">15</td>
+            <td style="text-align:center;padding:14px;color:var(--orange);font-weight:800">∞ Ilimitados</td>
           </tr>
           <tr style="border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Tracking en tiempo real</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Visibilidad en búsquedas</td>
+            <td style="text-align:center;padding:14px">Básica</td>
+            <td style="text-align:center;padding:14px">Mejorada</td>
+            <td style="text-align:center;padding:14px">Alta</td>
+            <td style="text-align:center;padding:14px">Máxima N°1</td>
           </tr>
           <tr style="background:#fafafa;border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Prioridad en búsquedas</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Etiquetas en perfil</td>
             <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">⭐ Posición #1</td>
+            <td style="text-align:center;padding:14px">"Recomendado"</td>
+            <td style="text-align:center;padding:14px">Badge Platinum</td>
+            <td style="text-align:center;padding:14px">💎 VIP Exclusivo</td>
           </tr>
           <tr style="border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Badge verificado</td>
-            <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">🥇 Gold</td>
-            <td style="text-align:center;padding:14px">🥈 Platinum</td>
-            <td style="text-align:center;padding:14px">💎 VIP</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Soporte</td>
+            <td style="text-align:center;padding:14px">Estándar</td>
+            <td style="text-align:center;padding:14px">Estándar</td>
+            <td style="text-align:center;padding:14px">Prioritario</td>
+            <td style="text-align:center;padding:14px">⭐ VIP Inmediato</td>
           </tr>
           <tr style="background:#fafafa;border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Estadísticas avanzadas</td>
+            <td style="padding:14px 20px;font-weight:700;color:#333">Beneficios Extra</td>
             <td style="text-align:center;padding:14px">❌</td>
             <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0">
-            <td style="padding:14px 20px;font-weight:700;color:#333">Soporte prioritario</td>
-            <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">✅</td>
-            <td style="text-align:center;padding:14px">✅ 24/7</td>
-            <td style="text-align:center;padding:14px">✅ Personalizado</td>
-          </tr>
-          <tr>
-            <td style="padding:14px 20px;font-weight:700;color:#333">Atención personalizada</td>
-            <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">❌</td>
-            <td style="text-align:center;padding:14px">✅</td>
+            <td style="text-align:center;padding:14px">Clientes Premium</td>
+            <td style="text-align:center;padding:14px">Leads VIP y contacto directo</td>
           </tr>
         </tbody>
       </table>
