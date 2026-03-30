@@ -1,6 +1,17 @@
 import React from 'react';
 
 export default function HomePage() {
+  React.useEffect(() => {
+    setTimeout(() => {
+      const splash = document.getElementById('splash-phase');
+      if (splash) splash.style.display = 'none';
+      const preloader = document.getElementById('preloader');
+      if (preloader) preloader.style.display = 'none';
+      const intro = document.getElementById('intro-video-container');
+      if (intro) intro.style.display = 'none';
+    }, 1500);
+  }, []);
+
   return (
     <>
 
@@ -11,22 +22,22 @@ export default function HomePage() {
     <div style={{"position": "relative", "width": "100%", "maxWidth": "480px", "height": "100%", "boxShadow": "0 0 40px rgba(242,96,0,0.4)", "overflow": "hidden", "background": "#000"}}>
       
       {/*  Video Backgrounds  */}
-      <video id="v-0" className="ob-video active" src="./videos/servicios1.mp4" autoplay muted playsinline loop></video>
-      <video id="v-1" className="ob-video" src="./videos/profesionales1.mp4" muted playsinline loop></video>
-      <video id="v-2" className="ob-video" src="./videos/servicios3.mp4" muted playsinline loop></video>
-      <video id="v-3" className="ob-video" src="./videos/profesionales3.mp4" muted playsinline loop></video>
-      <video id="v-4" className="ob-video" src="./videos/reserva1.mp4" muted playsinline loop></video>
-      <video id="v-5" className="ob-video" src="./videos/reserva2.mp4" muted playsinline loop></video>
+      <video id="v-0" className="ob-video active" src="./videos/servicios1.mp4" autoPlay muted playsInline loop></video>
+      <video id="v-1" className="ob-video" src="./videos/profesionales1.mp4" muted playsInline loop></video>
+      <video id="v-2" className="ob-video" src="./videos/servicios3.mp4" muted playsInline loop></video>
+      <video id="v-3" className="ob-video" src="./videos/profesionales3.mp4" muted playsInline loop></video>
+      <video id="v-4" className="ob-video" src="./videos/reserva1.mp4" muted playsInline loop></video>
+      <video id="v-5" className="ob-video" src="./videos/reserva2.mp4" muted playsInline loop></video>
 
       <div className="ob-overlay"></div>
 
       {/*  ONBOARDING PHASE  */}
       <div id="onboarding-phase">
         <div className="ob-content-wrapper">
-          <button className="skip-btn" onClick="closeIntro()">Omitir →</button>
+          <button className="skip-btn" onClick={() => { closeIntro() }}>Omitir →</button>
           
           <div className="ob-content" id="ob-content">
-            <img src="./assets/logo_listo_blanco.png" className="ob-logo" onerror="this.style.display='none'" />
+            <img src="./assets/logo_listo_blanco.png" className="ob-logo" onError={(e) => { e.target.style.display='none' }} />
             <h2 className="ob-title" id="ob-title">Todos los servicios en un solo lugar</h2>
             <p className="ob-sub" id="ob-sub">Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.</p>
           </div>
@@ -37,7 +48,7 @@ export default function HomePage() {
               <div className="ob-dot active"></div><div className="ob-dot"></div><div className="ob-dot"></div>
               <div className="ob-dot"></div><div className="ob-dot"></div><div className="ob-dot"></div>
             </div>
-            <button className="ob-btn" id="ob-btn" onClick="nextSlide()">Siguiente →</button>
+            <button className="ob-btn" id="ob-btn" onClick={() => { nextSlide() }}>Siguiente →</button>
           </div>
         </div>
       </div>
@@ -45,7 +56,7 @@ export default function HomePage() {
       {/*  SPLASH PHASE  */}
       <div id="splash-phase">
         <div className="splash-logo-wrap">
-          <img src="./assets/logo_listo.png" className="splash-logo" onerror="this.style.display='none'" />
+          <img src="./assets/logo_listo.png" className="splash-logo" onError={(e) => { e.target.style.display='none' }} />
         </div>
         <p className="splash-tagline">Listo, patrón.</p>
         <div className="splash-loader"><div className="splash-bar"></div></div>
@@ -142,8 +153,8 @@ export default function HomePage() {
 
       {/*  Stat 1  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>👷</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="500" data-suffix="+">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Profesionales activos</div>
@@ -151,8 +162,8 @@ export default function HomePage() {
 
       {/*  Stat 2  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>✅</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="1200" data-suffix="+">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Servicios completados</div>
@@ -160,8 +171,8 @@ export default function HomePage() {
 
       {/*  Stat 3  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>⭐</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="4.9" data-suffix="/5" data-decimal="true">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Calificación promedio</div>
@@ -169,8 +180,8 @@ export default function HomePage() {
 
       {/*  Stat 4  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>⚡</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="15" data-suffix=" min">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Tiempo de respuesta</div>
@@ -178,8 +189,8 @@ export default function HomePage() {
 
       {/*  Stat 5  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>🏙️</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="2" data-suffix=" ciudades">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Ciudades activas</div>
@@ -187,8 +198,8 @@ export default function HomePage() {
 
       {/*  Stat 6  */}
       <div style={{"background": "rgba(255,255,255,0.15)", "backdropFilter": "blur(10px)", "border": "1px solid rgba(255,255,255,0.25)", "borderRadius": "20px", "padding": "28px 20px", "textAlign": "center", "transition": "transform .3s,box-shadow .3s"}}
-           onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)'"
-           onmouseout="this.style.transform='';this.style.boxShadow=''">
+           onMouseOver={() => { this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.2)' }}
+           onMouseOut={() => { this.style.transform='';this.style.boxShadow='' }}>
         <div style={{"fontSize": "36px", "marginBottom": "8px"}}>😊</div>
         <div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "46px", "color": "#fff", "lineHeight": "1"}} className="stat-counter" data-target="94" data-suffix="%">0</div>
         <div style={{"fontSize": "13px", "color": "rgba(255,255,255,0.85)", "fontWeight": "700", "marginTop": "6px", "textTransform": "uppercase", "letterSpacing": ".8px"}}>Clientes satisfechos</div>
@@ -217,7 +228,7 @@ export default function HomePage() {
     </div>
 
     <div style={{"position": "relative"}}>
-      <button onClick="shiftSlider(-1)" aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
+      <button onClick={() => { shiftSlider(-1) }} aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
 
       <div id="proSliderTrack" style={{"display": "grid", "gridTemplateColumns": "repeat(4,1fr)", "gap": "20px"}}>
         <div className="pro-slide">
@@ -259,19 +270,19 @@ export default function HomePage() {
       </div>
 
       {/*  Arrow right  */}
-      <button onClick="shiftSlider(1)" aria-label="Siguiente" style={{"position": "absolute", "right": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>›</button>
+      <button onClick={() => { shiftSlider(1) }} aria-label="Siguiente" style={{"position": "absolute", "right": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>›</button>
     </div>
 
     <div style={{"display": "flex", "justifyContent": "center", "gap": "8px", "marginTop": "24px"}}>
-        <button className="pro-dot  active" onClick="goSlide(0)"></button>
-        <button className="pro-dot" onClick="goSlide(1)"></button>
-        <button className="pro-dot" onClick="goSlide(2)"></button>
-        <button className="pro-dot" onClick="goSlide(3)"></button>
-        <button className="pro-dot" onClick="goSlide(4)"></button>
-        <button className="pro-dot" onClick="goSlide(5)"></button>
-        <button className="pro-dot" onClick="goSlide(6)"></button>
-        <button className="pro-dot" onClick="goSlide(7)"></button>
-        <button className="pro-dot" onClick="goSlide(8)"></button>
+        <button className="pro-dot  active" onClick={() => { goSlide(0) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(1) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(2) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(3) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(4) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(5) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(6) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(7) }}></button>
+        <button className="pro-dot" onClick={() => { goSlide(8) }}></button>
     </div>
   </div>
 </section>
@@ -287,14 +298,14 @@ export default function HomePage() {
         <div className="ad-slide"><img src="../src/assets/extracted_17.png" alt="Arte Medios" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
         <div className="ad-slide"><img src="../src/assets/extracted_18.png" alt="FCO Ren Cars" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
       </div>
-      <button onClick="adSlide(-1)" style={{"position": "absolute", "left": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>‹</button>
-      <button onClick="adSlide(1)" style={{"position": "absolute", "right": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>›</button>
+      <button onClick={() => { adSlide(-1) }} style={{"position": "absolute", "left": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>‹</button>
+      <button onClick={() => { adSlide(1) }} style={{"position": "absolute", "right": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>›</button>
     </div>
     <div style={{"display": "flex", "justifyContent": "center", "gap": "8px", "marginTop": "12px"}} id="ad-dots">
-      <span className="ad-dot active" onClick="goAd(0)"></span>
-      <span className="ad-dot" onClick="goAd(1)"></span>
-      <span className="ad-dot" onClick="goAd(2)"></span>
-      <span className="ad-dot" onClick="goAd(3)"></span>
+      <span className="ad-dot active" onClick={() => { goAd(0) }}></span>
+      <span className="ad-dot" onClick={() => { goAd(1) }}></span>
+      <span className="ad-dot" onClick={() => { goAd(2) }}></span>
+      <span className="ad-dot" onClick={() => { goAd(3) }}></span>
     </div>
   </div>
 </section>
@@ -609,7 +620,7 @@ export default function HomePage() {
            style={{"width": "100%", "display": "block", "background": "linear-gradient(160deg,#F26000 0%,#FF7B2E 50%,#C24D00 100%)"}}>
         <defs>
           <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.25)"/>
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="rgba(0,0,0,0.25)"/>
           </filter>
           <filter id="mapglow">
             <feGaussianBlur stdDeviation="2" result="blur"/>
@@ -755,8 +766,8 @@ export default function HomePage() {
     <circle cx="446.3" cy="326.8" r="16" fill="#F26000" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="446.3" cy="326.8" r="6" fill="white"/>
     <rect x="391.3" y="270.8" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="446.3" y="283.8" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">Santo Domingo</text>
-    <text x="446.3" y="295.8" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">500+ profesionales</text>
+    <text x="446.3" y="283.8" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">Santo Domingo</text>
+    <text x="446.3" y="295.8" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">500+ profesionales</text>
   </g>
   {/*  Santiago  */}
   <g>
@@ -764,8 +775,8 @@ export default function HomePage() {
     <circle cx="282.4" cy="108.6" r="16" fill="#F26000" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="282.4" cy="108.6" r="6" fill="white"/>
     <rect x="227.39999999999998" y="52.599999999999994" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="282.4" y="65.6" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">Santiago</text>
-    <text x="282.4" y="77.6" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">200+ profesionales</text>
+    <text x="282.4" y="65.6" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">Santiago</text>
+    <text x="282.4" y="77.6" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">200+ profesionales</text>
   </g>
   {/*  La Vega  */}
   <g>
@@ -773,8 +784,8 @@ export default function HomePage() {
     <circle cx="317.4" cy="160.7" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="317.4" cy="160.7" r="4" fill="white"/>
     <rect x="262.4" y="104.69999999999999" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="317.4" y="117.69999999999999" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">La Vega</text>
-    <text x="317.4" y="129.7" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">En crecimiento</text>
+    <text x="317.4" y="117.69999999999999" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">La Vega</text>
+    <text x="317.4" y="129.7" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">En crecimiento</text>
   </g>
   {/*  La Romana  */}
   <g>
@@ -782,8 +793,8 @@ export default function HomePage() {
     <circle cx="652.8" cy="340.1" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="652.8" cy="340.1" r="4" fill="white"/>
     <rect x="597.8" y="284.1" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="652.8" y="297.1" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">La Romana</text>
-    <text x="652.8" y="309.1" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">En crecimiento</text>
+    <text x="652.8" y="297.1" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">La Romana</text>
+    <text x="652.8" y="309.1" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">En crecimiento</text>
   </g>
   {/*  Puerto Plata  */}
   <g>
@@ -791,8 +802,8 @@ export default function HomePage() {
     <circle cx="282.9" cy="31.4" r="11" fill="#FFB380" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="282.9" cy="31.4" r="4" fill="white"/>
     <rect x="227.89999999999998" y="61.4" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="282.9" y="74.4" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">Puerto Plata</text>
-    <text x="282.9" y="86.4" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">Próximamente</text>
+    <text x="282.9" y="74.4" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">Puerto Plata</text>
+    <text x="282.9" y="86.4" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">Próximamente</text>
   </g>
   {/*  Punta Cana  */}
   <g>
@@ -800,8 +811,8 @@ export default function HomePage() {
     <circle cx="775.0" cy="308.3" r="11" fill="#FFB380" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="775.0" cy="308.3" r="4" fill="white"/>
     <rect x="677" y="252.3" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="775.0" y="265.3" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">Punta Cana</text>
-    <text x="775.0" y="277.3" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">Próximamente</text>
+    <text x="775.0" y="265.3" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">Punta Cana</text>
+    <text x="775.0" y="277.3" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">Próximamente</text>
   </g>
   {/*  San Pedro  */}
   <g>
@@ -809,19 +820,19 @@ export default function HomePage() {
     <circle cx="581.1" cy="332.7" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="581.1" cy="332.7" r="4" fill="white"/>
     <rect x="526.1" y="276.7" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
-    <text x="581.1" y="289.7" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#C24D00">San Pedro</text>
-    <text x="581.1" y="301.7" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="600" fill="#F26000">En crecimiento</text>
+    <text x="581.1" y="289.7" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">San Pedro</text>
+    <text x="581.1" y="301.7" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">En crecimiento</text>
   </g>
 
         {/*  Ocean labels  */}
-        <text x="400" y="18" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="rgba(255,255,255,0.45)" font-style={{}} font-weight="600">Océano Atlántico</text>
-        <text x="400" y="542" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="rgba(255,255,255,0.45)" font-style={{}} font-weight="600">Mar Caribe</text>
+        <text x="400" y="18" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="13" fill="rgba(255,255,255,0.45)" fontStyle={{}} fontWeight="600">Océano Atlántico</text>
+        <text x="400" y="542" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="13" fill="rgba(255,255,255,0.45)" fontStyle={{}} fontWeight="600">Mar Caribe</text>
 
         {/*  North indicator  */}
         <g transform="translate(755,40)">
           <circle cx="0" cy="0" r="18" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5"/>
           <polygon points="0,-11 -5,6 0,3 5,6" fill="white"/>
-          <text x="0" y="22" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="white" font-weight="800">N</text>
+          <text x="0" y="22" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fill="white" fontWeight="800">N</text>
         </g>
       </svg>
     </div>
@@ -1055,7 +1066,7 @@ export default function HomePage() {
         <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Los planes se contratan desde la app</div>
         <div style={{"fontSize": "13px", "color": "var(--gray)", "marginTop": "2px"}}>Descarga Listo Patrón, crea tu perfil de profesional y elige tu plan en segundos.</div>
       </div>
-      <a href="https://listopatron.vercel.app/" style={{"background": "var(--orange)", "color": "#fff", "padding": "10px 22px", "borderRadius": "50px", "fontWeight": "800", "fontSize": "14px", "textDecoration": "none", "whiteSpace": "nowrap", "boxShadow": "0 4px 14px rgba(242,96,0,0.35)", "transition": "transform .2s,box-shadow .2s"}} onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(242,96,0,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(242,96,0,0.35)'">🚀 Descargar app</a>
+      <a href="https://listopatron.vercel.app/" style={{"background": "var(--orange)", "color": "#fff", "padding": "10px 22px", "borderRadius": "50px", "fontWeight": "800", "fontSize": "14px", "textDecoration": "none", "whiteSpace": "nowrap", "boxShadow": "0 4px 14px rgba(242,96,0,0.35)", "transition": "transform .2s,box-shadow .2s"}} onMouseOver={() => { this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(242,96,0,0.5)' }} onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 14px rgba(242,96,0,0.35)' }}>🚀 Descargar app</a>
     </div>
     <div className="planes-wrap" style={{"gridTemplateColumns": "repeat(auto-fit,minmax(220px,1fr))", "maxWidth": "1100px"}}>
     {/*  styles extracted  */}
@@ -1215,10 +1226,10 @@ export default function HomePage() {
 
     {/*  Tab buttons  */}
     <div style={{"display": "flex", "gap": "12px", "justifyContent": "center", "marginBottom": "28px"}}>
-      <button id="tabCliente" onClick="switchTab('cliente')" style={{"display": "flex", "alignItems": "center", "gap": "8px", "background": "#F26000", "color": "#fff", "border": "none", "padding": "12px 28px", "borderRadius": "50px", "fontFamily": "'Nunito',sans-serif", "fontSize": "15px", "fontWeight": "800", "cursor": "pointer", "boxShadow": "0 4px 14px rgba(242,96,0,0.35)", "transition": "all .2s"}}>
+      <button id="tabCliente" onClick={() => { switchTab('cliente') }} style={{"display": "flex", "alignItems": "center", "gap": "8px", "background": "#F26000", "color": "#fff", "border": "none", "padding": "12px 28px", "borderRadius": "50px", "fontFamily": "'Nunito',sans-serif", "fontSize": "15px", "fontWeight": "800", "cursor": "pointer", "boxShadow": "0 4px 14px rgba(242,96,0,0.35)", "transition": "all .2s"}}>
         👤 Soy Cliente
       </button>
-      <button id="tabPro" onClick="switchTab('pro')" style={{"display": "flex", "alignItems": "center", "gap": "8px", "background": "#FFF3EC", "color": "#F26000", "border": "2px solid #F26000", "padding": "12px 28px", "borderRadius": "50px", "fontFamily": "'Nunito',sans-serif", "fontSize": "15px", "fontWeight": "800", "cursor": "pointer", "transition": "all .2s"}}>
+      <button id="tabPro" onClick={() => { switchTab('pro') }} style={{"display": "flex", "alignItems": "center", "gap": "8px", "background": "#FFF3EC", "color": "#F26000", "border": "2px solid #F26000", "padding": "12px 28px", "borderRadius": "50px", "fontFamily": "'Nunito',sans-serif", "fontSize": "15px", "fontWeight": "800", "cursor": "pointer", "transition": "all .2s"}}>
         🔧 Soy Profesional
       </button>
     </div>
@@ -1317,7 +1328,7 @@ export default function HomePage() {
 
     <div className="faq-grid sr sr-delay-2">
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿Cómo funciona Listo?</span>
           <span className="faq-arrow">▼</span>
@@ -1325,7 +1336,7 @@ export default function HomePage() {
         <div className="faq-a">Busca el servicio que necesitas, elige un profesional verificado cerca de ti y coordina directamente. En minutos tienes a alguien en camino.</div>
       </div>
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿Los profesionales están verificados?</span>
           <span className="faq-arrow">▼</span>
@@ -1333,7 +1344,7 @@ export default function HomePage() {
         <div className="faq-a">Sí. Todos los profesionales pasan por un proceso de verificación antes de aparecer en la plataforma. También puedes ver sus calificaciones y reseñas de otros clientes.</div>
       </div>
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿Cómo se realiza el pago?</span>
           <span className="faq-arrow">▼</span>
@@ -1341,7 +1352,7 @@ export default function HomePage() {
         <div className="faq-a">El pago se coordina directamente con el profesional. Puedes pagar en efectivo o por transferencia bancaria según el acuerdo con el profesional.</div>
       </div>
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿Qué pasa si tengo un problema con el servicio?</span>
           <span className="faq-arrow">▼</span>
@@ -1349,7 +1360,7 @@ export default function HomePage() {
         <div className="faq-a">Puedes contactarnos directamente por WhatsApp o email. Nuestro equipo estará disponible para ayudarte a resolver cualquier inconveniente.</div>
       </div>
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿En qué ciudades está disponible?</span>
           <span className="faq-arrow">▼</span>
@@ -1357,7 +1368,7 @@ export default function HomePage() {
         <div className="faq-a">Listo está disponible en toda República Dominicana, con mayor cobertura en Santo Domingo, Santiago, La Romana y San Pedro de Macorís.</div>
       </div>
 
-      <div className="faq-item" onClick="toggleFaq(this)">
+      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
         <div className="faq-q">
           <span>¿Cómo me registro como profesional?</span>
           <span className="faq-arrow">▼</span>
@@ -1526,14 +1537,14 @@ export default function HomePage() {
       <div className="why-app-cta reveal">
         <h3>¿Listo para empezar?</h3>
         <div className="app-buttons" style={{"display": "flex", "gap": "14px", "flexWrap": "wrap", "justifyContent": "center"}}>
-          <a href="https://play.google.com/store/apps/details?id=com.listopatron" data-platform="android" target="_blank" rel="noopener noreferrer" onClick="trackAppDownload('android')" style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)'">
+          <a href="https://play.google.com/store/apps/details?id=com.listopatron" data-platform="android" target="_blank" rel="noopener noreferrer" onClick={() => { trackAppDownload('android') }} style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onMouseOver={() => { this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)' }} onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)' }}>
             <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
             <div style={{"lineHeight": "1.2"}}>
               <div style={{"fontSize": "11px", "opacity": ".7"}}>Descargar en</div>
               <div style={{"fontSize": "15px", "fontWeight": "800"}}>Google Play</div>
             </div>
           </a>
-          <a href="https://apps.apple.com/app/listopatron/id000000000" data-platform="ios" target="_blank" rel="noopener noreferrer" onClick="trackAppDownload('ios')" style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)'">
+          <a href="https://apps.apple.com/app/listopatron/id000000000" data-platform="ios" target="_blank" rel="noopener noreferrer" onClick={() => { trackAppDownload('ios') }} style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onMouseOver={() => { this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)' }} onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)' }}>
             <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M18.71,19.5C17.88,20.74 17,21.95 15.66,21.97C14.32,22 13.89,21.18 12.37,21.18C10.84,21.18 10.37,21.95 9.1,22C7.79,22.05 6.8,20.68 5.96,19.47C4.25,17 2.94,12.45 4.7,9.39C5.57,7.87 7.13,6.91 8.82,6.88C10.1,6.86 11.32,7.75 12.11,7.75C12.89,7.75 14.37,6.68 15.92,6.84C16.57,6.87 18.39,7.1 19.56,8.82C19.47,8.88 17.39,10.1 17.41,12.63C17.44,15.65 20.06,16.66 20.09,16.67C20.06,16.74 19.67,18.11 18.71,19.5M13,3.5C13.73,2.67 14.94,2.04 15.94,2C16.07,3.17 15.6,4.35 14.9,5.19C14.21,6.04 13.07,6.7 11.95,6.61C11.8,5.46 12.36,4.26 13,3.5Z"/></svg>
             <div style={{"lineHeight": "1.2"}}>
               <div style={{"fontSize": "11px", "opacity": ".7"}}>Descargar en</div>
@@ -1548,28 +1559,28 @@ export default function HomePage() {
             {/*  TikTok  */}
             <a href="https://www.tiktok.com/@listopatron?_r=1&_t=ZS-94ntViURmdQ" target="_blank" title="TikTok"
               style={{"width": "42px", "height": "42px", "borderRadius": "10px", "background": "#000", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "boxShadow": "0 3px 10px rgba(0,0,0,0.2)", "transition": "transform .2s"}}
-              onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+              onMouseOver={() => { this.style.transform='translateY(-3px)' }} onMouseOut={() => { this.style.transform='' }}>
               <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
             </a>
 
             {/*  Instagram  */}
             <a href="https://www.instagram.com/listopatronofficial?igsh=OGQ5ZDc2ODk2ZA==" target="_blank" title="Instagram"
               style={{"width": "42px", "height": "42px", "borderRadius": "10px", "background": "linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "boxShadow": "0 3px 10px rgba(220,39,67,0.35)", "transition": "transform .2s"}}
-              onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+              onMouseOver={() => { this.style.transform='translateY(-3px)' }} onMouseOut={() => { this.style.transform='' }}>
               <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162S8.597 18.163 12 18.163s6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
 
             {/*  Facebook  */}
             <a href="https://www.facebook.com/ListoPatron" target="_blank" title="Facebook"
               style={{"width": "42px", "height": "42px", "borderRadius": "10px", "background": "#1877F2", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "boxShadow": "0 3px 10px rgba(24,119,242,0.35)", "transition": "transform .2s"}}
-              onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+              onMouseOver={() => { this.style.transform='translateY(-3px)' }} onMouseOut={() => { this.style.transform='' }}>
               <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
 
             {/*  YouTube  */}
             <a href="https://www.youtube.com/@listopatron" target="_blank" title="YouTube"
               style={{"width": "42px", "height": "42px", "borderRadius": "10px", "background": "#FF0000", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "boxShadow": "0 3px 10px rgba(255,0,0,0.35)", "transition": "transform .2s"}}
-              onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+              onMouseOver={() => { this.style.transform='translateY(-3px)' }} onMouseOut={() => { this.style.transform='' }}>
               <svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
           </div>
@@ -1611,8 +1622,8 @@ export default function HomePage() {
 
       {/*  TikTok  */}
       <a href="https://www.tiktok.com/@listopatron?_r=1&_t=ZS-94ntViURmdQ" target="_blank" title="TikTok" style={{"width": "44px", "height": "44px", "borderRadius": "12px", "background": "#000", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "transition": "transform .2s,box-shadow .2s", "boxShadow": "0 4px 12px rgba(0,0,0,0.3)"}}
-        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)'">
+        onMouseOver={() => { this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.4)' }}
+        onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)' }}>
         <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
           <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/>
         </svg>
@@ -1620,8 +1631,8 @@ export default function HomePage() {
 
       {/*  Instagram  */}
       <a href="https://www.instagram.com/listopatronofficial?igsh=OGQ5ZDc2ODk2ZA==" target="_blank" title="Instagram" style={{"width": "44px", "height": "44px", "borderRadius": "12px", "background": "linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "transition": "transform .2s,box-shadow .2s", "boxShadow": "0 4px 12px rgba(220,39,67,0.4)"}}
-        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(220,39,67,0.55)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(220,39,67,0.4)'">
+        onMouseOver={() => { this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(220,39,67,0.55)' }}
+        onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 12px rgba(220,39,67,0.4)' }}>
         <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162S8.597 18.163 12 18.163s6.162-2.759 6.162-6.162S15.403 5.838 12 5.838zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
         </svg>
@@ -1629,8 +1640,8 @@ export default function HomePage() {
 
       {/*  Facebook  */}
       <a href="https://www.facebook.com/ListoPatron" target="_blank" title="Facebook" style={{"width": "44px", "height": "44px", "borderRadius": "12px", "background": "#1877F2", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "transition": "transform .2s,box-shadow .2s", "boxShadow": "0 4px 12px rgba(24,119,242,0.4)"}}
-        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(24,119,242,0.55)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(24,119,242,0.4)'">
+        onMouseOver={() => { this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(24,119,242,0.55)' }}
+        onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 12px rgba(24,119,242,0.4)' }}>
         <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
           <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
         </svg>
@@ -1638,8 +1649,8 @@ export default function HomePage() {
 
       {/*  WhatsApp  */}
       <a href="https://wa.me/18099090455" target="_blank" title="WhatsApp" style={{"width": "44px", "height": "44px", "borderRadius": "12px", "background": "#25D366", "display": "flex", "alignItems": "center", "justifyContent": "center", "textDecoration": "none", "transition": "transform .2s,box-shadow .2s", "boxShadow": "0 4px 12px rgba(37,211,102,0.4)"}}
-        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(37,211,102,0.55)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(37,211,102,0.4)'">
+        onMouseOver={() => { this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(37,211,102,0.55)' }}
+        onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 12px rgba(37,211,102,0.4)' }}>
         <svg viewBox="0 0 24 24" fill="white" width="22" height="22">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
