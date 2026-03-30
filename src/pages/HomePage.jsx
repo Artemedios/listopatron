@@ -1,69 +1,21 @@
 import React from 'react';
+import useListoLogic from '../useListoLogic';
 
 export default function HomePage() {
-  React.useEffect(() => {
-    setTimeout(() => {
-      const splash = document.getElementById('splash-phase');
-      if (splash) splash.style.display = 'none';
-      const preloader = document.getElementById('preloader');
-      if (preloader) preloader.style.display = 'none';
-      const intro = document.getElementById('intro-video-container');
-      if (intro) intro.style.display = 'none';
-    }, 1500);
-  }, []);
+  useListoLogic();
+
+  const closeIntro = () => { if (window.closeIntro) window.closeIntro(); };
+  const nextSlide = () => { if (window.nextSlide) window.nextSlide(); };
+  const shiftSlider = (d) => { if (window.shiftSlider) window.shiftSlider(d); };
+  const goSlide = (i) => { if (window.goSlide) window.goSlide(i); };
+  const adSlide = (d) => { if (window.adSlide) window.adSlide(d); };
+  const goAd = (i) => { if (window.goAd) window.goAd(i); };
+  const switchTab = (t) => { if (window.switchTab) window.switchTab(t); };
 
   return (
     <>
 
-  {/*  INTRO VIDEO SPLASH  */}
-  {/*  styles extracted  */}
-
-  <div id="intro-video-container" style={{"position": "fixed", "top": "0", "left": "0", "width": "100vw", "height": "100vh", "zIndex": "999999", "background": "rgba(0,0,0,0.9)", "display": "flex", "alignItems": "center", "justifyContent": "center", "transition": "opacity 0.8s ease-out"}}>
-    <div style={{"position": "relative", "width": "100%", "maxWidth": "480px", "height": "100%", "boxShadow": "0 0 40px rgba(242,96,0,0.4)", "overflow": "hidden", "background": "#000"}}>
-      
-      {/*  Video Backgrounds  */}
-      <video id="v-0" className="ob-video active" src="./videos/servicios1.mp4" autoPlay muted playsInline loop></video>
-      <video id="v-1" className="ob-video" src="./videos/profesionales1.mp4" muted playsInline loop></video>
-      <video id="v-2" className="ob-video" src="./videos/servicios3.mp4" muted playsInline loop></video>
-      <video id="v-3" className="ob-video" src="./videos/profesionales3.mp4" muted playsInline loop></video>
-      <video id="v-4" className="ob-video" src="./videos/reserva1.mp4" muted playsInline loop></video>
-      <video id="v-5" className="ob-video" src="./videos/reserva2.mp4" muted playsInline loop></video>
-
-      <div className="ob-overlay"></div>
-
-      {/*  ONBOARDING PHASE  */}
-      <div id="onboarding-phase">
-        <div className="ob-content-wrapper">
-          <button className="skip-btn" onClick={() => { closeIntro() }}>Omitir →</button>
-          
-          <div className="ob-content" id="ob-content">
-            <img src="./assets/logo_listo_blanco.png" className="ob-logo" onError={(e) => { e.target.style.display='none' }} />
-            <h2 className="ob-title" id="ob-title">Todos los servicios en un solo lugar</h2>
-            <p className="ob-sub" id="ob-sub">Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.</p>
-          </div>
-
-          <div className="ob-footer">
-            <div className="ob-progress"><div className="ob-progress-bar" id="ob-progress-bar"></div></div>
-            <div className="ob-dots" id="ob-dots">
-              <div className="ob-dot active"></div><div className="ob-dot"></div><div className="ob-dot"></div>
-              <div className="ob-dot"></div><div className="ob-dot"></div><div className="ob-dot"></div>
-            </div>
-            <button className="ob-btn" id="ob-btn" onClick={() => { nextSlide() }}>Siguiente →</button>
-          </div>
-        </div>
-      </div>
-
-      {/*  SPLASH PHASE  */}
-      <div id="splash-phase">
-        <div className="splash-logo-wrap">
-          <img src="./assets/logo_listo.png" className="splash-logo" onError={(e) => { e.target.style.display='none' }} />
-        </div>
-        <p className="splash-tagline">Listo, patrón.</p>
-        <div className="splash-loader"><div className="splash-bar"></div></div>
-      </div>
-
-    </div>
-  </div>
+  {/*  INTRO VIDEO SPLASH MOVED TO PORTADA HEADER  */}
 
   
   {/*  PRELOADER  */}
@@ -119,13 +71,52 @@ export default function HomePage() {
 </nav>
 
 
-{/*  PORTADA PRINCIPAL  */}
-<div style={{"width": "100%", "background": "#F26000", "paddingTop": "70px"}}>
-  <img
-    src="../src/assets/extracted_5.png"
-    alt="Listo Patrón — Un profesional siempre cerca de ti"
-    style={{"width": "100%", "display": "block", "maxHeight": "520px", "objectFit": "cover", "objectPosition": "center 15%"}}
-  />
+{/*  PORTADA PRINCIPAL / INTRO VIDEO SPLASH  */}
+<div id="intro-video-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "height": "520px", "display": "flex", "justifyContent": "center", "position": "relative", "overflow": "hidden"}}>
+    <div style={{"position": "relative", "width": "100%", "maxWidth": "480px", "height": "100%", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000"}}>
+      
+      {/*  Video Backgrounds  */}
+      <video id="v-0" className="ob-video active" src="./videos/servicios1.mp4" autoPlay muted playsInline loop></video>
+      <video id="v-1" className="ob-video" src="./videos/profesionales1.mp4" muted playsInline loop></video>
+      <video id="v-2" className="ob-video" src="./videos/servicios3.mp4" muted playsInline loop></video>
+      <video id="v-3" className="ob-video" src="./videos/profesionales3.mp4" muted playsInline loop></video>
+      <video id="v-4" className="ob-video" src="./videos/reserva1.mp4" muted playsInline loop></video>
+      <video id="v-5" className="ob-video" src="./videos/reserva2.mp4" muted playsInline loop></video>
+
+      <div className="ob-overlay"></div>
+
+      {/*  ONBOARDING PHASE  */}
+      <div id="onboarding-phase">
+        <div className="ob-content-wrapper">
+          <button className="skip-btn" onClick={() => { closeIntro() }}>Omitir →</button>
+          
+          <div className="ob-content" id="ob-content">
+            <img src="./assets/logo_listo_blanco.png" className="ob-logo" onError={(e) => { e.target.style.display='none' }} />
+            <h2 className="ob-title" id="ob-title">Todos los servicios en un solo lugar</h2>
+            <p className="ob-sub" id="ob-sub">Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.</p>
+          </div>
+
+          <div className="ob-footer">
+            <div className="ob-progress"><div className="ob-progress-bar" id="ob-progress-bar"></div></div>
+            <div className="ob-dots" id="ob-dots">
+              <div className="ob-dot active"></div><div className="ob-dot"></div><div className="ob-dot"></div>
+              <div className="ob-dot"></div><div className="ob-dot"></div><div className="ob-dot"></div>
+            </div>
+            <button className="ob-btn" id="ob-btn" onClick={() => { nextSlide() }}>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      {/*  SPLASH PHASE  */}
+      <div id="splash-phase">
+        <div className="splash-logo-wrap">
+          <img src="./assets/logo_listo.png" className="splash-logo" onError={(e) => { e.target.style.display='none' }} />
+        </div>
+        <p className="splash-tagline">Listo, patrón.</p>
+        <div className="splash-loader"><div className="splash-bar"></div></div>
+      </div>
+
+    </div>
 </div>
 
 
