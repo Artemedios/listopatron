@@ -197,41 +197,41 @@ export default function HomePage() {
       <button onClick={() => { shiftSlider(-1) }} aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
 
       <div id="proSliderTrack" style={{"display": "flex", "transition": "transform 0.5s ease-out", "gap": "20px"}}>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/MECANICO.png" alt="Mecánico" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🔧 Mecánico</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_6.png" alt="Mecánico" />
+          <div className="pro-slide-label">🔧 Mecánico</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/limpiesa.png" alt="Limpieza" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🧹 Limpieza</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_7.png" alt="Limpieza" />
+          <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/albañil.png" alt="Albañil" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🧱 Albañil</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_8.png" alt="Limpieza 2" />
+          <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/jardinero.png" alt="Jardinero" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🌿 Jardinero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_9.png" alt="Jardinero" />
+          <div className="pro-slide-label">🌿 Jardinero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/electricista.png" alt="Electricista" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>⚡ Electricista</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_10.png" alt="Jardinero 2" />
+          <div className="pro-slide-label">🌿 Jardinero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/Plomero.png" alt="Plomero" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🔩 Plomero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_11.png" alt="Plomero" />
+          <div className="pro-slide-label">🔩 Plomero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/niñera.png" alt="Niñera" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>👶 Niñera</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_12.png" alt="Enfermería" />
+          <div className="pro-slide-label">🏥 Enfermería</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/masajes.png" alt="Masajes" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>💆 Masajes</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_13.png" alt="Masajes" />
+          <div className="pro-slide-label">💆 Masajes</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
-          <img src="./assets/profesionales/Pintor.png" alt="Pintor" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
-          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🎨 Pintor</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_14.jpeg" alt="Pintor" />
+          <div className="pro-slide-label">🎨 Pintor</div>
         </div>
       </div>
 
@@ -401,14 +401,16 @@ export default function HomePage() {
     <h2 className="section-title sr sr-delay-1">Todo lo que necesitas<br/><span>en un solo lugar</span></h2>
     <p className="section-sub">Desde plomería hasta niñeras — el profesional que buscas está a minutos de ti.</p>
     <div className="cats-grid">
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/mantenimiento.png" alt="Mantenimiento" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Mantenimiento</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/limpieza.png" alt="Limpieza" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Limpieza</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/cuidado.jpg" alt="Cuidado personal" style={{"width": "40px", "height": "40px", "objectFit": "contain", "borderRadius": "8px"}}/></span><span className="cat-name">Cuidado personal</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/eventos.png" alt="Eventos" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Eventos</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/personalizado.png" alt="Personalizado" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Personalizado</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/belleza.png" alt="Belleza" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Belleza y Bienestar</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/transporte.png" alt="Transporte" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Transporte</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card cta-cat"><span className="cat-icon" style={{"color": "#fff", "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "40px", "height": "40px"}}>✦</span><span className="cat-name">Ver todos</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/MECANICO.png" alt="Mantenimiento" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Mantenimiento</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/limpiesa.png" alt="Limpieza" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Limpieza</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/masajes.png" alt="Cuidado personal" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Cuidado personal</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/organisadora de boda.png" alt="Eventos" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Eventos</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/Pintor.png" alt="Personalizado" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Personalizado</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/electricista.png" alt="Electricista" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Electricista</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/Plomero.png" alt="Plomero" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Plomero</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/delivery.png" alt="Repartidor" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Envíos</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/niñera.png" alt="Niñera" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Niñera</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card cta-cat"><span className="cat-icon" style={{"color": "#fff", "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "48px", "height": "48px", "fontSize": "24px"}}>✦</span><span className="cat-name">Ver todos</span></a>
     </div>
 
     {/*  Profesionales destacados  */}
