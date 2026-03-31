@@ -196,42 +196,34 @@ export default function HomePage() {
     <div style={{"position": "relative"}}>
       <button onClick={() => { shiftSlider(-1) }} aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
 
-      <div id="proSliderTrack" style={{"display": "grid", "gridTemplateColumns": "repeat(4,1fr)", "gap": "20px"}}>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_6.png" alt="🔧 Mecánico" />
-          <div className="pro-slide-label">🔧 Mecánico</div>
+      <div id="proSliderTrack" style={{"display": "flex", "transition": "transform 0.5s ease-out", "gap": "20px"}}>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/belleza.png" alt="Belleza y Bienestar" />
+          <div className="pro-slide-label">💆 Belleza y Bienestar</div>
         </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_7.png" alt="🧹 Limpieza" />
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/cuidado.jpg" alt="Cuidado Personal" />
+          <div className="pro-slide-label">🧼 Cuidado Personal</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/eventos.png" alt="Eventos" />
+          <div className="pro-slide-label">🎉 Eventos</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/limpieza.png" alt="Limpieza" />
           <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_8.png" alt="🧹 Limpieza" />
-          <div className="pro-slide-label">🧹 Limpieza</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/mantenimiento.png" alt="Mantenimiento" />
+          <div className="pro-slide-label">🔧 Mantenimiento</div>
         </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_9.png" alt="🌿 Jardinero" />
-          <div className="pro-slide-label">🌿 Jardinero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/personalizado.png" alt="Personalizado" />
+          <div className="pro-slide-label">✨ Personalizado</div>
         </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_10.png" alt="🌿 Jardinero" />
-          <div className="pro-slide-label">🌿 Jardinero</div>
-        </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_11.png" alt="🔩 Plomero" />
-          <div className="pro-slide-label">🔩 Plomero</div>
-        </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_12.png" alt="🏥 Enfermería" />
-          <div className="pro-slide-label">🏥 Enfermería</div>
-        </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_13.png" alt="💆 Masajes" />
-          <div className="pro-slide-label">💆 Masajes</div>
-        </div>
-        <div className="pro-slide">
-          <img src="../src/assets/extracted_14.jpeg" alt="🎨 Pintor" />
-          <div className="pro-slide-label">🎨 Pintor</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/categorias/transporte.png" alt="Transporte" />
+          <div className="pro-slide-label">🚚 Transporte</div>
         </div>
       </div>
 
