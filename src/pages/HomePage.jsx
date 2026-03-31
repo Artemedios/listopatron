@@ -73,13 +73,24 @@ export default function HomePage() {
 
 
 {/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
-<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "height": "520px", "display": "flex", "justifyContent": "center", "position": "relative", "overflow": "hidden"}}>
-    <div style={{"position": "relative", "width": "100%", "maxWidth": "960px", "height": "100%", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px"}}>
-      {/* La imagen principal (el banner naranja con las personas) */}
-      <img src="./assets/portada_nueva.png" style={{"width": "100%", "height": "100%", "objectFit": "cover", "display": "block"}} alt="Portada Listo Patrón" />
+<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "justifyContent": "center", "position": "relative"}}>
+    <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px"}}>
+      
+      {/* La imagen principal (el banner naranja con las personas) - en auto proporciones para que no se corte */}
+      <img src="./assets/portada_nueva.png" style={{"width": "100%", "height": "auto", "display": "block"}} alt="Portada Listo Patrón" />
       
       {/* El logo circular en la esquina superior derecha */}
-      <img src="./assets/logo_esquina.png" style={{"position": "absolute", "top": "20px", "right": "20px", "width": "80px", "height": "80px", "objectFit": "contain", "zIndex": "2", "filter": "drop-shadow(0 4px 6px rgba(0,0,0,0.2))"}} alt="Logo Listo" />
+      <img src="./assets/logo_esquina.png" style={{"position": "absolute", "top": "4%", "right": "4%", "width": "clamp(50px, 8vw, 90px)", "height": "auto", "objectFit": "contain", "zIndex": "2", "filter": "drop-shadow(0 4px 6px rgba(0,0,0,0.2))"}} alt="Logo Listo" />
+
+      {/* Botones de App Store y Google Play superpuestos encima de los marcos blancos */}
+      <div style={{"position": "absolute", "top": "56%", "right": "3.5%", "display": "flex", "flexDirection": "column", "gap": "1vh", "zIndex": "5", "width": "clamp(100px, 15vw, 150px)"}}>
+         <a href="https://play.google.com/store/apps" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+           <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Disponible en Google Play" style={{"width": "100%", "height": "auto", "display": "block"}} />
+         </a>
+         <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+           <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Consíguelo en el App Store" style={{"width": "100%", "height": "auto", "display": "block"}} />
+         </a>
+      </div>
     </div>
 </div>
 
