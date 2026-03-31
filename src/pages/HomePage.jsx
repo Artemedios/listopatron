@@ -20,10 +20,11 @@ export default function HomePage() {
   
   {/*  PRELOADER  */}
   <div className="preloader" id="preloader" role="status" aria-label="Cargando">
-    <div className="preloader-content">
-      <div className="preloader-logo">🔧 Listo Patrón</div>
+    <div className="preloader-content" style={{"display": "flex", "flexDirection": "column", "alignItems": "center", "justifyContent": "center", "position": "absolute", "top": "50%", "left": "50%", "transform": "translate(-50%, -50%)"}}>
+      <img src="./assets/logo_listo_blanco.png" alt="Logo Listo" style={{"height": "60px", "objectFit": "contain", "marginBottom": "20px"}} />
+      <div className="preloader-logo" style={{"fontSize": "32px", "color": "white", "fontFamily": "'Fredoka One', cursive", "marginBottom": "15px"}}>Listo</div>
       <div className="preloader-spinner"></div>
-      <p style={{"color": "white", "marginTop": "10px", "fontWeight": "600"}}>Cargando...</p>
+      <p style={{"color": "white", "marginTop": "15px", "fontWeight": "600"}}>Cargando...</p>
     </div>
   </div>
 
