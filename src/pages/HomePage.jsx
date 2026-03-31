@@ -71,51 +71,19 @@ export default function HomePage() {
 </nav>
 
 
-{/*  PORTADA PRINCIPAL / INTRO VIDEO SPLASH  */}
-<div id="intro-video-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "height": "520px", "display": "flex", "justifyContent": "center", "position": "relative", "overflow": "hidden"}}>
-    <div style={{"position": "relative", "width": "100%", "maxWidth": "480px", "height": "100%", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000"}}>
-      
-      {/*  Video Backgrounds  */}
-      <video id="v-0" className="ob-video active" src="./videos/servicios1.mp4" autoPlay muted playsInline loop></video>
-      <video id="v-1" className="ob-video" src="./videos/profesionales1.mp4" muted playsInline loop></video>
-      <video id="v-2" className="ob-video" src="./videos/servicios3.mp4" muted playsInline loop></video>
-      <video id="v-3" className="ob-video" src="./videos/profesionales3.mp4" muted playsInline loop></video>
-      <video id="v-4" className="ob-video" src="./videos/reserva1.mp4" muted playsInline loop></video>
-      <video id="v-5" className="ob-video" src="./videos/reserva2.mp4" muted playsInline loop></video>
-
-      <div className="ob-overlay"></div>
-
-      {/*  ONBOARDING PHASE  */}
-      <div id="onboarding-phase">
-        <div className="ob-content-wrapper">
-          <button className="skip-btn" onClick={() => { closeIntro() }}>Omitir →</button>
-          
-          <div className="ob-content" id="ob-content">
-            <img src="./assets/logo_listo_blanco.png" className="ob-logo" onError={(e) => { e.target.style.display='none' }} />
-            <h2 className="ob-title" id="ob-title">Todos los servicios en un solo lugar</h2>
-            <p className="ob-sub" id="ob-sub">Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.</p>
-          </div>
-
-          <div className="ob-footer">
-            <div className="ob-progress"><div className="ob-progress-bar" id="ob-progress-bar"></div></div>
-            <div className="ob-dots" id="ob-dots">
-              <div className="ob-dot active"></div><div className="ob-dot"></div><div className="ob-dot"></div>
-              <div className="ob-dot"></div><div className="ob-dot"></div><div className="ob-dot"></div>
-            </div>
-            <button className="ob-btn" id="ob-btn" onClick={() => { nextSlide() }}>Siguiente →</button>
-          </div>
-        </div>
+{/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
+<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "height": "520px", "display": "flex", "justifyContent": "center", "position": "relative", "overflow": "hidden"}}>
+    <div style={{"position": "relative", "width": "100%", "maxWidth": "960px", "height": "100%", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px"}}>
+      <img src="./assets/banner_pros.jpg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "display": "block"}} alt="Portada Listo Patrón" />
+      <div style={{"position": "absolute", "inset": "0", "background": "linear-gradient(to top, rgba(0,0,0,0.8), transparent)"}}></div>
+      <div style={{"position": "absolute", "bottom": "40px", "left": "40px", "paddingRight": "40px"}}>
+         <h1 style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "clamp(28px, 4vw, 42px)", "color": "#fff", "lineHeight": "1.1", "marginBottom": "8px"}}>
+            Todos los servicios en un solo lugar
+         </h1>
+         <p style={{"fontSize": "16px", "color": "rgba(255,255,255,0.9)", "maxWidth": "500px"}}>
+            Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.
+         </p>
       </div>
-
-      {/*  SPLASH PHASE  */}
-      <div id="splash-phase">
-        <div className="splash-logo-wrap">
-          <img src="./assets/logo_listo.png" className="splash-logo" onError={(e) => { e.target.style.display='none' }} />
-        </div>
-        <p className="splash-tagline">Listo, patrón.</p>
-        <div className="splash-loader"><div className="splash-bar"></div></div>
-      </div>
-
     </div>
 </div>
 
