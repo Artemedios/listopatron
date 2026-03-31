@@ -74,16 +74,11 @@ export default function HomePage() {
 {/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
 <div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "height": "520px", "display": "flex", "justifyContent": "center", "position": "relative", "overflow": "hidden"}}>
     <div style={{"position": "relative", "width": "100%", "maxWidth": "960px", "height": "100%", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px"}}>
-      <img src="./assets/banner_pros.jpg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "display": "block"}} alt="Portada Listo Patrón" />
-      <div style={{"position": "absolute", "inset": "0", "background": "linear-gradient(to top, rgba(0,0,0,0.8), transparent)"}}></div>
-      <div style={{"position": "absolute", "bottom": "40px", "left": "40px", "paddingRight": "40px"}}>
-         <h1 style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "clamp(28px, 4vw, 42px)", "color": "#fff", "lineHeight": "1.1", "marginBottom": "8px"}}>
-            Todos los servicios en un solo lugar
-         </h1>
-         <p style={{"fontSize": "16px", "color": "rgba(255,255,255,0.9)", "maxWidth": "500px"}}>
-            Mecánicos, electricistas, plomeros, niñeras y más — cuando los necesitas.
-         </p>
-      </div>
+      {/* La imagen principal (el banner naranja con las personas) */}
+      <img src="./assets/portada_nueva.png" style={{"width": "100%", "height": "100%", "objectFit": "cover", "display": "block"}} alt="Portada Listo Patrón" />
+      
+      {/* El logo circular en la esquina superior derecha */}
+      <img src="./assets/logo_esquina.png" style={{"position": "absolute", "top": "20px", "right": "20px", "width": "80px", "height": "80px", "objectFit": "contain", "zIndex": "2", "filter": "drop-shadow(0 4px 6px rgba(0,0,0,0.2))"}} alt="Logo Listo" />
     </div>
 </div>
 
