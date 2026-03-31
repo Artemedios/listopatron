@@ -82,8 +82,8 @@ export default function HomePage() {
       {/* El logo circular en la esquina superior derecha */}
       <img src="./assets/logo_esquina.png" style={{"position": "absolute", "top": "4%", "right": "4%", "width": "clamp(50px, 8vw, 90px)", "height": "auto", "objectFit": "contain", "zIndex": "2", "filter": "drop-shadow(0 4px 6px rgba(0,0,0,0.2))"}} alt="Logo Listo" />
 
-      {/* Botones de App Store y Google Play superpuestos encima de los marcos blancos */}
-      <div style={{"position": "absolute", "top": "54.5%", "left": "74%", "display": "flex", "flexDirection": "column", "gap": "1.8vh", "zIndex": "5", "width": "22.5%"}}>
+      {/* Botones de App Store y Google Play */}
+      <div style={{"position": "absolute", "top": "54%", "right": "5%", "display": "flex", "flexDirection": "column", "gap": "2vh", "zIndex": "5", "width": "clamp(120px, 18vw, 160px)"}}>
          <a href="https://play.google.com/store/apps" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Disponible en Google Play" style={{"width": "100%", "height": "auto", "display": "block"}} />
          </a>
