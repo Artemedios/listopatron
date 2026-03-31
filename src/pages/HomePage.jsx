@@ -198,32 +198,40 @@ export default function HomePage() {
 
       <div id="proSliderTrack" style={{"display": "flex", "transition": "transform 0.5s ease-out", "gap": "20px"}}>
         <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/belleza.png" alt="Belleza y Bienestar" />
-          <div className="pro-slide-label">💆 Belleza y Bienestar</div>
+          <img src="./assets/extracted_6.png" alt="Mecánico" />
+          <div className="pro-slide-label">🔧 Mecánico</div>
         </div>
         <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/cuidado.jpg" alt="Cuidado Personal" />
-          <div className="pro-slide-label">🧼 Cuidado Personal</div>
-        </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/eventos.png" alt="Eventos" />
-          <div className="pro-slide-label">🎉 Eventos</div>
-        </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/limpieza.png" alt="Limpieza" />
+          <img src="./assets/extracted_7.png" alt="Limpieza" />
           <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
         <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/mantenimiento.png" alt="Mantenimiento" />
-          <div className="pro-slide-label">🔧 Mantenimiento</div>
+          <img src="./assets/extracted_8.png" alt="Limpieza 2" />
+          <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
         <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/personalizado.png" alt="Personalizado" />
-          <div className="pro-slide-label">✨ Personalizado</div>
+          <img src="./assets/extracted_9.png" alt="Jardinero" />
+          <div className="pro-slide-label">🌿 Jardinero</div>
         </div>
         <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/categorias/transporte.png" alt="Transporte" />
-          <div className="pro-slide-label">🚚 Transporte</div>
+          <img src="./assets/extracted_10.png" alt="Jardinero 2" />
+          <div className="pro-slide-label">🌿 Jardinero</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_11.png" alt="Plomero" />
+          <div className="pro-slide-label">🔩 Plomero</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_12.png" alt="Enfermería" />
+          <div className="pro-slide-label">🏥 Enfermería</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_13.png" alt="Masajes" />
+          <div className="pro-slide-label">💆 Masajes</div>
+        </div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+          <img src="./assets/extracted_14.jpeg" alt="Pintor" />
+          <div className="pro-slide-label">🎨 Pintor</div>
         </div>
       </div>
 
@@ -393,16 +401,14 @@ export default function HomePage() {
     <h2 className="section-title sr sr-delay-1">Todo lo que necesitas<br/><span>en un solo lugar</span></h2>
     <p className="section-sub">Desde plomería hasta niñeras — el profesional que buscas está a minutos de ti.</p>
     <div className="cats-grid">
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">🔧</span><span className="cat-name">Mantenimiento</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">🧹</span><span className="cat-name">Limpieza</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">✂️</span><span className="cat-name">Cuidado personal</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">🎉</span><span className="cat-name">Eventos</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">⭐</span><span className="cat-name">Personalizado</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">⚡</span><span className="cat-name">Electricista</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">🔩</span><span className="cat-name">Plomero</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">🏍️</span><span className="cat-name">Mec. Motos</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon">👶</span><span className="cat-name">Niñera</span></a>
-      <a href="https://listopatron.vercel.app/" className="cat-card cta-cat"><span className="cat-icon" style={{"color": "#fff"}}>✦</span><span className="cat-name">Ver todos</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/mantenimiento.png" alt="Mantenimiento" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Mantenimiento</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/limpieza.png" alt="Limpieza" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Limpieza</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/cuidado.jpg" alt="Cuidado personal" style={{"width": "40px", "height": "40px", "objectFit": "contain", "borderRadius": "8px"}}/></span><span className="cat-name">Cuidado personal</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/eventos.png" alt="Eventos" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Eventos</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/personalizado.png" alt="Personalizado" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Personalizado</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/belleza.png" alt="Belleza" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Belleza y Bienestar</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/categorias/transporte.png" alt="Transporte" style={{"width": "40px", "height": "40px", "objectFit": "contain"}}/></span><span className="cat-name">Transporte</span></a>
+      <a href="https://listopatron.vercel.app/" className="cat-card cta-cat"><span className="cat-icon" style={{"color": "#fff", "display": "flex", "alignItems": "center", "justifyContent": "center", "width": "40px", "height": "40px"}}>✦</span><span className="cat-name">Ver todos</span></a>
     </div>
 
     {/*  Profesionales destacados  */}
