@@ -197,41 +197,41 @@ export default function HomePage() {
       <button onClick={() => { shiftSlider(-1) }} aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
 
       <div id="proSliderTrack" style={{"display": "flex", "transition": "transform 0.5s ease-out", "gap": "20px"}}>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_6.png" alt="Mecánico" />
-          <div className="pro-slide-label">🔧 Mecánico</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/MECANICO.png" alt="Mecánico" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🔧 Mecánico</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_7.png" alt="Limpieza" />
-          <div className="pro-slide-label">🧹 Limpieza</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/limpiesa.png" alt="Limpieza" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🧹 Limpieza</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_8.png" alt="Limpieza 2" />
-          <div className="pro-slide-label">🧹 Limpieza</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/albañil.png" alt="Albañil" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🧱 Albañil</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_9.png" alt="Jardinero" />
-          <div className="pro-slide-label">🌿 Jardinero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/jardinero.png" alt="Jardinero" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🌿 Jardinero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_10.png" alt="Jardinero 2" />
-          <div className="pro-slide-label">🌿 Jardinero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/electricista.png" alt="Electricista" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>⚡ Electricista</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_11.png" alt="Plomero" />
-          <div className="pro-slide-label">🔩 Plomero</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/Plomero.png" alt="Plomero" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🔩 Plomero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_12.png" alt="Enfermería" />
-          <div className="pro-slide-label">🏥 Enfermería</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/niñera.png" alt="Niñera" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>👶 Niñera</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_13.png" alt="Masajes" />
-          <div className="pro-slide-label">💆 Masajes</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/masajes.png" alt="Masajes" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>💆 Masajes</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
-          <img src="./assets/extracted_14.jpeg" alt="Pintor" />
-          <div className="pro-slide-label">🎨 Pintor</div>
+        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px", "background": "#FFF9F5", "borderRadius": "20px", "padding": "20px", "boxSizing": "border-box", "display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+          <img src="./assets/profesionales/Pintor.png" alt="Pintor" style={{"width": "100%", "height": "160px", "objectFit": "contain", "marginBottom": "15px"}} />
+          <div className="pro-slide-label" style={{"color": "#F26000", "fontWeight": "800", "fontSize": "16px"}}>🎨 Pintor</div>
         </div>
       </div>
 
