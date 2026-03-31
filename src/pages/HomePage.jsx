@@ -58,14 +58,14 @@ export default function HomePage() {
 
 {/*  NAV  */}
 <nav id="nav">
-  <img className="nav-logo" src="../src/assets/extracted_4.png" alt="Listo"/>
+  <img className="nav-logo" src="./assets/logo_listo.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
   <div className="nav-links" id="navLinks">
     <a href="#servicios">Servicios</a>
     <a href="#como-funciona">Cómo funciona</a>
     <a href="#profesionales">Para profesionales</a>
     <a href="#planes">Planes</a>
     <a href="#faq">FAQ</a>
-    <a href="https://listopatron.vercel.app/" className="nav-btn">Abrir app →</a>
+    <a href="https://listopatron.vercel.app/" className="nav-btn" style={{"color": "#FFFFFF", "fontWeight": "bold"}}>Abrir app →</a>
   </div>
   <button className="burger" id="burger"><span></span><span></span><span></span></button>
 </nav>
