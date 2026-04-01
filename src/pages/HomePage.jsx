@@ -260,10 +260,10 @@ export default function HomePage() {
     <div style={{"textAlign": "center", "fontSize": "11px", "color": "#999", "letterSpacing": "1.5px", "textTransform": "uppercase", "marginBottom": "12px"}}>Publicidad</div>
     <div style={{"position": "relative", "maxWidth": "960px", "margin": "0 auto", "overflow": "hidden", "borderRadius": "16px", "boxShadow": "0 8px 30px rgba(0,0,0,0.1)"}}>
       <div id="ad-track" style={{"display": "flex", "transition": "transform .6s ease"}}>
-        <div className="ad-slide"><img src="../src/assets/extracted_15.png" alt="Caney Discoteca" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="../src/assets/extracted_16.png" alt="Arte Urbano" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="../src/assets/extracted_17.png" alt="Arte Medios" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="../src/assets/extracted_18.png" alt="FCO Ren Cars" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src="./assets/extracted_15.png" alt="Caney Discoteca" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src="./assets/extracted_16.png" alt="Arte Urbano" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src="./assets/extracted_17.png" alt="Arte Medios" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src="./assets/extracted_18.png" alt="FCO Ren Cars" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
       </div>
       <button onClick={() => { adSlide(-1) }} style={{"position": "absolute", "left": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>‹</button>
       <button onClick={() => { adSlide(1) }} style={{"position": "absolute", "right": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>›</button>
@@ -313,7 +313,7 @@ export default function HomePage() {
             <div className="phone-notch"></div>
             <div className="phone-screen">
               <div className="phone-header" style={{"flexDirection": "column", "alignItems": "center", "gap": "6px", "padding": "16px 14px 10px"}}>
-                <img src="../src/assets/extracted_19.png" alt="Listo Patrón" style={{"height": "28px", "width": "auto", "objectFit": "contain", "filter": "brightness(0) invert(1)"}}/>
+                <img src="./assets/extracted_19.png" alt="Listo Patrón" style={{"height": "28px", "width": "auto", "objectFit": "contain", "filter": "brightness(0) invert(1)"}}/>
                 <span style={{"color": "rgba(255,255,255,0.9)", "fontSize": "10px", "fontWeight": "700", "letterSpacing": ".5px"}}>🇩🇴 República Dominicana</span>
               </div>
               <div className="phone-search">🔍 ¿Qué servicio necesitas?</div>
@@ -423,7 +423,7 @@ export default function HomePage() {
       <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fill,minmax(240px,1fr))", "gap": "16px"}}>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_20.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_20.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Carlos Méndez</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Electricista · Santo Domingo</div>
@@ -433,7 +433,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_21.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_21.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Ana Rodríguez</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Plomera · Santiago</div>
@@ -443,7 +443,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_22.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_22.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>José Fernández</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Mecánico · La Romana</div>
@@ -453,7 +453,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_23.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_23.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>María Concepción</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Limpieza · Santo Domingo</div>
@@ -463,7 +463,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_24.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_24.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Rafael Guzmán</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Pintor · Santiago</div>
@@ -473,7 +473,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="../src/assets/extracted_25.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_25.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Pedro Santos</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Jardinero · San Cristóbal</div>
@@ -909,7 +909,7 @@ export default function HomePage() {
       </div>
       <div className="pro-visual">
         <div className="pro-card">
-          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="../src/assets/extracted_26.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
+          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="./assets/extracted_26.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
           <div className="pro-card-info">
             <div className="pro-card-name">Carlos Méndez</div>
             <div className="pro-card-role">Electricista · Santo Domingo</div>
@@ -918,7 +918,7 @@ export default function HomePage() {
           <div className="pro-card-earn">+RD$45k</div>
         </div>
         <div className="pro-card">
-          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="../src/assets/extracted_27.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
+          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="./assets/extracted_27.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
           <div className="pro-card-info">
             <div className="pro-card-name">Ana Rodríguez</div>
             <div className="pro-card-role">Plomera · Santiago</div>
@@ -927,7 +927,7 @@ export default function HomePage() {
           <div className="pro-card-earn">+RD$38k</div>
         </div>
         <div className="pro-card">
-          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="../src/assets/extracted_28.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
+          <div className="pro-card-av" style={{"overflow": "hidden"}}><img src="./assets/extracted_28.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover", "borderRadius": "50%"}} loading="lazy"/></div>
           <div className="pro-card-info">
             <div className="pro-card-name">José Fernández</div>
             <div className="pro-card-role">Mecánico · La Romana</div>
@@ -977,7 +977,7 @@ export default function HomePage() {
         </div>
         <p className="testi-text">"En menos de 20 minutos tenía un plomero en mi casa. La app es facilísima y el seguimiento en el mapa me dio mucha tranquilidad. 10/10."</p>
         <div className="testi-author">
-          <div className="testi-av"><img src="../src/assets/extracted_29.jpeg" alt="María Altagracia" loading="lazy"/></div>
+          <div className="testi-av"><img src="./assets/extracted_29.jpeg" alt="María Altagracia" loading="lazy"/></div>
           <div>
             <div className="testi-name">María Altagracia</div>
             <div className="testi-role">Cliente · Santo Domingo</div>
@@ -992,7 +992,7 @@ export default function HomePage() {
         </div>
         <p className="testi-text">"Desde que me uní tengo trabajo todos los días. La comisión es justa y el sistema de pagos es transparente. Gané RD$47,000 el mes pasado."</p>
         <div className="testi-author">
-          <div className="testi-av"><img src="../src/assets/extracted_30.jpeg" alt="Juan Rosario" loading="lazy"/></div>
+          <div className="testi-av"><img src="./assets/extracted_30.jpeg" alt="Juan Rosario" loading="lazy"/></div>
           <div>
             <div className="testi-name">Juan Rosario</div>
             <div className="testi-role">Albañil · Santiago ✓ Verificado</div>
@@ -1007,7 +1007,7 @@ export default function HomePage() {
         </div>
         <p className="testi-text">"El chat con el profesional antes de que llegue es increíble. Todo queda acordado y sin sorpresas al pagar. Ya lo usé 3 veces."</p>
         <div className="testi-author">
-          <div className="testi-av"><img src="../src/assets/extracted_31.jpeg" alt="Carmen Pérez" loading="lazy"/></div>
+          <div className="testi-av"><img src="./assets/extracted_31.jpeg" alt="Carmen Pérez" loading="lazy"/></div>
           <div>
             <div className="testi-name">Carmen Pérez</div>
             <div className="testi-role">Cliente · La Romana</div>
@@ -1560,7 +1560,7 @@ export default function HomePage() {
 <footer role="contentinfo" aria-label="Pie de página">
   <div className="footer-grid">
     <div>
-      <img className="footer-logo" src="../src/assets/extracted_32.png" alt="Listo"/>
+      <img className="footer-logo" src="./assets/extracted_32.png" alt="Listo"/>
       <p className="footer-desc">La plataforma dominicana que conecta clientes con profesionales de confianza. Rápido, seguro y sin complicaciones.</p>
     </div>
     <div>
