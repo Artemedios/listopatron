@@ -1,5 +1,15 @@
 import React from 'react';
 import useListoLogic from '../useListoLogic';
+import ad15 from '../assets/extracted_15.png';
+import ad16 from '../assets/extracted_16.png';
+import ad17 from '../assets/extracted_17.png';
+import ad18 from '../assets/extracted_18.png';
+import pro20 from '../assets/extracted_20.jpeg';
+import pro21 from '../assets/extracted_21.jpeg';
+import pro22 from '../assets/extracted_22.jpeg';
+import pro23 from '../assets/extracted_23.jpeg';
+import pro24 from '../assets/extracted_24.jpeg';
+import pro25 from '../assets/extracted_25.jpeg';
 
 export default function HomePage() {
   useListoLogic();
@@ -260,10 +270,10 @@ export default function HomePage() {
     <div style={{"textAlign": "center", "fontSize": "11px", "color": "#999", "letterSpacing": "1.5px", "textTransform": "uppercase", "marginBottom": "12px"}}>Publicidad</div>
     <div style={{"position": "relative", "maxWidth": "960px", "margin": "0 auto", "overflow": "hidden", "borderRadius": "16px", "boxShadow": "0 8px 30px rgba(0,0,0,0.1)"}}>
       <div id="ad-track" style={{"display": "flex", "transition": "transform .6s ease"}}>
-        <div className="ad-slide"><img src="./assets/extracted_15.png" alt="Caney Discoteca" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="./assets/extracted_16.png" alt="Arte Urbano" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="./assets/extracted_17.png" alt="Arte Medios" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
-        <div className="ad-slide"><img src="./assets/extracted_18.png" alt="FCO Ren Cars" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src={ad15} alt="Caney Discoteca" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src={ad16} alt="Arte Urbano" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src={ad17} alt="Arte Medios" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
+        <div className="ad-slide"><img src={ad18} alt="FCO Ren Cars" style={{"width": "100%", "display": "block", "objectFit": "cover", "maxHeight": "200px"}}/></div>
       </div>
       <button onClick={() => { adSlide(-1) }} style={{"position": "absolute", "left": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>‹</button>
       <button onClick={() => { adSlide(1) }} style={{"position": "absolute", "right": "10px", "top": "50%", "transform": "translateY(-50%)", "background": "rgba(0,0,0,0.4)", "color": "#fff", "border": "none", "borderRadius": "50%", "width": "36px", "height": "36px", "fontSize": "20px", "cursor": "pointer", "zIndex": "10"}}>›</button>
@@ -423,7 +433,7 @@ export default function HomePage() {
       <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fill,minmax(240px,1fr))", "gap": "16px"}}>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_20.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro20} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Carlos Méndez</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Electricista · Santo Domingo</div>
@@ -433,7 +443,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_21.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro21} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Ana Rodríguez</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Plomera · Santiago</div>
@@ -443,7 +453,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_22.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro22} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>José Fernández</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Mecánico · La Romana</div>
@@ -453,7 +463,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_23.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro23} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>María Concepción</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Limpieza · Santo Domingo</div>
@@ -463,7 +473,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_24.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro24} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Rafael Guzmán</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Pintor · Santiago</div>
@@ -473,7 +483,7 @@ export default function HomePage() {
         </a>
 
         <a href="https://listopatron.vercel.app/" style={{"textDecoration": "none", "background": "#fff", "borderRadius": "20px", "padding": "20px", "display": "flex", "alignItems": "center", "gap": "14px", "border": "2px solid transparent", "transition": "all .25s", "boxShadow": "0 2px 12px rgba(0,0,0,0.06)"}} className="pro-row-card">
-          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src="./assets/extracted_25.jpeg" style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
+          <div style={{"width": "52px", "height": "52px", "borderRadius": "50%", "background": "var(--orange)", "overflow": "hidden", "flexShrink": "0"}}><img src={pro25} style={{"width": "100%", "height": "100%", "objectFit": "cover"}} loading="lazy"/></div>
           <div style={{"flex": "1"}}>
             <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Pedro Santos</div>
             <div style={{"fontSize": "13px", "color": "#888", "marginTop": "2px"}}>Jardinero · San Cristóbal</div>
