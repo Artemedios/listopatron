@@ -18,13 +18,14 @@ export default function HomePage() {
   {/*  INTRO VIDEO SPLASH MOVED TO PORTADA HEADER  */}
 
   
-  {/*  PRELOADER  */}
-  <div className="preloader" id="preloader" role="status" aria-label="Cargando">
-    <div className="preloader-content" style={{"display": "flex", "flexDirection": "column", "alignItems": "center", "justifyContent": "center", "position": "absolute", "top": "50%", "left": "50%", "transform": "translate(-50%, -50%)"}}>
-      <img src="./assets/logo_listo_blanco.png" alt="Logo Listo" style={{"height": "60px", "objectFit": "contain", "marginBottom": "20px"}} />
-      <div className="preloader-logo" style={{"fontSize": "32px", "color": "white", "fontFamily": "'Fredoka One', cursive", "marginBottom": "15px"}}>Listo</div>
-      <div className="preloader-spinner"></div>
-      <p style={{"color": "white", "marginTop": "15px", "fontWeight": "600"}}>Cargando...</p>
+  {/*  PRELOADER ESTILO APP  */}
+  <div className="splash-screen" id="preloader" role="status" aria-label="Cargando">
+    <div className="splash-logo-wrap">
+      <img src="./assets/logo_listo_blanco.png" alt="Listo" className="splash-logo" />
+    </div>
+    <div className="splash-tagline">Listo Patrón</div>
+    <div className="splash-loader">
+      <div className="splash-bar"></div>
     </div>
   </div>
 

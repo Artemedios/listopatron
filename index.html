@@ -77,7 +77,11 @@
     window.addEventListener('load', function() {
       const preloader = document.getElementById('preloader');
       if (preloader) {
-        preloader.style.display = 'none';
+        setTimeout(() => {
+          preloader.style.opacity = '0';
+          preloader.style.visibility = 'hidden';
+          setTimeout(() => preloader.style.display = 'none', 500);
+        }, 1800);
       }
     });
 
