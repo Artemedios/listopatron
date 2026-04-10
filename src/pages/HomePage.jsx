@@ -1585,7 +1585,7 @@ export default function HomePage() {
 
       <div style={{"display": "flex", "gap": "12px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "12px 20px", "borderRadius": "12px", "border": "1px solid rgba(255,255,255,0.08)", "marginTop": "8px"}}>
         <div style={{"background": "#fff", "padding": "4px 8px", "borderRadius": "4px", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"}}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/320px-Visa_Inc._logo.svg.png" alt="Visa" style={{"width": "38px", "height": "auto", "display": "block"}} />
+          <img src="/assets/visa-logo.png" alt="Visa" style={{"width": "38px", "height": "auto", "display": "block"}} />
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="MasterCard" style={{"height": "22px", "marginLeft": "4px", "marginRight": "4px"}} />
         
