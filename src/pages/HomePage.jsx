@@ -1584,7 +1584,9 @@ export default function HomePage() {
       </div>
 
       <div style={{"display": "flex", "gap": "12px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "12px 20px", "borderRadius": "12px", "border": "1px solid rgba(255,255,255,0.08)", "marginTop": "8px"}}>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{"height": "16px", "background": "#fff", "padding": "5px 10px", "borderRadius": "6px", "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"}} />
+        <div style={{"background": "#fff", "padding": "3px 8px", "borderRadius": "4px", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"}}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{"width": "38px", "height": "auto", "display": "block"}} />
+        </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="MasterCard" style={{"height": "22px", "marginLeft": "4px", "marginRight": "4px"}} />
         
         <div style={{"height": "18px", "width": "1px", "background": "rgba(255,255,255,0.15)", "margin": "0 8px"}}></div>
