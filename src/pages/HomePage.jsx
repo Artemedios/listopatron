@@ -1567,15 +1567,35 @@ export default function HomePage() {
 
 </main>
 
+  <footer role="contentinfo" aria-label="Pie de página" style={{"background": "#1e1e2d", "padding": "60px 20px 40px", "textAlign": "center"}}>
+    <div style={{"maxWidth": "800px", "margin": "0 auto", "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "20px"}}>
+      
+      <div>
+        <h3 style={{"color": "#fff", "fontSize": "22px", "fontWeight": "800", "marginBottom": "8px"}}>Listo Patrón SRL</h3>
+        <p style={{"color": "#8c9bb3", "margin": "0 0 4px", "fontSize": "15px"}}>Santo Domingo, Distrito Nacional</p>
+        <p style={{"color": "#8c9bb3", "margin": "0", "fontSize": "15px"}}>República Dominicana</p>
+      </div>
 
+      <div style={{"display": "flex", "gap": "20px", "flexWrap": "wrap", "justifyContent": "center", "marginTop": "4px"}}>
+        <a href="/politicas.html" style={{"color": "#768bb1", "textDecoration": "underline", "textDecorationColor": "rgba(118, 139, 177, 0.4)", "textUnderlineOffset": "4px", "fontSize": "15px", "fontWeight": "500", "transition": "color 0.2s"}}>Privacidad</a>
+        <a href="/politicas.html" style={{"color": "#768bb1", "textDecoration": "underline", "textDecorationColor": "rgba(118, 139, 177, 0.4)", "textUnderlineOffset": "4px", "fontSize": "15px", "fontWeight": "500", "transition": "color 0.2s"}}>Devoluciones</a>
+        <a href="/politicas.html" style={{"color": "#768bb1", "textDecoration": "underline", "textDecorationColor": "rgba(118, 139, 177, 0.4)", "textUnderlineOffset": "4px", "fontSize": "15px", "fontWeight": "500", "transition": "color 0.2s"}}>Entregas</a>
+        <a href="/politicas.html" style={{"color": "#768bb1", "textDecoration": "underline", "textDecorationColor": "rgba(118, 139, 177, 0.4)", "textUnderlineOffset": "4px", "fontSize": "15px", "fontWeight": "500", "transition": "color 0.2s"}}>Seguridad</a>
+      </div>
 
+      <div style={{"display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "16px 24px", "borderRadius": "10px", "border": "1px solid rgba(255,255,255,0.06)", "marginTop": "8px"}}>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{"height": "20px", "background": "#fff", "padding": "4px 8px", "borderRadius": "4px"}} />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" style={{"height": "22px"}} />
+        <div style={{"height": "24px", "width": "1px", "background": "rgba(255,255,255,0.1)", "margin": "0 2px"}}></div>
+        <div style={{"border": "1px solid rgba(255,255,255,0.15)", "background": "rgba(255,255,255,0.05)", "borderRadius": "4px", "padding": "4px 10px", "color": "#fff", "fontSize": "12px", "fontWeight": "700"}}>Verified by VISA</div>
+        <div style={{"border": "1px solid rgba(255,255,255,0.15)", "background": "rgba(255,255,255,0.05)", "borderRadius": "4px", "padding": "4px 10px", "color": "#fff", "fontSize": "12px", "fontWeight": "700"}}>Mastercard ID Check</div>
+      </div>
 
-{/*  styles extracted  */}
-{/*  styles extracted  */}
-
-{/*  styles extracted  */}
-
-
+      <div style={{"color": "#526484", "fontSize": "14px", "marginTop": "10px"}}>
+        © 2026 Listo Patrón. Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
 
     </>
   );
