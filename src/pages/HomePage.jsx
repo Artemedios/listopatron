@@ -1592,10 +1592,10 @@ export default function HomePage() {
             <path d="M38.8687 0.288086L35.6329 9.56616L33.9189 1.63661C33.6826 0.771239 32.7483 0.288086 31.8159 0.288086H27.5312C27.6749 0.495209 28.1822 1.13458 29.0768 1.825L32.8943 13.7228H36.7645L42 0.288086H38.8687Z" fill="#F5A100"/>
           </svg>
         </div>
-        <div style={{"background": "transparent", "display": "flex", "alignItems": "center", "marginLeft": "4px", "marginRight": "4px", "flexShrink": 0}}>
+        <div style={{"background": "white", "padding": "0", "borderRadius": "6px", "display": "flex", "alignItems": "center", "justifyContent": "center", "flexShrink": 0, "boxShadow": "0 2px 4px rgba(0,0,0,0.1)", "minWidth": "60px", "height": "26px", "marginLeft": "4px", "marginRight": "4px"}}>
           <svg width="34" height="22" viewBox="0 0 34 22" fill="none" xmlns="http://www.w3.org/2000/svg" style={{"display": "block"}}>
-            <circle cx="11" cy="11" r="11" fill="#EB001B"/>
-            <circle cx="23" cy="11" r="11" fill="#F79E1B"/>
+            <circle cx="11" cy="11" r="11" fill="#FF0000"/>
+            <circle cx="23" cy="11" r="11" fill="#FF9A00"/>
             <path d="M17 19.38C15.24 17.61 14 14.95 14 11C14 7.05 15.24 4.39 17 2.62C18.76 4.39 20 7.05 20 11C20 14.95 18.76 17.61 17 19.38Z" fill="#FF5F00"/>
           </svg>
         </div>
