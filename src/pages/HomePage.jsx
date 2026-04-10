@@ -1584,10 +1584,20 @@ export default function HomePage() {
       </div>
 
       <div style={{"display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "16px 24px", "borderRadius": "12px", "border": "1px solid rgba(255,255,255,0.08)", "marginTop": "8px"}}>
-        <div style={{"background": "white", "padding": "4px 8px", "borderRadius": "4px", "fontWeight": "900", "color": "#1A1F71", "fontStyle": "italic", "fontSize": "14px"}}>VISA</div>
-        <div style={{"background": "transparent", "display": "flex", "alignItems": "center", "marginLeft": "4px", "marginRight": "4px"}}>
-           <div style={{"width": "18px", "height": "18px", "borderRadius": "50%", "background": "#EB001B", "marginRight": "-6px", "mixBlendMode": "multiply"}}></div>
-           <div style={{"width": "18px", "height": "18px", "borderRadius": "50%", "background": "#F79E1B", "mixBlendMode": "multiply"}}></div>
+        <div style={{"background": "white", "padding": "6px 12px", "borderRadius": "6px", "display": "flex", "alignItems": "center", "justifyContent": "center", "flexShrink": 0, "boxShadow": "0 2px 4px rgba(0,0,0,0.1)", "minWidth": "60px"}}>
+          <svg width="40" height="14" viewBox="0 0 42 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{"display": "block"}}>
+            <path d="M16.9452 0.288086L11.1624 13.7228H7.4206L4.72145 2.76633C4.54228 2.05204 4.38025 1.77704 3.79185 1.48834C2.60742 0.893876 0.999661 0.49079 0 0.288086L0.0895522 0H5.53936C6.67383 0 7.68888 0.741042 7.94052 2.05204L9.42065 9.71261L13.1624 0.288086H16.9452V0.288086Z" fill="#1434CB"/>
+            <path d="M22.9555 9.53986C22.9691 6.07925 18.2329 5.8885 18.2618 4.31688C18.2738 3.8402 18.6946 3.32971 19.6805 3.20815C20.177 3.14925 21.4395 3.10996 22.9555 3.80554V0.366668C22.2536 0.133095 21.2828 0 19.9888 0C16.4862 0 14.0734 1.86536 14.053 4.95759C14.0325 7.24647 16.0357 8.52554 17.5186 9.25206C19.0439 10.0075 19.5543 10.4908 19.5492 11.1738C19.5407 12.1969 18.3496 12.6394 17.3712 12.6394C15.5413 12.6394 14.5204 12.1523 13.6272 11.7247L13.0645 11.4556L12.5184 14.99C13.4305 15.421 14.8878 15.7533 16.4024 15.7533C20.1264 15.7533 22.9436 13.9056 22.9555 9.53986Z" fill="#1434CB"/>
+            <path d="M29.5606 13.7228H33.0954L29.8456 0.288086H26.8524C25.8647 0.288086 25.1091 0.852656 24.7171 1.82115L21.1449 13.7228H25.0483L25.8239 11.5126H30.5699L31.0259 13.7228H29.5606ZM26.963 8.35626L28.9103 2.94315L29.9877 8.35626H26.963Z" fill="#1434CB"/>
+            <path d="M38.8687 0.288086L35.6329 9.56616L33.9189 1.63661C33.6826 0.771239 32.7483 0.288086 31.8159 0.288086H27.5312C27.6749 0.495209 28.1822 1.13458 29.0768 1.825L32.8943 13.7228H36.7645L42 0.288086H38.8687Z" fill="#F5A100"/>
+          </svg>
+        </div>
+        <div style={{"background": "transparent", "display": "flex", "alignItems": "center", "marginLeft": "4px", "marginRight": "4px", "flexShrink": 0}}>
+          <svg width="34" height="22" viewBox="0 0 34 22" fill="none" xmlns="http://www.w3.org/2000/svg" style={{"display": "block"}}>
+            <circle cx="11" cy="11" r="11" fill="#EB001B"/>
+            <circle cx="23" cy="11" r="11" fill="#F79E1B"/>
+            <path d="M17 19.38C15.24 17.61 14 14.95 14 11C14 7.05 15.24 4.39 17 2.62C18.76 4.39 20 7.05 20 11C20 14.95 18.76 17.61 17 19.38Z" fill="#FF5F00"/>
+          </svg>
         </div>
         
         <div style={{"height": "18px", "width": "1px", "background": "rgba(255,255,255,0.15)", "margin": "0 8px"}}></div>
