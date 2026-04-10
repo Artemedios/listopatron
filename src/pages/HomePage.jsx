@@ -1583,11 +1583,12 @@ export default function HomePage() {
         <a href="/politicas.html" style={{"color": "#768bb1", "textDecoration": "underline", "textDecorationColor": "rgba(118, 139, 177, 0.4)", "textUnderlineOffset": "4px", "fontSize": "15px", "fontWeight": "500", "transition": "color 0.2s"}}>Seguridad</a>
       </div>
 
-      <div style={{"display": "flex", "gap": "12px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "12px 20px", "borderRadius": "12px", "border": "1px solid rgba(255,255,255,0.08)", "marginTop": "8px"}}>
-        <div style={{"background": "#fff", "padding": "4px 8px", "borderRadius": "4px", "display": "flex", "alignItems": "center", "justifyContent": "center", "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"}}>
-          <img src="/assets/visa-logo.svg" alt="Visa" style={{"width": "38px", "height": "auto", "display": "block"}} />
+      <div style={{"display": "flex", "gap": "14px", "alignItems": "center", "flexWrap": "wrap", "justifyContent": "center", "background": "rgba(255,255,255,0.03)", "padding": "16px 24px", "borderRadius": "12px", "border": "1px solid rgba(255,255,255,0.08)", "marginTop": "8px"}}>
+        <div style={{"background": "white", "padding": "4px 8px", "borderRadius": "4px", "fontWeight": "900", "color": "#1A1F71", "fontStyle": "italic", "fontSize": "14px"}}>VISA</div>
+        <div style={{"background": "transparent", "display": "flex", "alignItems": "center", "marginLeft": "4px", "marginRight": "4px"}}>
+           <div style={{"width": "18px", "height": "18px", "borderRadius": "50%", "background": "#EB001B", "marginRight": "-6px", "mixBlendMode": "multiply"}}></div>
+           <div style={{"width": "18px", "height": "18px", "borderRadius": "50%", "background": "#F79E1B", "mixBlendMode": "multiply"}}></div>
         </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="MasterCard" style={{"height": "22px", "marginLeft": "4px", "marginRight": "4px"}} />
         
         <div style={{"height": "18px", "width": "1px", "background": "rgba(255,255,255,0.15)", "margin": "0 8px"}}></div>
         
