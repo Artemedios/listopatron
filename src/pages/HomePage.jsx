@@ -1567,11 +1567,17 @@ export default function HomePage() {
 
 </main>
 
-<footer role="contentinfo" aria-label="Pie de página">
+  <footer role="contentinfo" aria-label="Pie de página">
   <div className="footer-grid">
     <div>
       <img className="footer-logo" src="./assets/extracted_32.png" alt="Listo"/>
       <p className="footer-desc">La plataforma dominicana que conecta clientes con profesionales de confianza. Rápido, seguro y sin complicaciones.</p>
+      <div style={{"display": "flex", "gap": "12px", "marginTop": "20px", "flexWrap": "wrap", "alignItems": "center"}}>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{"height": "22px", "background": "#fff", "padding": "2px 4px", "borderRadius": "4px"}} />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" style={{"height": "22px"}} />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Verified_by_Visa.svg" alt="Verified by Visa" style={{"height": "26px", "background": "#fff", "padding": "2px 4px", "borderRadius": "4px"}} />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_SecureCode_Logo.svg" alt="MasterCard ID Check" style={{"height": "24px", "background": "#fff", "padding": "2px 4px", "borderRadius": "4px"}} />
+      </div>
     </div>
     <div>
       <div className="footer-col-title">App</div>
@@ -1579,8 +1585,18 @@ export default function HomePage() {
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#como-funciona">Cómo funciona</a></li>
         <li><a href="#profesionales">Para profesionales</a></li>
-        <li><a href="#planes">Planes</a>
-    <a href="#faq">FAQ</a></li>
+        <li><a href="#planes">Planes</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div className="footer-col-title">Legal</div>
+      <ul className="footer-links">
+        <li><a href="/politicas.html">Políticas de Privacidad</a></li>
+        <li><a href="/politicas.html">Términos y Condiciones</a></li>
+        <li><a href="/politicas.html">Devoluciones y Reembolsos</a></li>
+        <li><a href="/politicas.html">Política de Entrega</a></li>
+        <li><a href="/politicas.html">Transmisión de Datos</a></li>
       </ul>
     </div>
     <div>
@@ -1590,6 +1606,7 @@ export default function HomePage() {
         <li><a href="tel:+18099090455">📞 +1 (809) 909-0455</a></li>
         <li><a href="https://wa.me/18099090455" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a></li>
         <li><a href="https://www.youtube.com/@listopatron" target="_blank" rel="noopener noreferrer">▶️ YouTube</a></li>
+        <li style={{"marginTop": "10px", "fontSize": "13px", "color": "#888", "lineHeight": "1.4"}}>📍 Santo Domingo,<br/>República Dominicana</li>
       </ul>
     </div>
   </div>
