@@ -1572,8 +1572,8 @@ export default function HomePage() {
       
       <div>
         <h3 style={{"color": "#fff", "fontSize": "22px", "fontWeight": "800", "marginBottom": "10px"}}>Listo Patrón SRL</h3>
-        <p style={{"color": "#768bb1", "margin": "0 0 6px", "fontSize": "15px"}}>Santo Domingo, Distrito Nacional</p>
-        <p style={{"color": "#768bb1", "margin": "0", "fontSize": "15px"}}>República Dominicana</p>
+        <p style={{"color": "#768bb1", "margin": "0 0 6px", "fontSize": "15px"}}>Barrio La Terrazita, Peatón 3 No. 18, Edificio de Arte</p>
+        <p style={{"color": "#768bb1", "margin": "0", "fontSize": "15px"}}>Detrás Urb. La Terraza, Santiago de los Caballeros, Rep. Dom.</p>
       </div>
 
       <div style={{"display": "flex", "gap": "20px", "flexWrap": "wrap", "justifyContent": "center", "marginTop": "12px", "marginBottom": "8px"}}>
@@ -1584,13 +1584,19 @@ export default function HomePage() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '24px', background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '12px' }}>
-        <div style={{ background: 'white', padding: '4px 8px', borderRadius: '4px', fontWeight: '900', color: '#1A1F71', fontStyle: 'italic', fontSize: '14px' }}>VISA</div>
-        <div style={{ background: 'white', padding: '6px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center' }}>
-           <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#EB001B', marginRight: '-4px', mixBlendMode: 'multiply' }}></div>
-           <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#F79E1B', mixBlendMode: 'multiply' }}></div>
+        <div style={{ background: 'white', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center' }}>
+          <svg viewBox="0 0 190 50" style={{ height: '20px' }}>
+            <text x="0" y="38" fontFamily="sans-serif" fontSize="40" fontWeight="900" fontStyle="italic" fill="#1A1F71" letterSpacing="-2">VISA</text>
+            <text x="115" y="38" fontFamily="sans-serif" fontSize="20" fontWeight="600" fill="#1A1F71">Secure</text>
+          </svg>
         </div>
-        <div style={{ padding: '4px 8px', border: '1px solid #475569', borderRadius: '4px', color: '#E2E8F0', fontSize: '11px', fontWeight: 'bold' }}>Verified by VISA</div>
-        <div style={{ padding: '4px 8px', border: '1px solid #475569', borderRadius: '4px', color: '#E2E8F0', fontSize: '11px', fontWeight: 'bold' }}>Mastercard ID Check</div>
+        <div style={{ background: 'white', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <svg viewBox="0 0 100 60" style={{ height: '22px' }}>
+            <circle cx="35" cy="30" r="25" fill="#EB001B" />
+            <circle cx="65" cy="30" r="25" fill="#F79E1B" opacity="0.8" />
+          </svg>
+          <span style={{ color: '#1A1A2E', fontSize: '11px', fontWeight: '900', fontFamily: 'sans-serif' }}>ID Check&trade;</span>
+        </div>
       </div>
 
       <div style={{"color": "#4a5a75", "fontSize": "14px", "marginTop": "24px"}}>
