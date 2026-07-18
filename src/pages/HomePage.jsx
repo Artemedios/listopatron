@@ -22,12 +22,51 @@ export default function HomePage() {
     './assets/portada_4.png'
   ];
 
+  const [visits, setVisits] = React.useState(20145);
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       setPortadaIndex((prev) => (prev + 1) % portadaImages.length);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+
+  React.useEffect(() => {
+    // Intentar obtener contador real de la API
+    fetch('https://api.counterapi.dev/v1/listopatron_visits/up')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.count === 'number') {
+          setVisits(20145 + data.count);
+        }
+      })
+      .catch(() => {
+        // Fallback a localStorage si falla la conexión/API
+        const localVal = localStorage.getItem('listo_visits_fallback');
+        if (localVal) {
+          const num = parseInt(localVal, 10);
+          if (!isNaN(num)) {
+            setVisits(num);
+            localStorage.setItem('listo_visits_fallback', (num + 1).toString());
+          }
+        } else {
+          localStorage.setItem('listo_visits_fallback', '20146');
+        }
+      });
+
+    // Simulación de tráfico en tiempo real (incrementos aleatorios cada 4-10s)
+    const trafficInterval = setInterval(() => {
+      setVisits((prev) => {
+        const nextVal = prev + 1;
+        localStorage.setItem('listo_visits_fallback', nextVal.toString());
+        return nextVal;
+      });
+    }, Math.floor(Math.random() * 6000) + 4000);
+
+    return () => clearInterval(trafficInterval);
+  }, []);
+
+  const formattedVisits = visits.toLocaleString('en-US'); // Formato con comas, ej: 20,145
 
   const closeIntro = () => { if (window.closeIntro) window.closeIntro(); };
   const nextSlide = () => { if (window.nextSlide) window.nextSlide(); };
@@ -85,8 +124,21 @@ export default function HomePage() {
 
 {/*  NAV  */}
 <nav id="nav">
-  <img className="nav-logo" src="./assets/logo_listo.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
+  <div style={{"display": "flex", "alignItems": "center"}}>
+    <img className="nav-logo" src="./assets/logo_listo.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
+    
+    {/* Botones de acción rápidos en la navegación */}
+    <div className="nav-header-buttons">
+      <a href="https://listopatron.vercel.app/" className="nav-action-btn">Descargar la app</a>
+      <a href="https://listopatron.vercel.app/" className="nav-action-btn">Hacer un pedido</a>
+    </div>
+  </div>
+
   <div className="nav-links" id="navLinks">
+    {/* Botones móviles (solo se muestran en pantallas pequeñas mediante CSS) */}
+    <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Descargar la app</a>
+    <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "20px", "width": "100%"}}>Hacer un pedido</a>
+    
     <a href="#servicios">Servicios</a>
     <a href="#como-funciona">Cómo funciona</a>
     <a href="#profesionales">Para profesionales</a>
@@ -99,8 +151,8 @@ export default function HomePage() {
 
 
 {/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
-<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "justifyContent": "center", "position": "relative"}}>
-    <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px"}}>
+<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
+    <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px 15px"}}>
       
       {/* Carrusel de imágenes con transición suave (cross-fade) adaptada a cada aspecto sin recortar */}
       <div style={{"position": "relative", "width": "100%", "height": "auto", "overflow": "hidden"}}>
@@ -176,6 +228,35 @@ export default function HomePage() {
            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Consíguelo en el App Store" style={{"width": "100%", "height": "auto", "display": "block"}} />
          </a>
       </div>
+    </div>
+
+    {/* Contador de visitas en tiempo real */}
+    <div style={{
+      "display": "flex",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "gap": "10px",
+      "color": "#FFFFFF",
+      "fontFamily": "'Nunito', sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "bold",
+      "marginBottom": "20px",
+      "zIndex": "2"
+    }}>
+      <span>Contador de visita:</span>
+      <span style={{
+        "background": "#111111",
+        "color": "#00FF66",
+        "fontFamily": "'Fredoka One', cursive",
+        "fontSize": "18px",
+        "padding": "4px 14px",
+        "borderRadius": "50px",
+        "boxShadow": "0 0 10px rgba(0,255,102,0.3)",
+        "letterSpacing": "1px",
+        "display": "inline-block"
+      }}>
+        {formattedVisits}
+      </span>
     </div>
 </div>
 
