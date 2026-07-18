@@ -4880,14 +4880,14 @@ footer{background:#F26000;padding:28px 5% 24px}
 }
 
 .country-bar-wrap {
-  flex-grow: 1;
+  width: 60px;
+  flex-shrink: 0;
   margin-left: 10px;
   margin-right: 10px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.15);
   height: 6px;
   border-radius: 3px;
   overflow: hidden;
-  max-width: 60px;
 }
 
 .country-bar {

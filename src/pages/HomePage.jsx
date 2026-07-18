@@ -22,20 +22,20 @@ export default function HomePage() {
     './assets/portada_4.png'
   ];
 
-  const [visits, setVisits] = React.useState(20145);
+  const [visits, setVisits] = React.useState(10000);
   const [onlineUsers, setOnlineUsers] = React.useState(47);
   const [countryStats, setCountryStats] = React.useState([
-    { code: 'DO', name: 'Rep. Dominicana', flag: '🇩🇴', count: 14852 },
-    { code: 'US', name: 'Estados Unidos', flag: '🇺🇸', count: 2840 },
-    { code: 'ES', name: 'España', flag: '🇪🇸', count: 1230 },
-    { code: 'PR', name: 'Puerto Rico', flag: '🇵🇷', count: 683 },
-    { code: 'VE', name: 'Venezuela', flag: '🇻🇪', count: 540 }
+    { code: 'DO', name: 'Rep. Dominicana', count: 7350 },
+    { code: 'US', name: 'Estados Unidos', count: 1420 },
+    { code: 'ES', name: 'España', count: 610 },
+    { code: 'PR', name: 'Puerto Rico', count: 340 },
+    { code: 'VE', name: 'Venezuela', count: 280 }
   ]);
   const [liveFeed, setLiveFeed] = React.useState([
-    { time: 'Ahora mismo', location: 'Santo Domingo, RD', flag: '🇩🇴', type: 'Conexión' },
-    { time: 'Hace 30s', location: 'Santiago, RD', flag: '🇩🇴', type: 'Búsqueda' },
-    { time: 'Hace 1m', location: 'New York, USA', flag: '🇺🇸', type: 'Descarga' },
-    { time: 'Hace 3m', location: 'Madrid, España', flag: '🇪🇸', type: 'Conexión' }
+    { time: 'Ahora mismo', location: 'Santo Domingo, RD', code: 'DO', type: 'Conexión' },
+    { time: 'Hace 30s', location: 'Santiago, RD', code: 'DO', type: 'Búsqueda' },
+    { time: 'Hace 1m', location: 'New York, USA', code: 'US', type: 'Descarga' },
+    { time: 'Hace 3m', location: 'Madrid, España', code: 'ES', type: 'Conexión' }
   ]);
 
   React.useEffect(() => {
@@ -45,18 +45,10 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Helper para generar banderas a partir de códigos de país
-  const getFlagEmoji = (countryCode) => {
-    if (!countryCode) return '🇩🇴';
-    const codePoints = countryCode
-      .toUpperCase()
-      .split('')
-      .map(char => 127397 + char.charCodeAt(0));
-    try {
-      return String.fromCodePoint(...codePoints);
-    } catch (e) {
-      return '🇩🇴';
-    }
+  // Helper para generar URLs de banderas reales desde un CDN de alta fidelidad compatible con Windows
+  const getFlagUrl = (countryCode) => {
+    if (!countryCode) return 'https://flagcdn.com/16x12/do.png';
+    return `https://flagcdn.com/16x12/${countryCode.toLowerCase()}.png`;
   };
 
   React.useEffect(() => {
@@ -65,7 +57,7 @@ export default function HomePage() {
       .then(res => res.json())
       .then(data => {
         if (data && typeof data.count === 'number') {
-          setVisits(20145 + data.count);
+          setVisits(10000 + data.count);
         }
       })
       .catch(() => {
@@ -77,7 +69,7 @@ export default function HomePage() {
             localStorage.setItem('listo_visits_fallback', (num + 1).toString());
           }
         } else {
-          localStorage.setItem('listo_visits_fallback', '20146');
+          localStorage.setItem('listo_visits_fallback', '10001');
         }
       });
 
@@ -89,10 +81,9 @@ export default function HomePage() {
           const userCountry = data.countryName || 'Rep. Dominicana';
           const userCode = data.countryCode;
           const userCity = data.cityName || 'Santo Domingo';
-          const flag = getFlagEmoji(userCode);
           
           setLiveFeed(prev => [
-            { time: 'Ahora mismo', location: `${userCity}, ${userCode}`, flag: flag, type: 'Tu Visita (Real)' },
+            { time: 'Ahora mismo', location: `${userCity}, ${userCode}`, code: userCode, type: 'Tu Visita (Real)' },
             ...prev.slice(0, 3)
           ]);
 
@@ -101,7 +92,7 @@ export default function HomePage() {
             if (exists) {
               return prev.map(c => c.code === userCode ? { ...c, count: c.count + 1 } : c).sort((a, b) => b.count - a.count);
             } else {
-              return [...prev, { code: userCode, name: userCountry, flag: flag, count: 1 }].sort((a, b) => b.count - a.count);
+              return [...prev, { code: userCode, name: userCountry, count: 1 }].sort((a, b) => b.count - a.count);
             }
           });
         }
@@ -110,16 +101,16 @@ export default function HomePage() {
 
     // 3. Simulación de tráfico en tiempo real (incrementos cada 4-10s)
     const simLocations = [
-      { city: 'Santo Domingo', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
-      { city: 'Santiago', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
-      { city: 'La Romana', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
-      { city: 'New York', country: 'Estados Unidos', code: 'US', flag: '🇺🇸' },
-      { city: 'Madrid', country: 'España', code: 'ES', flag: '🇪🇸' },
-      { city: 'Bogotá', country: 'Colombia', code: 'CO', flag: '🇨🇴' },
-      { city: 'San Juan', country: 'Puerto Rico', code: 'PR', flag: '🇵🇷' },
-      { city: 'Miami', country: 'Estados Unidos', code: 'US', flag: '🇺🇸' },
-      { city: 'Caracas', country: 'Venezuela', code: 'VE', flag: '🇻🇪' },
-      { city: 'Panamá', country: 'Panamá', code: 'PA', flag: '🇵🇦' }
+      { city: 'Santo Domingo', country: 'Rep. Dominicana', code: 'DO' },
+      { city: 'Santiago', country: 'Rep. Dominicana', code: 'DO' },
+      { city: 'La Romana', country: 'Rep. Dominicana', code: 'DO' },
+      { city: 'New York', country: 'Estados Unidos', code: 'US' },
+      { city: 'Madrid', country: 'España', code: 'ES' },
+      { city: 'Bogotá', country: 'Colombia', code: 'CO' },
+      { city: 'San Juan', country: 'Puerto Rico', code: 'PR' },
+      { city: 'Miami', country: 'Estados Unidos', code: 'US' },
+      { city: 'Caracas', country: 'Venezuela', code: 'VE' },
+      { city: 'Panamá', country: 'Panamá', code: 'PA' }
     ];
 
     const types = ['Conexión', 'Búsqueda', 'Descarga', 'Registro'];
@@ -144,7 +135,7 @@ export default function HomePage() {
       const type = types[Math.floor(Math.random() * types.length)];
       
       setLiveFeed(prev => [
-        { time: 'Ahora mismo', location: `${loc.city}, ${loc.code}`, flag: loc.flag, type: type },
+        { time: 'Ahora mismo', location: `${loc.city}, ${loc.code}`, code: loc.code, type: type },
         ...prev.map(f => {
           if (f.time === 'Ahora mismo') return { ...f, time: 'Hace unos segundos' };
           if (f.time === 'Hace unos segundos') return { ...f, time: 'Hace poco' };
@@ -154,12 +145,17 @@ export default function HomePage() {
 
       // Incrementar contador por país correspondiente
       setCountryStats(prev => {
-        return prev.map(c => {
-          if (c.code === loc.code) {
-            return { ...c, count: c.count + 1 };
-          }
-          return c;
-        }).sort((a, b) => b.count - a.count);
+        const exists = prev.some(c => c.code === loc.code);
+        if (exists) {
+          return prev.map(c => {
+            if (c.code === loc.code) {
+              return { ...c, count: c.count + 1 };
+            }
+            return c;
+          }).sort((a, b) => b.count - a.count);
+        } else {
+          return [...prev, { code: loc.code, name: loc.country, count: 1 }].sort((a, b) => b.count - a.count);
+        }
       });
 
     }, Math.floor(Math.random() * 6000) + 4000);
@@ -355,17 +351,18 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Columna 2: Por Países */}
+        {/* Columna 2: Por Países (Desbloqueado a 6 países principales) */}
         <div className="live-col">
           <span className="live-col-title">Tráfico por Países</span>
           <div style={{"display": "flex", "flexDirection": "column"}}>
-            {countryStats.slice(0, 4).map((country) => {
+            {countryStats.slice(0, 6).map((country) => {
               const maxCount = countryStats[0].count || 1;
               const percentage = Math.min(100, Math.round((country.count / maxCount) * 100));
               return (
                 <div key={country.code} className="country-item">
                   <div className="country-info">
-                    <span>{country.flag}</span>
+                    {/* Banderas reales en alta calidad compatibles con Windows */}
+                    <img src={getFlagUrl(country.code)} width="16" height="12" alt={country.code} style={{"borderRadius": "2px", "marginRight": "6px"}} />
                     <span style={{"fontWeight": "600"}}>{country.name}</span>
                   </div>
                   <div style={{"display": "flex", "alignItems": "center"}}>
@@ -387,7 +384,8 @@ export default function HomePage() {
             {liveFeed.map((feed, idx) => (
               <div key={idx} className="live-feed-item">
                 <div className="live-feed-info">
-                  <span>{feed.flag}</span>
+                  {/* Banderas reales en alta calidad compatibles con Windows */}
+                  <img src={getFlagUrl(feed.code)} width="16" height="12" alt={feed.code} style={{"borderRadius": "2px", "marginRight": "6px"}} />
                   <span style={{"fontWeight": "600"}}>{feed.location}</span>
                 </div>
                 <div style={{"display": "flex", "alignItems": "center", "gap": "6px"}}>
