@@ -23,6 +23,20 @@ export default function HomePage() {
   ];
 
   const [visits, setVisits] = React.useState(20145);
+  const [onlineUsers, setOnlineUsers] = React.useState(47);
+  const [countryStats, setCountryStats] = React.useState([
+    { code: 'DO', name: 'Rep. Dominicana', flag: '🇩🇴', count: 14852 },
+    { code: 'US', name: 'Estados Unidos', flag: '🇺🇸', count: 2840 },
+    { code: 'ES', name: 'España', flag: '🇪🇸', count: 1230 },
+    { code: 'PR', name: 'Puerto Rico', flag: '🇵🇷', count: 683 },
+    { code: 'VE', name: 'Venezuela', flag: '🇻🇪', count: 540 }
+  ]);
+  const [liveFeed, setLiveFeed] = React.useState([
+    { time: 'Ahora mismo', location: 'Santo Domingo, RD', flag: '🇩🇴', type: 'Conexión' },
+    { time: 'Hace 30s', location: 'Santiago, RD', flag: '🇩🇴', type: 'Búsqueda' },
+    { time: 'Hace 1m', location: 'New York, USA', flag: '🇺🇸', type: 'Descarga' },
+    { time: 'Hace 3m', location: 'Madrid, España', flag: '🇪🇸', type: 'Conexión' }
+  ]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -31,8 +45,22 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Helper para generar banderas a partir de códigos de país
+  const getFlagEmoji = (countryCode) => {
+    if (!countryCode) return '🇩🇴';
+    const codePoints = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => 127397 + char.charCodeAt(0));
+    try {
+      return String.fromCodePoint(...codePoints);
+    } catch (e) {
+      return '🇩🇴';
+    }
+  };
+
   React.useEffect(() => {
-    // Intentar obtener contador real de la API
+    // 1. Intentar obtener contador real de la API
     fetch('https://api.counterapi.dev/v1/listopatron_visits/up')
       .then(res => res.json())
       .then(data => {
@@ -41,7 +69,6 @@ export default function HomePage() {
         }
       })
       .catch(() => {
-        // Fallback a localStorage si falla la conexión/API
         const localVal = localStorage.getItem('listo_visits_fallback');
         if (localVal) {
           const num = parseInt(localVal, 10);
@@ -54,19 +81,95 @@ export default function HomePage() {
         }
       });
 
-    // Simulación de tráfico en tiempo real (incrementos aleatorios cada 4-10s)
+    // 2. Intentar geolocalizar al usuario real
+    fetch('https://freeipapi.com/api/json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.countryCode) {
+          const userCountry = data.countryName || 'Rep. Dominicana';
+          const userCode = data.countryCode;
+          const userCity = data.cityName || 'Santo Domingo';
+          const flag = getFlagEmoji(userCode);
+          
+          setLiveFeed(prev => [
+            { time: 'Ahora mismo', location: `${userCity}, ${userCode}`, flag: flag, type: 'Tu Visita (Real)' },
+            ...prev.slice(0, 3)
+          ]);
+
+          setCountryStats(prev => {
+            const exists = prev.some(c => c.code === userCode);
+            if (exists) {
+              return prev.map(c => c.code === userCode ? { ...c, count: c.count + 1 } : c).sort((a, b) => b.count - a.count);
+            } else {
+              return [...prev, { code: userCode, name: userCountry, flag: flag, count: 1 }].sort((a, b) => b.count - a.count);
+            }
+          });
+        }
+      })
+      .catch(() => {});
+
+    // 3. Simulación de tráfico en tiempo real (incrementos cada 4-10s)
+    const simLocations = [
+      { city: 'Santo Domingo', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
+      { city: 'Santiago', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
+      { city: 'La Romana', country: 'Rep. Dominicana', code: 'DO', flag: '🇩🇴' },
+      { city: 'New York', country: 'Estados Unidos', code: 'US', flag: '🇺🇸' },
+      { city: 'Madrid', country: 'España', code: 'ES', flag: '🇪🇸' },
+      { city: 'Bogotá', country: 'Colombia', code: 'CO', flag: '🇨🇴' },
+      { city: 'San Juan', country: 'Puerto Rico', code: 'PR', flag: '🇵🇷' },
+      { city: 'Miami', country: 'Estados Unidos', code: 'US', flag: '🇺🇸' },
+      { city: 'Caracas', country: 'Venezuela', code: 'VE', flag: '🇻🇪' },
+      { city: 'Panamá', country: 'Panamá', code: 'PA', flag: '🇵🇦' }
+    ];
+
+    const types = ['Conexión', 'Búsqueda', 'Descarga', 'Registro'];
+
     const trafficInterval = setInterval(() => {
+      // Incrementar contador total
       setVisits((prev) => {
         const nextVal = prev + 1;
         localStorage.setItem('listo_visits_fallback', nextVal.toString());
         return nextVal;
       });
+
+      // Modificar usuarios online ligeramente
+      setOnlineUsers(prev => {
+        const diff = Math.floor(Math.random() * 5) - 2; // -2 a +2
+        const next = prev + diff;
+        return next < 10 ? 10 : next > 200 ? 200 : next;
+      });
+
+      // Insertar nueva visita simulada en el feed
+      const loc = simLocations[Math.floor(Math.random() * simLocations.length)];
+      const type = types[Math.floor(Math.random() * types.length)];
+      
+      setLiveFeed(prev => [
+        { time: 'Ahora mismo', location: `${loc.city}, ${loc.code}`, flag: loc.flag, type: type },
+        ...prev.map(f => {
+          if (f.time === 'Ahora mismo') return { ...f, time: 'Hace unos segundos' };
+          if (f.time === 'Hace unos segundos') return { ...f, time: 'Hace poco' };
+          return f;
+        }).slice(0, 3)
+      ]);
+
+      // Incrementar contador por país correspondiente
+      setCountryStats(prev => {
+        return prev.map(c => {
+          if (c.code === loc.code) {
+            return { ...c, count: c.count + 1 };
+          }
+          return c;
+        }).sort((a, b) => b.count - a.count);
+      });
+
     }, Math.floor(Math.random() * 6000) + 4000);
 
     return () => clearInterval(trafficInterval);
   }, []);
 
-  const formattedVisits = visits.toLocaleString('en-US'); // Formato con comas, ej: 20,145
+  const getDigits = () => {
+    return visits.toString().padStart(8, '0').split('');
+  };
 
   const closeIntro = () => { if (window.closeIntro) window.closeIntro(); };
   const nextSlide = () => { if (window.nextSlide) window.nextSlide(); };
@@ -230,33 +333,72 @@ export default function HomePage() {
       </div>
     </div>
 
-    {/* Contador de visitas en tiempo real */}
-    <div style={{
-      "display": "flex",
-      "alignItems": "center",
-      "justifyContent": "center",
-      "gap": "10px",
-      "color": "#FFFFFF",
-      "fontFamily": "'Nunito', sans-serif",
-      "fontSize": "16px",
-      "fontWeight": "bold",
-      "marginBottom": "20px",
-      "zIndex": "2"
-    }}>
-      <span>Contador de visita:</span>
-      <span style={{
-        "background": "#111111",
-        "color": "#00FF66",
-        "fontFamily": "'Fredoka One', cursive",
-        "fontSize": "18px",
-        "padding": "4px 14px",
-        "borderRadius": "50px",
-        "boxShadow": "0 0 10px rgba(0,255,102,0.3)",
-        "letterSpacing": "1px",
-        "display": "inline-block"
-      }}>
-        {formattedVisits}
-      </span>
+    {/* Panel de Tráfico en Vivo Profesional */}
+    <div className="live-panel">
+      <div className="live-panel-title">
+        <div className="live-pulse-dot"></div>
+        <span>Panel de Tráfico en Vivo</span>
+      </div>
+      
+      <div className="live-panel-grid">
+        {/* Columna 1: Total Visitas */}
+        <div className="live-col">
+          <span className="live-col-title">Visitas Totales</span>
+          <div className="odometer-container">
+            {getDigits().map((digit, idx) => (
+              <span key={idx} className="odometer-digit">{digit}</span>
+            ))}
+          </div>
+          <div className="live-online-status">
+            <span style={{"color": "#00FF66"}}>● {onlineUsers}</span>
+            <span style={{"color": "#aaa", "fontWeight": "normal", "marginLeft": "5px"}}>usuarios activos online</span>
+          </div>
+        </div>
+
+        {/* Columna 2: Por Países */}
+        <div className="live-col">
+          <span className="live-col-title">Tráfico por Países</span>
+          <div style={{"display": "flex", "flexDirection": "column"}}>
+            {countryStats.slice(0, 4).map((country) => {
+              const maxCount = countryStats[0].count || 1;
+              const percentage = Math.min(100, Math.round((country.count / maxCount) * 100));
+              return (
+                <div key={country.code} className="country-item">
+                  <div className="country-info">
+                    <span>{country.flag}</span>
+                    <span style={{"fontWeight": "600"}}>{country.name}</span>
+                  </div>
+                  <div style={{"display": "flex", "alignItems": "center"}}>
+                    <div className="country-bar-wrap">
+                      <div className="country-bar" style={{"width": `${percentage}%`}}></div>
+                    </div>
+                    <span style={{"fontFamily": "monospace", "fontWeight": "bold", "color": "#00FF66"}}>{country.count.toLocaleString()}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Columna 3: Actividad Reciente */}
+        <div className="live-col">
+          <span className="live-col-title">Actividad en Tiempo Real</span>
+          <div className="live-feed-list">
+            {liveFeed.map((feed, idx) => (
+              <div key={idx} className="live-feed-item">
+                <div className="live-feed-info">
+                  <span>{feed.flag}</span>
+                  <span style={{"fontWeight": "600"}}>{feed.location}</span>
+                </div>
+                <div style={{"display": "flex", "alignItems": "center", "gap": "6px"}}>
+                  <span className="live-feed-type">{feed.type}</span>
+                  <span style={{"color": "#888", "fontSize": "9px"}}>{feed.time}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 
