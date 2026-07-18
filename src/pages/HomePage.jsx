@@ -102,30 +102,37 @@ export default function HomePage() {
 <div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "justifyContent": "center", "position": "relative"}}>
     <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px"}}>
       
-      {/* Carrusel de imágenes con transición suave (cross-fade) */}
+      {/* Carrusel de imágenes con transición suave (cross-fade) adaptada a cada aspecto sin recortar */}
       <div style={{"position": "relative", "width": "100%", "height": "auto", "overflow": "hidden"}}>
-        {/* Imagen espaciadora invisible para mantener la responsividad y proporciones del contenedor */}
-        <img src="./assets/portada_1.jpg" style={{"width": "100%", "height": "auto", "display": "block", "visibility": "hidden"}} alt="Espaciador" />
-        
-        {portadaImages.map((src, idx) => (
-          <img
-            key={src}
-            src={src}
-            style={{
-              "position": "absolute",
-              "top": "0",
-              "left": "0",
-              "width": "100%",
-              "height": "100%",
-              "objectFit": "cover",
-              "display": "block",
-              "transition": "opacity 1.2s ease-in-out",
-              "opacity": idx === portadaIndex ? "1" : "0",
-              "zIndex": idx === portadaIndex ? "1" : "0"
-            }}
-            alt={`Portada Listo Patrón ${idx + 1}`}
-          />
-        ))}
+        {portadaImages.map((src, idx) => {
+          const isActive = idx === portadaIndex;
+          return (
+            <img
+              key={src}
+              src={src}
+              style={isActive ? {
+                "width": "100%",
+                "height": "auto",
+                "display": "block",
+                "transition": "opacity 1.2s ease-in-out",
+                "opacity": "1",
+                "zIndex": "2"
+              } : {
+                "position": "absolute",
+                "top": "0",
+                "left": "0",
+                "width": "100%",
+                "height": "100%",
+                "objectFit": "cover",
+                "display": "block",
+                "transition": "opacity 1.2s ease-in-out",
+                "opacity": "0",
+                "zIndex": "1"
+              }}
+              alt={`Portada Listo Patrón ${idx + 1}`}
+            />
+          );
+        })}
       </div>
 
       {/* Puntos indicadores interactivos (dots) estilo pastilla expansible */}
