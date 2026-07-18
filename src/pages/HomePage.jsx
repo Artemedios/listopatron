@@ -14,6 +14,21 @@ import pro25 from '../assets/extracted_25.jpeg';
 export default function HomePage() {
   useListoLogic();
 
+  const [portadaIndex, setPortadaIndex] = React.useState(0);
+  const portadaImages = [
+    './assets/portada_1.jpg',
+    './assets/portada_2.png',
+    './assets/portada_3.png',
+    './assets/portada_4.png'
+  ];
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setPortadaIndex((prev) => (prev + 1) % portadaImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   const closeIntro = () => { if (window.closeIntro) window.closeIntro(); };
   const nextSlide = () => { if (window.nextSlide) window.nextSlide(); };
   const shiftSlider = (d) => { if (window.shiftSlider) window.shiftSlider(d); };
@@ -87,8 +102,60 @@ export default function HomePage() {
 <div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "justifyContent": "center", "position": "relative"}}>
     <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px"}}>
       
-      {/* La imagen principal (el banner naranja con las personas) - en auto proporciones para que no se corte */}
-      <img src="./assets/portada_nueva.png" style={{"width": "100%", "height": "auto", "display": "block"}} alt="Portada Listo Patrón" />
+      {/* Carrusel de imágenes con transición suave (cross-fade) */}
+      <div style={{"position": "relative", "width": "100%", "height": "auto", "overflow": "hidden"}}>
+        {/* Imagen espaciadora invisible para mantener la responsividad y proporciones del contenedor */}
+        <img src="./assets/portada_1.jpg" style={{"width": "100%", "height": "auto", "display": "block", "visibility": "hidden"}} alt="Espaciador" />
+        
+        {portadaImages.map((src, idx) => (
+          <img
+            key={src}
+            src={src}
+            style={{
+              "position": "absolute",
+              "top": "0",
+              "left": "0",
+              "width": "100%",
+              "height": "100%",
+              "objectFit": "cover",
+              "display": "block",
+              "transition": "opacity 1.2s ease-in-out",
+              "opacity": idx === portadaIndex ? "1" : "0",
+              "zIndex": idx === portadaIndex ? "1" : "0"
+            }}
+            alt={`Portada Listo Patrón ${idx + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Puntos indicadores interactivos (dots) estilo pastilla expansible */}
+      <div style={{
+        "position": "absolute",
+        "bottom": "5%",
+        "left": "50%",
+        "transform": "translateX(-50%)",
+        "display": "flex",
+        "gap": "8px",
+        "zIndex": "6"
+      }}>
+        {portadaImages.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setPortadaIndex(idx)}
+            style={{
+              "width": idx === portadaIndex ? "24px" : "8px",
+              "height": "8px",
+              "borderRadius": "4px",
+              "border": "none",
+              "background": idx === portadaIndex ? "#F26000" : "rgba(255,255,255,0.6)",
+              "cursor": "pointer",
+              "transition": "all 0.3s ease",
+              "padding": "0"
+            }}
+            aria-label={`Ir a imagen de portada ${idx + 1}`}
+          />
+        ))}
+      </div>
       
       {/* El logo circular en la esquina superior derecha */}
       <img src="./assets/logo_esquina.png" style={{"position": "absolute", "top": "4%", "right": "4%", "width": "clamp(50px, 8vw, 90px)", "height": "auto", "objectFit": "contain", "zIndex": "2", "filter": "drop-shadow(0 4px 6px rgba(0,0,0,0.2))"}} alt="Logo Listo" />
