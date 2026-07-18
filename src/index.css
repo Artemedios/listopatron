@@ -579,7 +579,7 @@ footer{background:#F26000;padding:28px 5% 24px}
   .hero-stat:last-child{border-bottom:none}
   .stat-num{font-size:30px}
   /* Planes en columna */
-  .planes-wrap{grid-template-columns:1fr!important}
+  .planes-wrap{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
   /* Steps en columna */
   .steps-grid{grid-template-columns:1fr}
   /* Categorías 2 columnas en mobile */

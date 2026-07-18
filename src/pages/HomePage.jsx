@@ -53,7 +53,7 @@ export default function HomePage() {
 
   React.useEffect(() => {
     // 1. Intentar obtener contador real de la API
-    fetch('https://api.counterapi.dev/v1/listopatron_visits/up')
+    fetch('https://api.counterapi.dev/v1/listopatron/visits/up')
       .then(res => res.json())
       .then(data => {
         if (data && typeof data.count === 'number') {
