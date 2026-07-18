@@ -4748,6 +4748,7 @@ footer{background:#F26000;padding:28px 5% 24px}
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .nav-action-btn:hover {
@@ -4762,9 +4763,24 @@ footer{background:#F26000;padding:28px 5% 24px}
 
 @media (max-width: 900px) {
   .nav-header-buttons {
-    display: none !important;
+    display: flex !important;
+    gap: 6px;
+    margin-left: 8px;
   }
+  
+  .nav-header-buttons .nav-action-btn {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
   .nav-links-mobile-only {
-    display: inline-flex !important;
+    display: none !important; /* Hide duplicate in menu since they are in the header */
+  }
+}
+
+@media (max-width: 375px) {
+  .nav-header-buttons .nav-action-btn {
+    font-size: 10px;
+    padding: 5px 8px;
   }
 }
