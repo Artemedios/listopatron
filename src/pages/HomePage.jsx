@@ -320,7 +320,7 @@ export default function HomePage() {
 
       {/* Botones de App Store y Google Play */}
       <div style={{"position": "absolute", "top": "54%", "right": "5%", "display": "flex", "flexDirection": "column", "gap": "2vh", "zIndex": "5", "width": "clamp(120px, 18vw, 160px)"}}>
-         <a href="https://play.google.com/store/apps" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+         <a href="https://play.google.com/store/apps/details?id=com.listopatron.app" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Disponible en Google Play" style={{"width": "100%", "height": "auto", "display": "block"}} />
          </a>
          <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
