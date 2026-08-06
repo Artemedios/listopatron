@@ -116,3 +116,112 @@ h2.section-title {
 .chip {
   box-shadow: 0 4px 15px rgba(242, 96, 0, 0.15);
 }
+
+/* Typography Override for a Professional Look */
+h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, .splash-tagline {
+  font-family: 'Plus Jakarta Sans', 'Nunito', sans-serif !important;
+  font-weight: 800;
+}
+
+/* Stat Cards Modern Styling - fixes hover crash bug */
+.stat-card {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 20px !important;
+  padding: 28px 20px !important;
+  text-align: center !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Download App button standard modern styles */
+.btn-download-app {
+  background: var(--orange) !important;
+  color: #fff !important;
+  padding: 10px 22px !important;
+  border-radius: 50px !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  box-shadow: 0 4px 14px rgba(242,96,0,0.35) !important;
+  transition: transform .2s ease, box-shadow .2s ease !important;
+  display: inline-block !important;
+}
+
+.btn-download-app:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(242,96,0,0.5) !important;
+}
+
+/* Store download buttons - replacing JS mouseovers */
+.store-download-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: #1a1a1a !important;
+  color: #fff !important;
+  padding: 12px 22px !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  font-family: 'Nunito', sans-serif !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
+  transition: transform .2s ease, box-shadow .2s ease !important;
+}
+
+.store-download-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35) !important;
+}
+
+/* Social icons buttons - replacing JS mouseovers */
+.social-icon-btn {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: transform .2s ease !important;
+}
+
+.social-icon-btn:hover {
+  transform: translateY(-3px) !important;
+}
+
+/* Portada Store buttons hover */
+.portada-store-btn {
+  display: block !important;
+  transition: transform 0.2s ease !important;
+}
+.portada-store-btn:hover {
+  transform: scale(1.05) !important;
+}
+
+/* Pro row cards premium styling */
+.pro-row-card {
+  text-decoration: none !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  padding: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  border: 1px solid rgba(242, 96, 0, 0.05) !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+.pro-row-card:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 0 12px 30px rgba(242, 96, 0, 0.1) !important;
+  border-color: rgba(242, 96, 0, 0.3) !important;
+}
+
