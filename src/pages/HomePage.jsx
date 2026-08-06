@@ -11,16 +11,61 @@ import pro23 from '../assets/extracted_23.jpeg';
 import pro24 from '../assets/extracted_24.jpeg';
 import pro25 from '../assets/extracted_25.jpeg';
 
+const portadaImages = [
+  './assets/portada_1.jpg',
+  './assets/portada_2.png',
+  './assets/portada_3.png',
+  './assets/portada_4.png'
+];
+
 export default function HomePage() {
   useListoLogic();
 
+  const trackAppDownload = (platform) => {
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('event', 'app_download_click', {
+        'event_category': 'conversion',
+        'event_label': platform,
+        'value': 1,
+        'transport_type': 'beacon'
+      });
+    }
+    if (typeof window.fbq !== 'undefined') {
+      window.fbq('track', 'InitiateCheckout', {
+        'content_type': 'app_download',
+        'platform': platform
+      });
+    }
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #333;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    `;
+    toast.innerHTML = `🚀 Redirigiendo a ${platform === 'android' ? 'Play Store' : 'App Store'}...`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    }, 100);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(100px)';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  };
+
   const [portadaIndex, setPortadaIndex] = React.useState(0);
-  const portadaImages = [
-    './assets/portada_1.jpg',
-    './assets/portada_2.png',
-    './assets/portada_3.png',
-    './assets/portada_4.png'
-  ];
 
   const [visits, setVisits] = React.useState(10000);
   const [onlineUsers, setOnlineUsers] = React.useState(47);
@@ -167,8 +212,6 @@ export default function HomePage() {
     return visits.toString().padStart(8, '0').split('');
   };
 
-  const closeIntro = () => { if (window.closeIntro) window.closeIntro(); };
-  const nextSlide = () => { if (window.nextSlide) window.nextSlide(); };
   const shiftSlider = (d) => { if (window.shiftSlider) window.shiftSlider(d); };
   const goSlide = (i) => { if (window.goSlide) window.goSlide(i); };
   const adSlide = (d) => { if (window.adSlide) window.adSlide(d); };
@@ -1600,7 +1643,7 @@ export default function HomePage() {
 
     <div className="faq-grid sr sr-delay-2">
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿Cómo funciona Listo?</span>
           <span className="faq-arrow">▼</span>
@@ -1608,7 +1651,7 @@ export default function HomePage() {
         <div className="faq-a">Busca el servicio que necesitas, elige un profesional verificado cerca de ti y coordina directamente. En minutos tienes a alguien en camino.</div>
       </div>
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿Los profesionales están verificados?</span>
           <span className="faq-arrow">▼</span>
@@ -1616,7 +1659,7 @@ export default function HomePage() {
         <div className="faq-a">Sí. Todos los profesionales pasan por un proceso de verificación antes de aparecer en la plataforma. También puedes ver sus calificaciones y reseñas de otros clientes.</div>
       </div>
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿Cómo se realiza el pago?</span>
           <span className="faq-arrow">▼</span>
@@ -1624,7 +1667,7 @@ export default function HomePage() {
         <div className="faq-a">El pago se coordina directamente con el profesional. Puedes pagar en efectivo o por transferencia bancaria según el acuerdo con el profesional.</div>
       </div>
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿Qué pasa si tengo un problema con el servicio?</span>
           <span className="faq-arrow">▼</span>
@@ -1632,7 +1675,7 @@ export default function HomePage() {
         <div className="faq-a">Puedes contactarnos directamente por WhatsApp o email. Nuestro equipo estará disponible para ayudarte a resolver cualquier inconveniente.</div>
       </div>
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿En qué ciudades está disponible?</span>
           <span className="faq-arrow">▼</span>
@@ -1640,7 +1683,7 @@ export default function HomePage() {
         <div className="faq-a">Listo está disponible en toda República Dominicana, con mayor cobertura en Santo Domingo, Santiago, La Romana y San Pedro de Macorís.</div>
       </div>
 
-      <div className="faq-item" onClick={() => { toggleFaq(this) }}>
+      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
         <div className="faq-q">
           <span>¿Cómo me registro como profesional?</span>
           <span className="faq-arrow">▼</span>
