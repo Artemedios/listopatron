@@ -228,14 +228,14 @@ export default function HomePage() {
     
     {/* Botones de acción rápidos en la navegación */}
     <div className="nav-header-buttons">
-      <a href="https://listopatron.vercel.app/" className="nav-action-btn">Descargar la app</a>
+      <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn">Descargar la app</a>
       <a href="https://listopatron.vercel.app/" className="nav-action-btn">Hacer un pedido</a>
     </div>
   </div>
 
   <div className="nav-links" id="navLinks">
     {/* Botones móviles (solo se muestran en pantallas pequeñas mediante CSS) */}
-    <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Descargar la app</a>
+    <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Descargar la app</a>
     <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "20px", "width": "100%"}}>Hacer un pedido</a>
     
     <a href="#servicios">Servicios</a>
@@ -1354,7 +1354,7 @@ export default function HomePage() {
           <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🔹</span></div>
           <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Básico</p>
           <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 0-3.9 | 3 contratos</p>
-          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$500</p></div>
+          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>Gratis</p></div>
           <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
         </div>
       </a>
@@ -1427,7 +1427,7 @@ export default function HomePage() {
         <tbody>
           <tr style={{"borderBottom": "1px solid #f0f0f0"}}>
             <td style={{"padding": "14px 20px", "fontWeight": "700", "color": "#333"}}>Precio al mes</td>
-            <td style={{"textAlign": "center", "padding": "14px", "color": "#16a34a", "fontWeight": "800"}}>RD$500</td>
+            <td style={{"textAlign": "center", "padding": "14px", "color": "#16a34a", "fontWeight": "800"}}>Gratis</td>
             <td style={{"textAlign": "center", "padding": "14px", "color": "#B8860B", "fontWeight": "800"}}>RD$1,000</td>
             <td style={{"textAlign": "center", "padding": "14px", "color": "#555", "fontWeight": "800"}}>RD$1,500</td>
             <td style={{"textAlign": "center", "padding": "14px", "color": "var(--orange)", "fontWeight": "800"}}>RD$2,500</td>
@@ -1809,7 +1809,7 @@ export default function HomePage() {
       <div className="why-app-cta reveal">
         <h3>¿Listo para empezar?</h3>
         <div className="app-buttons" style={{"display": "flex", "gap": "14px", "flexWrap": "wrap", "justifyContent": "center"}}>
-          <a href="https://play.google.com/store/apps/details?id=com.listopatron" data-platform="android" target="_blank" rel="noopener noreferrer" onClick={() => { trackAppDownload('android') }} style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onMouseOver={() => { this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)' }} onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)' }}>
+          <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" data-platform="android" target="_blank" rel="noopener noreferrer" onClick={() => { trackAppDownload('android') }} style={{"display": "inline-flex", "alignItems": "center", "gap": "10px", "background": "#1a1a1a", "color": "#fff", "padding": "12px 22px", "borderRadius": "12px", "textDecoration": "none", "fontFamily": "'Nunito',sans-serif", "boxShadow": "0 4px 14px rgba(0,0,0,0.25)", "transition": "transform .2s,box-shadow .2s"}} onMouseOver={() => { this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.35)' }} onMouseOut={() => { this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,0,0,0.25)' }}>
             <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/></svg>
             <div style={{"lineHeight": "1.2"}}>
               <div style={{"fontSize": "11px", "opacity": ".7"}}>Descargar en</div>
