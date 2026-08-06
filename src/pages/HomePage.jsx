@@ -1707,7 +1707,7 @@ export default function HomePage() {
     <div className="app-banner-btns">
 
       {/*  Google Play  */}
-      <a href="#" className="app-store-btn google">
+      <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" onClick={() => trackAppDownload('android')} className="app-store-btn google">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
           <path d="M3.18 1.27C2.8 1.67 2.58 2.27 2.58 3.06v17.88c0 .79.22 1.39.6 1.79l.09.08 10.02-10.02v-.24L3.27 1.19l-.09.08z" fill="#EA4335"/>
           <path d="M16.6 15.61l-3.34-3.34v-.24l3.34-3.34.08.05 3.96 2.25c1.13.64 1.13 1.69 0 2.33l-3.96 2.25-.08.04z" fill="#FBBC04"/>
@@ -1721,7 +1721,7 @@ export default function HomePage() {
       </a>
 
       {/*  App Store  */}
-      <a href="#" className="app-store-btn apple">
+      <a href="https://apps.apple.com/app/listopatron/id000000000" target="_blank" rel="noopener noreferrer" onClick={() => trackAppDownload('ios')} className="app-store-btn apple">
         <svg width="26" height="28" viewBox="0 0 814 1000" fill="white">
           <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.8-155.5-118.2C46.2 687 0 582.1 0 481.3c0-183 119.1-279.6 236.7-279.6 61.4 0 112.6 40.8 149.9 40.8 35.7 0 92.3-43.2 161.9-43.2 26.1 0 108.2 2.6 168.6 79.9zm-208-175.8c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/>
         </svg>
