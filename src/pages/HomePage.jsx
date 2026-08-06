@@ -157,95 +157,6 @@ export default function HomePage() {
   <button className="burger" id="burger"><span></span><span></span><span></span></button>
 </nav>
 
-{/*  HERO  */}
-<section className="hero" id="inicio" aria-label="Sección principal">
-  <div className="hero-dots"></div>
-  <div className="hero-blob1"></div>
-  <div className="hero-blob2"></div>
-
-  {/*  TETRIS LEFT/RIGHT ahora van dentro del phone-wrap  */}
-
-
-  <div style={{"maxWidth": "1200px", "margin": "0 auto", "width": "100%"}}>
-    <div className="hero-inner">
-      <div className="hero-text">
-        <div className="hero-badge"><span className="hero-dot"></span> República Dominicana · En línea ahora</div>
-        <h1>El servicio que<br/>necesitas,<br/><span>cuando lo necesitas</span></h1>
-        <p className="hero-sub">Conectamos clientes con los mejores profesionales independientes de RD. Sin esperas, sin complicaciones.</p>
-        <div className="hero-btns">
-          <a href="https://listopatron.vercel.app/" className="btn-white">🔍 Buscar profesional</a>
-          <a href="#profesionales" className="btn-ghost">🔧 Soy profesional</a>
-        </div>
-      </div>
-      <div className="hero-phone">
-        <div className="phone-wrap" style={{"position": "relative"}}>
-          {/*  TETRIS IZQUIERDA: LISTO  */}
-          <div className="tetris-side tetris-left" id="tetrisLeft"></div>
-          {/*  TETRIS DERECHA: PATRON  */}
-          <div className="tetris-side tetris-right" id="tetrisRight"></div>
-          <div className="phone-frame">
-            <div className="phone-notch"></div>
-            <div className="phone-screen">
-              <div className="phone-header" style={{"flexDirection": "column", "alignItems": "center", "gap": "6px", "padding": "16px 14px 10px"}}>
-                <img src="./assets/extracted_19.png" alt="Listo Patrón" style={{"height": "28px", "width": "auto", "objectFit": "contain", "filter": "brightness(0) invert(1)"}}/>
-                <span style={{"color": "rgba(255,255,255,0.9)", "fontSize": "10px", "fontWeight": "700", "letterSpacing": ".5px"}}>🇩🇴 República Dominicana</span>
-              </div>
-              <div className="phone-search">🔍 ¿Qué servicio necesitas?</div>
-              <div className="phone-cats">
-                <div className="phone-cat"><span className="phone-cat-icon">🔧</span>Mantenimiento</div>
-                <div className="phone-cat"><span className="phone-cat-icon">🧹</span>Limpieza</div>
-                <div className="phone-cat"><span className="phone-cat-icon">✂️</span>Cuidado personal</div>
-                <div className="phone-cat"><span className="phone-cat-icon">🎉</span>Eventos</div>
-              </div>
-              <div style={{"fontSize": "11px", "fontWeight": "800", "color": "#888"}}>Profesionales cerca de ti</div>
-              <div className="phone-card">
-                <div className="phone-card-avatar">👨‍🔧</div>
-                <div className="phone-card-info">
-                  <div className="phone-card-name">Carlos Méndez</div>
-                  <div className="phone-card-role">Electricista · 0.8km</div>
-                  <div className="phone-card-stars">★★★★★ 4.9</div>
-                </div>
-                <div className="phone-card-btn">Contratar</div>
-              </div>
-              <div className="phone-card" style={{"background": "var(--orange-dark)"}}>
-                <div className="phone-card-avatar">👩‍🔧</div>
-                <div className="phone-card-info">
-                  <div className="phone-card-name">Ana Rodríguez</div>
-                  <div className="phone-card-role">Plomera · 1.2km</div>
-                  <div className="phone-card-stars">★★★★★ 5.0</div>
-                </div>
-                <div className="phone-card-btn">Contratar</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/*  Stats bar  */}
-    <div className="hero-stats">
-      <div className="hero-stat">
-        <span className="stat-num">500+</span>
-        <span className="stat-label">Profesionales activos</span>
-      </div>
-      <div className="hero-stat">
-        <span className="stat-num">20+</span>
-        <span className="stat-label">Tipos de servicio</span>
-      </div>
-      <div className="hero-stat">
-        <span className="stat-num">4.9★</span>
-        <span className="stat-label">Calificación promedio</span>
-      </div>
-      <div className="hero-stat">
-        <span className="stat-num">~15min</span>
-        <span className="stat-label">Tiempo de respuesta</span>
-      </div>
-    </div>
-  </div>
-
-
-</section>
-
 
 {/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
 <div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
@@ -497,10 +408,94 @@ export default function HomePage() {
     </div>
   </div>
 </section>
-{/*  styles extracted  */}
+{/*  HERO  */}
+<section className="hero" id="inicio" aria-label="Sección principal">
+  <div className="hero-dots"></div>
+  <div className="hero-blob1"></div>
+  <div className="hero-blob2"></div>
+
+  {/*  TETRIS LEFT/RIGHT ahora van dentro del phone-wrap  */}
 
 
-{/*  styles extracted  */}
+  <div style={{"maxWidth": "1200px", "margin": "0 auto", "width": "100%"}}>
+    <div className="hero-inner">
+      <div className="hero-text">
+        <div className="hero-badge"><span className="hero-dot"></span> República Dominicana · En línea ahora</div>
+        <h1>El servicio que<br/>necesitas,<br/><span>cuando lo necesitas</span></h1>
+        <p className="hero-sub">Conectamos clientes con los mejores profesionales independientes de RD. Sin esperas, sin complicaciones.</p>
+        <div className="hero-btns">
+          <a href="https://listopatron.vercel.app/" className="btn-white">🔍 Buscar profesional</a>
+          <a href="#profesionales" className="btn-ghost">🔧 Soy profesional</a>
+        </div>
+      </div>
+      <div className="hero-phone">
+        <div className="phone-wrap" style={{"position": "relative"}}>
+          {/*  TETRIS IZQUIERDA: LISTO  */}
+          <div className="tetris-side tetris-left" id="tetrisLeft"></div>
+          {/*  TETRIS DERECHA: PATRON  */}
+          <div className="tetris-side tetris-right" id="tetrisRight"></div>
+          <div className="phone-frame">
+            <div className="phone-notch"></div>
+            <div className="phone-screen">
+              <div className="phone-header" style={{"flexDirection": "column", "alignItems": "center", "gap": "6px", "padding": "16px 14px 10px"}}>
+                <img src="./assets/extracted_19.png" alt="Listo Patrón" style={{"height": "28px", "width": "auto", "objectFit": "contain", "filter": "brightness(0) invert(1)"}}/>
+                <span style={{"color": "rgba(255,255,255,0.9)", "fontSize": "10px", "fontWeight": "700", "letterSpacing": ".5px"}}>🇩🇴 República Dominicana</span>
+              </div>
+              <div className="phone-search">🔍 ¿Qué servicio necesitas?</div>
+              <div className="phone-cats">
+                <div className="phone-cat"><span className="phone-cat-icon">🔧</span>Mantenimiento</div>
+                <div className="phone-cat"><span className="phone-cat-icon">🧹</span>Limpieza</div>
+                <div className="phone-cat"><span className="phone-cat-icon">✂️</span>Cuidado personal</div>
+                <div className="phone-cat"><span className="phone-cat-icon">🎉</span>Eventos</div>
+              </div>
+              <div style={{"fontSize": "11px", "fontWeight": "800", "color": "#888"}}>Profesionales cerca de ti</div>
+              <div className="phone-card">
+                <div className="phone-card-avatar">👨‍🔧</div>
+                <div className="phone-card-info">
+                  <div className="phone-card-name">Carlos Méndez</div>
+                  <div className="phone-card-role">Electricista · 0.8km</div>
+                  <div className="phone-card-stars">★★★★★ 4.9</div>
+                </div>
+                <div className="phone-card-btn">Contratar</div>
+              </div>
+              <div className="phone-card" style={{"background": "var(--orange-dark)"}}>
+                <div className="phone-card-avatar">👩‍🔧</div>
+                <div className="phone-card-info">
+                  <div className="phone-card-name">Ana Rodríguez</div>
+                  <div className="phone-card-role">Plomera · 1.2km</div>
+                  <div className="phone-card-stars">★★★★★ 5.0</div>
+                </div>
+                <div className="phone-card-btn">Contratar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/*  Stats bar  */}
+    <div className="hero-stats">
+      <div className="hero-stat">
+        <span className="stat-num">500+</span>
+        <span className="stat-label">Profesionales activos</span>
+      </div>
+      <div className="hero-stat">
+        <span className="stat-num">20+</span>
+        <span className="stat-label">Tipos de servicio</span>
+      </div>
+      <div className="hero-stat">
+        <span className="stat-num">4.9★</span>
+        <span className="stat-label">Calificación promedio</span>
+      </div>
+      <div className="hero-stat">
+        <span className="stat-num">~15min</span>
+        <span className="stat-label">Tiempo de respuesta</span>
+      </div>
+    </div>
+  </div>
+
+
+</section>
 
 
 
