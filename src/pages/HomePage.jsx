@@ -18,7 +18,7 @@ const portadaImages = [
   './assets/portada_4.png'
 ];
 
-export default function HomePage() {
+export default function HomePage({ onNavigate }) {
   useListoLogic();
 
   const trackAppDownload = (platform) => {
@@ -139,13 +139,15 @@ export default function HomePage() {
     <div className="nav-header-buttons">
       <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn">Descargar la app</a>
       <a href="https://listopatron.vercel.app/" className="nav-action-btn">Hacer un pedido</a>
+      <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn">VISITAR TIENDA 🛒</button>
     </div>
   </div>
 
   <div className="nav-links" id="navLinks">
     {/* Botones móviles (solo se muestran en pantallas pequeñas mediante CSS) */}
     <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Descargar la app</a>
-    <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "20px", "width": "100%"}}>Hacer un pedido</a>
+    <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Hacer un pedido</a>
+    <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-links-mobile-only nav-shop-highlight-btn" style={{"marginBottom": "20px", "width": "100%"}}>VISITAR TIENDA 🛒</button>
     
     <a href="#servicios">Servicios</a>
     <a href="#como-funciona">Cómo funciona</a>
