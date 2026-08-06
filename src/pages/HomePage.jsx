@@ -67,21 +67,7 @@ export default function HomePage() {
 
   const [portadaIndex, setPortadaIndex] = React.useState(0);
 
-  const [visits, setVisits] = React.useState(10000);
-  const [onlineUsers, setOnlineUsers] = React.useState(47);
-  const [countryStats, setCountryStats] = React.useState([
-    { code: 'DO', name: 'Rep. Dominicana', count: 7350 },
-    { code: 'US', name: 'Estados Unidos', count: 1420 },
-    { code: 'ES', name: 'España', count: 610 },
-    { code: 'PR', name: 'Puerto Rico', count: 340 },
-    { code: 'VE', name: 'Venezuela', count: 280 }
-  ]);
-  const [liveFeed, setLiveFeed] = React.useState([
-    { time: 'Ahora mismo', location: 'Santo Domingo, RD', code: 'DO', type: 'Conexión' },
-    { time: 'Hace 30s', location: 'Santiago, RD', code: 'DO', type: 'Búsqueda' },
-    { time: 'Hace 1m', location: 'New York, USA', code: 'US', type: 'Descarga' },
-    { time: 'Hace 3m', location: 'Madrid, España', code: 'ES', type: 'Conexión' }
-  ]);
+
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -90,127 +76,7 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Helper para generar URLs de banderas reales desde un CDN de alta fidelidad compatible con Windows
-  const getFlagUrl = (countryCode) => {
-    if (!countryCode) return 'https://flagcdn.com/16x12/do.png';
-    return `https://flagcdn.com/16x12/${countryCode.toLowerCase()}.png`;
-  };
 
-  React.useEffect(() => {
-    // 1. Intentar obtener contador real de la API
-    fetch('https://api.counterapi.dev/v1/listopatron/visits/up')
-      .then(res => res.json())
-      .then(data => {
-        if (data && typeof data.count === 'number') {
-          setVisits(10000 + data.count);
-        }
-      })
-      .catch(() => {
-        const localVal = localStorage.getItem('listo_visits_fallback');
-        if (localVal) {
-          const num = parseInt(localVal, 10);
-          if (!isNaN(num)) {
-            setVisits(num);
-            localStorage.setItem('listo_visits_fallback', (num + 1).toString());
-          }
-        } else {
-          localStorage.setItem('listo_visits_fallback', '10001');
-        }
-      });
-
-    // 2. Intentar geolocalizar al usuario real
-    fetch('https://freeipapi.com/api/json')
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.countryCode) {
-          const userCountry = data.countryName || 'Rep. Dominicana';
-          const userCode = data.countryCode;
-          const userCity = data.cityName || 'Santo Domingo';
-          
-          setLiveFeed(prev => [
-            { time: 'Ahora mismo', location: `${userCity}, ${userCode}`, code: userCode, type: 'Tu Visita (Real)' },
-            ...prev.slice(0, 3)
-          ]);
-
-          setCountryStats(prev => {
-            const exists = prev.some(c => c.code === userCode);
-            if (exists) {
-              return prev.map(c => c.code === userCode ? { ...c, count: c.count + 1 } : c).sort((a, b) => b.count - a.count);
-            } else {
-              return [...prev, { code: userCode, name: userCountry, count: 1 }].sort((a, b) => b.count - a.count);
-            }
-          });
-        }
-      })
-      .catch(() => {});
-
-    // 3. Simulación de tráfico en tiempo real (incrementos cada 4-10s)
-    const simLocations = [
-      { city: 'Santo Domingo', country: 'Rep. Dominicana', code: 'DO' },
-      { city: 'Santiago', country: 'Rep. Dominicana', code: 'DO' },
-      { city: 'La Romana', country: 'Rep. Dominicana', code: 'DO' },
-      { city: 'New York', country: 'Estados Unidos', code: 'US' },
-      { city: 'Madrid', country: 'España', code: 'ES' },
-      { city: 'Bogotá', country: 'Colombia', code: 'CO' },
-      { city: 'San Juan', country: 'Puerto Rico', code: 'PR' },
-      { city: 'Miami', country: 'Estados Unidos', code: 'US' },
-      { city: 'Caracas', country: 'Venezuela', code: 'VE' },
-      { city: 'Panamá', country: 'Panamá', code: 'PA' }
-    ];
-
-    const types = ['Conexión', 'Búsqueda', 'Descarga', 'Registro'];
-
-    const trafficInterval = setInterval(() => {
-      // Incrementar contador total
-      setVisits((prev) => {
-        const nextVal = prev + 1;
-        localStorage.setItem('listo_visits_fallback', nextVal.toString());
-        return nextVal;
-      });
-
-      // Modificar usuarios online ligeramente
-      setOnlineUsers(prev => {
-        const diff = Math.floor(Math.random() * 5) - 2; // -2 a +2
-        const next = prev + diff;
-        return next < 10 ? 10 : next > 200 ? 200 : next;
-      });
-
-      // Insertar nueva visita simulada en el feed
-      const loc = simLocations[Math.floor(Math.random() * simLocations.length)];
-      const type = types[Math.floor(Math.random() * types.length)];
-      
-      setLiveFeed(prev => [
-        { time: 'Ahora mismo', location: `${loc.city}, ${loc.code}`, code: loc.code, type: type },
-        ...prev.map(f => {
-          if (f.time === 'Ahora mismo') return { ...f, time: 'Hace unos segundos' };
-          if (f.time === 'Hace unos segundos') return { ...f, time: 'Hace poco' };
-          return f;
-        }).slice(0, 3)
-      ]);
-
-      // Incrementar contador por país correspondiente
-      setCountryStats(prev => {
-        const exists = prev.some(c => c.code === loc.code);
-        if (exists) {
-          return prev.map(c => {
-            if (c.code === loc.code) {
-              return { ...c, count: c.count + 1 };
-            }
-            return c;
-          }).sort((a, b) => b.count - a.count);
-        } else {
-          return [...prev, { code: loc.code, name: loc.country, count: 1 }].sort((a, b) => b.count - a.count);
-        }
-      });
-
-    }, Math.floor(Math.random() * 6000) + 4000);
-
-    return () => clearInterval(trafficInterval);
-  }, []);
-
-  const getDigits = () => {
-    return visits.toString().padStart(8, '0').split('');
-  };
 
   const shiftSlider = (d) => { if (window.shiftSlider) window.shiftSlider(d); };
   const goSlide = (i) => { if (window.goSlide) window.goSlide(i); };
@@ -369,76 +235,6 @@ export default function HomePage() {
          <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer" style={{"display": "block", "transition": "transform 0.2s"}} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Consíguelo en el App Store" style={{"width": "100%", "height": "auto", "display": "block"}} />
          </a>
-      </div>
-    </div>
-
-    {/* Panel de Tráfico en Vivo Profesional */}
-    <div className="live-panel">
-      <div className="live-panel-title">
-        <div className="live-pulse-dot"></div>
-        <span>Panel de Tráfico en Vivo</span>
-      </div>
-      
-      <div className="live-panel-grid">
-        {/* Columna 1: Total Visitas */}
-        <div className="live-col">
-          <span className="live-col-title">Visitas Totales</span>
-          <div className="odometer-container">
-            {getDigits().map((digit, idx) => (
-              <span key={idx} className="odometer-digit">{digit}</span>
-            ))}
-          </div>
-          <div className="live-online-status">
-            <span style={{"color": "#00FF66"}}>● {onlineUsers}</span>
-            <span style={{"color": "#aaa", "fontWeight": "normal", "marginLeft": "5px"}}>usuarios activos online</span>
-          </div>
-        </div>
-
-        {/* Columna 2: Por Países (Desbloqueado a 6 países principales) */}
-        <div className="live-col">
-          <span className="live-col-title">Tráfico por Países</span>
-          <div style={{"display": "flex", "flexDirection": "column"}}>
-            {countryStats.slice(0, 6).map((country) => {
-              const maxCount = countryStats[0].count || 1;
-              const percentage = Math.min(100, Math.round((country.count / maxCount) * 100));
-              return (
-                <div key={country.code} className="country-item">
-                  <div className="country-info">
-                    {/* Banderas reales en alta calidad compatibles con Windows */}
-                    <img src={getFlagUrl(country.code)} width="16" height="12" alt={country.code} style={{"borderRadius": "2px", "marginRight": "6px"}} />
-                    <span style={{"fontWeight": "600"}}>{country.name}</span>
-                  </div>
-                  <div style={{"display": "flex", "alignItems": "center"}}>
-                    <div className="country-bar-wrap">
-                      <div className="country-bar" style={{"width": `${percentage}%`}}></div>
-                    </div>
-                    <span style={{"fontFamily": "monospace", "fontWeight": "bold", "color": "#00FF66"}}>{country.count.toLocaleString()}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Columna 3: Actividad Reciente */}
-        <div className="live-col">
-          <span className="live-col-title">Actividad en Tiempo Real</span>
-          <div className="live-feed-list">
-            {liveFeed.map((feed, idx) => (
-              <div key={idx} className="live-feed-item">
-                <div className="live-feed-info">
-                  {/* Banderas reales en alta calidad compatibles con Windows */}
-                  <img src={getFlagUrl(feed.code)} width="16" height="12" alt={feed.code} style={{"borderRadius": "2px", "marginRight": "6px"}} />
-                  <span style={{"fontWeight": "600"}}>{feed.location}</span>
-                </div>
-                <div style={{"display": "flex", "alignItems": "center", "gap": "6px"}}>
-                  <span className="live-feed-type">{feed.type}</span>
-                  <span style={{"color": "#888", "fontSize": "9px"}}>{feed.time}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
 </div>
