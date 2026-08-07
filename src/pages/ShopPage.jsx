@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const products = [
+  // Categoría Original: Equipos de Seguridad
   {
     id: 1,
     name: 'VIVOSUN Pulverizador a Presión (1.35 Galones)',
@@ -9,7 +10,8 @@ const products = [
     reviews: 124,
     description: 'Botella de agua a presión para césped y jardín con correa ajustable para el hombro, ideal para fumigación, limpieza y riego del hogar.',
     image: './assets/product_sprayer.png',
-    badge: 'Más vendido'
+    badge: 'Más vendido',
+    category: 'seguridad'
   },
   {
     id: 2,
@@ -19,7 +21,8 @@ const products = [
     reviews: 86,
     description: 'Casco de seguridad industrial ventilado con arnés de suspensión ajustable de 6 puntos y correa de barbilla. Certificación de seguridad.',
     image: './assets/product_helmet.png',
-    badge: 'Popular'
+    badge: 'Popular',
+    category: 'seguridad'
   },
   {
     id: 3,
@@ -29,12 +32,184 @@ const products = [
     reviews: 198,
     description: 'Chaleco reflectante de alta visibilidad clase 2 con múltiples bolsillos y cremallera frontal. Tela transpirable y duradera.',
     image: './assets/product_vest.png',
-    badge: 'Esencial'
+    badge: 'Esencial',
+    category: 'seguridad'
+  },
+  // Categoría: Pantalones de Trabajo
+  {
+    id: 4,
+    name: 'Pantalones Tácticos Elásticos Cargo (Negro)',
+    price: 1780,
+    rating: 4.2,
+    reviews: 249,
+    description: 'Pantalón cargo táctico para hombre, tejido elástico y cómodo. Gran cantidad de bolsillos reforzados para herramientas.',
+    image: './assets/prod_pants_1.png',
+    badge: 'Más vendido',
+    category: 'pantalones'
+  },
+  {
+    id: 5,
+    name: 'Pantalones Tácticos de Senderismo (Gris Oscuro)',
+    price: 1785,
+    rating: 3.8,
+    reviews: 72,
+    description: 'Pantalones tácticos ligeros de secado rápido, ideales para senderismo y trabajos al aire libre bajo el sol.',
+    image: './assets/prod_pants_2.png',
+    badge: null,
+    category: 'pantalones'
+  },
+  {
+    id: 6,
+    name: 'Pantalones Tácticos de Trabajo Resistentes (Gris)',
+    price: 1785,
+    rating: 4.0,
+    reviews: 24,
+    description: 'Pantalón de trabajo reforzado con costuras dobles. Gran durabilidad para construcción, carpintería o mecánica.',
+    image: './assets/prod_pants_3.png',
+    badge: null,
+    category: 'pantalones'
+  },
+  {
+    id: 7,
+    name: 'Pantalones Tácticos whok (Gris Claro)',
+    price: 1600,
+    rating: 4.2,
+    reviews: 338,
+    description: 'Pantalones de trabajo tácticos de carga para hombre, resistentes y funcionales para el uso diario.',
+    image: './assets/prod_pants_4.png',
+    badge: 'Popular',
+    category: 'pantalones'
+  },
+  {
+    id: 8,
+    name: 'Pantalones Juicy Trendz de Construcción (Gris/Negro)',
+    price: 2500,
+    rating: 4.2,
+    reviews: 56,
+    description: 'Pantalón de trabajo de alta resistencia con bolsillos flotantes porta-herramientas. Refuerzo en rodillas.',
+    image: './assets/prod_pants_5.png',
+    badge: 'Premium',
+    category: 'pantalones'
+  },
+  {
+    id: 9,
+    name: 'Vaqueros de Ajuste Clásico Rustler (Azul)',
+    price: 1340,
+    rating: 4.5,
+    reviews: 43900,
+    description: 'Jeans de trabajo clásicos y relajados para hombre de alta durabilidad en mezclilla de alta calidad.',
+    image: './assets/prod_pants_6.png',
+    badge: 'Esencial',
+    category: 'pantalones'
+  },
+  {
+    id: 10,
+    name: 'Pantalones de Trabajo Impermeables Ligeros (Verde Oliva)',
+    price: 1160,
+    rating: 5.0,
+    reviews: 2,
+    description: 'Pantalones ligeros impermeables y resistentes al viento, ideales para trabajos de fontanería y exteriores.',
+    image: './assets/prod_pants_7.png',
+    badge: 'Recomendado',
+    category: 'pantalones'
+  },
+  {
+    id: 11,
+    name: 'DEWALT Protradesman Pantalones de Trabajo',
+    price: 4900,
+    rating: 4.6,
+    reviews: 508,
+    description: 'Pantalón de trabajo profesional DEWALT de alta gama, fabricado en algodón y poliéster elástico con bolsillos holster.',
+    image: './assets/prod_pants_8.png',
+    badge: 'Profesional',
+    category: 'pantalones'
+  },
+  {
+    id: 12,
+    name: 'Generic Pantalones Tácticos Cargo (Marrón)',
+    price: 1520,
+    rating: 4.1,
+    reviews: 658,
+    description: 'Pantalones tácticos de carga elásticos con diseño clásico multibolsillos, repelentes al agua y al desgaste.',
+    image: './assets/prod_pants_9.png',
+    badge: null,
+    category: 'pantalones'
+  },
+  // Categoría: Trajes y Protección
+  {
+    id: 13,
+    name: 'Andes Overol de Protección Química (Blanco)',
+    price: 1520,
+    rating: 4.3,
+    reviews: 158,
+    description: 'Overol de protección química para el manejo de materiales peligrosos, pintura industrial o desinfección.',
+    image: './assets/prod_safe_10.png',
+    badge: 'Certificado',
+    category: 'proteccion'
+  },
+  {
+    id: 14,
+    name: 'Overol Amarillo Hazmat de Material Peligroso',
+    price: 1965,
+    rating: 4.4,
+    reviews: 32,
+    description: 'Traje protector completo amarillo para materiales peligrosos y químicos agresivos. Capucha ajustable.',
+    image: './assets/prod_safe_11.png',
+    badge: 'Seguridad',
+    category: 'proteccion'
+  },
+  {
+    id: 15,
+    name: 'Máscara Respiradora Profesional',
+    price: 2500,
+    rating: 4.4,
+    reviews: 709,
+    description: 'Máscara respiradora de media cara con filtros intercambiables de alta eficiencia, perfecta para pintura y soldadura.',
+    image: './assets/prod_safe_12.png',
+    badge: 'Más vendido',
+    category: 'proteccion'
+  },
+  {
+    id: 16,
+    name: 'Traje de Pintura Reutilizable y Antiestático (Negro/Rojo)',
+    price: 4100,
+    rating: 4.0,
+    reviews: 27,
+    description: 'Overol reutilizable protector antiestático premium con ventilación trasera, ideal para cabinas de pintura y talleres.',
+    image: './assets/prod_safe_13.png',
+    badge: 'Premium',
+    category: 'proteccion'
+  },
+  {
+    id: 17,
+    name: 'Overol Desechable Transpirable (Azul)',
+    price: 1600,
+    rating: 3.5,
+    reviews: 29,
+    description: 'Mono protector desechable transpirable de alta visibilidad para limpieza general y trabajos de mantenimiento.',
+    image: './assets/prod_safe_14.png',
+    badge: null,
+    category: 'proteccion'
+  },
+  {
+    id: 18,
+    name: 'CAREGY Overoles Hazmat Desechables (2-Pack, Blanco)',
+    price: 890,
+    rating: 4.3,
+    reviews: 344,
+    description: 'Paquete de 2 overoles protectores desechables con capucha y puños elásticos para trabajos de pintura y barrera biológica.',
+    image: './assets/prod_safe_15.png',
+    badge: 'Oferta',
+    category: 'proteccion'
   }
 ];
 
 export default function ShopPage({ onNavigate }) {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('listo_cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -47,6 +222,11 @@ export default function ShopPage({ onNavigate }) {
     address: '',
     paymentMethod: 'contraentrega'
   });
+
+  // Save cart to localStorage
+  useEffect(() => {
+    localStorage.setItem('listo_cart', JSON.stringify(cart));
+  }, [cart]);
 
   // Calculate cart metrics
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -103,6 +283,10 @@ export default function ShopPage({ onNavigate }) {
     window.scrollTo(0, 0);
   }, []);
 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
+    : products.filter(product => product.category === selectedCategory);
+
   return (
     <div className="shop-page-wrapper">
       
@@ -142,8 +326,36 @@ export default function ShopPage({ onNavigate }) {
           <h2 className="shop-section-title">Productos <span>Disponibles</span></h2>
           <p className="shop-section-sub">Insumos y equipos con los mejores estándares para tus servicios diarios.</p>
           
+          {/* CATEGORY FILTERS */}
+          <div className="filter-pills" style={{ "marginBottom": "30px", "justifyContent": "center", "display": "flex", "flexWrap": "wrap" }}>
+            <button 
+              className={`filter-pill ${selectedCategory === 'all' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('all')}
+            >
+              Todos
+            </button>
+            <button 
+              className={`filter-pill ${selectedCategory === 'pantalones' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('pantalones')}
+            >
+              👖 Pantalones de Trabajo
+            </button>
+            <button 
+              className={`filter-pill ${selectedCategory === 'proteccion' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('proteccion')}
+            >
+              🛡️ Trajes y Protección
+            </button>
+            <button 
+              className={`filter-pill ${selectedCategory === 'seguridad' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('seguridad')}
+            >
+              🧯 Equipos de Seguridad
+            </button>
+          </div>
+
           <div className="products-grid">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product.id} className="product-card">
                 {product.badge && <span className="product-card-badge">{product.badge}</span>}
                 <div className="product-img-wrapper">
