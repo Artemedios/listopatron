@@ -932,6 +932,10 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 
 /* Mobile responsive fixes for the shop */
 @media(max-width: 900px) {
+  .shop-nav .nav-links {
+    display: flex !important;
+    gap: 12px;
+  }
   .shop-hero {
     height: 320px;
   }
@@ -946,9 +950,21 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
     border-radius: 50% !important;
   }
 }
+@media(max-width: 600px) {
+  .shop-logo-text {
+    display: none !important;
+  }
+}
 @media(max-width: 480px) {
   .products-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* Hide shop preview arrows on mobile and tablet touch viewports */
+@media (max-width: 1024px) {
+  .carousel-arrow-btn {
+    display: none !important;
   }
 }
 

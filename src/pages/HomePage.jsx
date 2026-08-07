@@ -332,39 +332,39 @@ export default function HomePage({ onNavigate }) {
       <button onClick={() => { shiftSlider(-1) }} aria-label="Anterior" style={{"position": "absolute", "left": "-20px", "top": "50%", "transform": "translateY(-50%)", "width": "44px", "height": "44px", "borderRadius": "50%", "border": "none", "cursor": "pointer", "background": "#F26000", "color": "#fff", "fontSize": "22px", "zIndex": "10", "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", "display": "flex", "alignItems": "center", "justifyContent": "center"}}>‹</button>
 
       <div id="proSliderTrack" style={{"display": "flex", "transition": "transform 0.5s ease-out", "gap": "20px"}}>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_6.png" alt="Mecánico" />
           <div className="pro-slide-label">🔧 Mecánico</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_7.png" alt="Limpieza" />
           <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_8.png" alt="Limpieza 2" />
           <div className="pro-slide-label">🧹 Limpieza</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_9.png" alt="Jardinero" />
           <div className="pro-slide-label">🌿 Jardinero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_10.png" alt="Jardinero 2" />
           <div className="pro-slide-label">🌿 Jardinero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_11.png" alt="Plomero" />
           <div className="pro-slide-label">🔩 Plomero</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_12.png" alt="Enfermería" />
           <div className="pro-slide-label">🏥 Enfermería</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_13.png" alt="Masajes" />
           <div className="pro-slide-label">💆 Masajes</div>
         </div>
-        <div className="pro-slide" style={{"flex": "0 0 calc(100% / 4 - 15px)", "minWidth": "220px"}}>
+        <div className="pro-slide">
           <img src="./assets/extracted_14.jpeg" alt="Pintor" />
           <div className="pro-slide-label">🎨 Pintor</div>
         </div>
@@ -1393,7 +1393,7 @@ export default function HomePage({ onNavigate }) {
     {/*  Tabla comparativa  */}
     <div style={{"marginTop": "72px", "overflowX": "auto"}}>
       <h3 style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "28px", "textAlign": "center", "marginBottom": "18px", "color": "#222"}}>Compara todos los <span style={{"color": "var(--orange)"}}>beneficios</span></h3>
-      <table style={{"width": "100%", "maxWidth": "900px", "margin": "0 auto", "borderCollapse": "separate", "borderSpacing": "0", "fontSize": "14px"}}>
+      <table style={{"width": "100%", "maxWidth": "900px", "minWidth": "650px", "margin": "0 auto", "borderCollapse": "separate", "borderSpacing": "0", "fontSize": "14px"}}>
         <thead>
           <tr>
             <th style={{"textAlign": "left", "padding": "14px 20px", "background": "#f9fafb", "borderRadius": "12px 0 0 0", "fontSize": "13px", "color": "#888", "fontWeight": "700", "borderBottom": "2px solid #f0f0f0"}}>Beneficio</th>

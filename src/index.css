@@ -4943,20 +4943,64 @@ footer{background:#F26000;padding:28px 5% 24px}
 
 @media (max-width: 900px) {
   .nav-header-buttons {
-    display: flex !important;
-    gap: 6px;
-    margin-left: 8px;
-  }
-  
-  .nav-header-buttons .nav-action-btn {
-    font-size: 11px;
-    padding: 6px 10px;
+    display: none !important;
   }
 
   .nav-links-mobile-only {
-    display: none !important;
+    display: flex !important;
   }
 }
+
+/* Responsive Professional Slider and Ad Slider */
+.pro-slide {
+  flex: 0 0 calc(25% - 15px);
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.pro-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.pro-slide:hover img {
+  transform: scale(1.04);
+}
+
+.pro-slide-label {
+  margin-top: 12px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #333;
+}
+
+@media(max-width: 900px) {
+  .pro-slide {
+    flex: 0 0 calc(33.333% - 14px) !important;
+    min-width: 180px !important;
+  }
+}
+
+@media(max-width: 580px) {
+  .pro-slide {
+    flex: 0 0 calc(50% - 10px) !important;
+    min-width: 130px !important;
+  }
+}
+
+.ad-slide {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
 
 @media (max-width: 768px) {
   .live-panel-grid {
