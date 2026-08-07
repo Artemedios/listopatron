@@ -499,10 +499,163 @@ export default function HomePage({ onNavigate }) {
 
 </section>
 
+{/* SECCIÓN PREVIEW TIENDA CON CARRUSEL DE PRODUCTOS */}
+<section className="shop-preview-section" style={{ "background": "#f3f4f6", "padding": "60px 5%", "position": "relative", "overflow": "hidden" }}>
+  <div style={{ "maxWidth": "1200px", "margin": "0 auto", "position": "relative" }}>
+    <div style={{ "textAlign": "center", "marginBottom": "30px" }}>
+      <div style={{ "display": "inline-flex", "alignItems": "center", "gap": "6px", "background": "#FFEBE0", "color": "#F26000", "padding": "6px 16px", "borderRadius": "50px", "fontSize": "11px", "fontWeight": "800", "letterSpacing": "1.5px", "textTransform": "uppercase", "marginBottom": "10px" }}>
+        🛒 LISTO PATRÓN TIENDA
+      </div>
+      <h2 style={{ "fontFamily": "'Fredoka One',cursive", "fontSize": "clamp(26px, 4vw, 42px)", "color": "#1a1a1a", "marginBottom": "10px" }}>
+        Equipos e Insumos <span style={{ "color": "#F26000" }}>Profesionales</span>
+      </h2>
+      <p style={{ "fontSize": "15px", "color": "#666", "maxWidth": "540px", "margin": "0 auto" }}>
+        Encuentra ropa de trabajo, herramientas y equipos de protección con los más altos estándares y envío a domicilio.
+      </p>
+    </div>
 
+    {/* CAROUSEL WRAPPER WITH 3D CARD FAN EFFECT */}
+    <div className="shop-carousel-container" style={{ "position": "relative", "margin": "0 auto 40px", "maxWidth": "1000px" }}>
+      <button 
+        onClick={() => {
+          const track = document.getElementById('shopCarouselTrack');
+          if (track) track.scrollLeft -= 300;
+        }}
+        aria-label="Anterior" 
+        className="carousel-arrow-btn left-arrow"
+        style={{
+          "position": "absolute", 
+          "left": "-20px", 
+          "top": "50%", 
+          "transform": "translateY(-50%)", 
+          "width": "44px", 
+          "height": "44px", 
+          "borderRadius": "50%", 
+          "border": "none", 
+          "cursor": "pointer", 
+          "background": "#F26000", 
+          "color": "#fff", 
+          "fontSize": "22px", 
+          "zIndex": "10", 
+          "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", 
+          "display": "flex", 
+          "alignItems": "center", 
+          "justifyContent": "center"
+        }}
+      >
+        ‹
+      </button>
 
+      <div 
+        id="shopCarouselTrack" 
+        style={{ 
+          "display": "flex", 
+          "gap": "20px", 
+          "overflowX": "auto", 
+          "scrollBehavior": "smooth",
+          "padding": "20px 10px 30px",
+          "scrollbarWidth": "none"
+        }}
+      >
+        {[
+          { name: 'Pantalones Tácticos Elásticos Cargo (Negro)', price: 'RD$ 1,780', img: './assets/prod_pants_1.png', category: 'Pantalones' },
+          { name: 'Máscara Respiradora Profesional', price: 'RD$ 2,500', img: './assets/prod_safe_12.png', category: 'Protección' },
+          { name: 'DEWALT Protradesman Pantalones de Trabajo', price: 'RD$ 4,900', img: './assets/prod_pants_8.png', category: 'Pantalones' },
+          { name: 'VIVOSUN Pulverizador a Presión (1.35 Gal)', price: 'RD$ 1,750', img: './assets/product_sprayer.png', category: 'Seguridad' },
+          { name: 'Casco de Construcción Ajustable', price: 'RD$ 1,450', img: './assets/product_helmet.png', category: 'Seguridad' },
+          { name: 'Chaleco de Seguridad Reflectante Hi-Vis', price: 'RD$ 590', img: './assets/product_vest.png', category: 'Seguridad' },
+        ].map((prod, idx) => (
+          <div 
+            key={idx} 
+            className="shop-preview-card"
+            style={{
+              "flex": "0 0 280px",
+              "background": "#ffffff",
+              "borderRadius": "20px",
+              "padding": "20px",
+              "boxShadow": "0 10px 25px rgba(0, 0, 0, 0.05)",
+              "border": "1px solid rgba(242, 96, 0, 0.05)",
+              "transition": "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+              "display": "flex",
+              "flexDirection": "column",
+              "cursor": "pointer"
+            }}
+            onClick={() => onNavigate('shop')}
+          >
+            <div style={{ "background": "#f9fafb", "borderRadius": "12px", "height": "180px", "display": "flex", "alignItems": "center", "justifyContent": "center", "padding": "10px", "marginBottom": "15px", "position": "relative", "overflow": "hidden" }}>
+              <img src={prod.img} alt={prod.name} style={{ "maxHeight": "100%", "maxWidth": "100%", "objectFit": "contain", "transition": "transform 0.5s ease" }} className="preview-card-img" />
+              <span style={{ "position": "absolute", "top": "10px", "left": "10px", "background": "rgba(242, 96, 0, 0.1)", "color": "#F26000", "fontSize": "10px", "fontWeight": "800", "padding": "4px 8px", "borderRadius": "6px" }}>{prod.category}</span>
+            </div>
+            <div style={{ "display": "flex", "alignItems": "center", "gap": "4px", "marginBottom": "6px" }}>
+              <span style={{ "color": "#ffb800", "fontSize": "12px" }}>★★★★★</span>
+              <span style={{ "fontSize": "11px", "color": "#9ca3af" }}>(4.8)</span>
+            </div>
+            <h3 style={{ "fontSize": "14px", "fontWeight": "800", "color": "#1f2937", "lineHeight": "1.4", "marginBottom": "12px", "minHeight": "40px", "display": "-webkit-box", "WebkitLineClamp": "2", "WebkitBoxOrient": "vertical", "overflow": "hidden" }}>
+              {prod.name}
+            </h3>
+            <div style={{ "marginTop": "auto", "display": "flex", "justifyContent": "space-between", "alignItems": "center" }}>
+              <span style={{ "fontSize": "16px", "fontWeight": "900", "color": "#111827" }}>{prod.price}</span>
+              <span style={{ "color": "#F26000", "fontWeight": "700", "fontSize": "12px" }}>Ver →</span>
+            </div>
+          </div>
+        ))}
+      </div>
 
+      <button 
+        onClick={() => {
+          const track = document.getElementById('shopCarouselTrack');
+          if (track) track.scrollLeft += 300;
+        }}
+        aria-label="Siguiente" 
+        className="carousel-arrow-btn right-arrow"
+        style={{
+          "position": "absolute", 
+          "right": "-20px", 
+          "top": "50%", 
+          "transform": "translateY(-50%)", 
+          "width": "44px", 
+          "height": "44px", 
+          "borderRadius": "50%", 
+          "border": "none", 
+          "cursor": "pointer", 
+          "background": "#F26000", 
+          "color": "#fff", 
+          "fontSize": "22px", 
+          "zIndex": "10", 
+          "boxShadow": "0 4px 16px rgba(242,96,0,0.4)", 
+          "display": "flex", 
+          "alignItems": "center", 
+          "justifyContent": "center"
+        }}
+      >
+        ›
+      </button>
+    </div>
 
+    {/* PULSING CTA BUTTON */}
+    <div style={{ "textAlign": "center" }}>
+      <button 
+        onClick={() => onNavigate('shop')}
+        className="visit-shop-pulse-btn"
+        style={{
+          "background": "linear-gradient(135deg, #F26000 0%, #FF8533 100%)",
+          "color": "#ffffff",
+          "border": "none",
+          "padding": "16px 40px",
+          "borderRadius": "50px",
+          "fontWeight": "800",
+          "fontSize": "16px",
+          "cursor": "pointer",
+          "display": "inline-flex",
+          "alignItems": "center",
+          "gap": "10px"
+        }}
+      >
+        Visitar Tienda 🛒
+      </button>
+    </div>
+  </div>
+</section>
 
 {/*  TICKER BANNER  */}
 <div className="ticker-wrap">
