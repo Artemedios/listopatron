@@ -298,7 +298,7 @@ export default function ShopPage({ onNavigate }) {
       {/* SHOP NAVIGATION BAR */}
       <nav id="nav" className="shop-nav">
         <div style={{"display": "flex", "alignItems": "center"}}>
-          <img className="nav-logo" src="./assets/logo_listo_patron.png" alt="Listo Patrón" style={{"height": "52px", "objectFit": "contain"}} />
+          <img className="nav-logo" src="./assets/logo_listo_patron.png" alt="Listo Patrón" style={{"height": "75px", "objectFit": "contain"}} />
           <span className="shop-logo-text">Tienda</span>
         </div>
 
