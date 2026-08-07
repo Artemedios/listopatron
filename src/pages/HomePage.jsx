@@ -135,11 +135,16 @@ export default function HomePage({ onNavigate }) {
   <div style={{"display": "flex", "alignItems": "center"}}>
     <img className="nav-logo" src="./assets/logo_listo.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
     
-    {/* Botones de acción rápidos en la navegación */}
     <div className="nav-header-buttons">
-      <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn">Descargar la app</a>
-      <a href="https://listopatron.vercel.app/" className="nav-action-btn">Hacer un pedido</a>
-      <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn">VISITAR TIENDA 🛒</button>
+      <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn nav-btn-download">
+        <span className="desktop-text">Descargar la app</span>
+        <span className="mobile-text">Descargar App</span>
+      </a>
+      <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-btn-order">Hacer un pedido</a>
+      <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn nav-btn-shop">
+        <span className="desktop-text">VISITAR TIENDA 🛒</span>
+        <span className="mobile-text">Tienda 🛒</span>
+      </button>
     </div>
   </div>
 

@@ -4941,13 +4941,51 @@ footer{background:#F26000;padding:28px 5% 24px}
   }
 }
 
+.mobile-text {
+  display: none !important;
+}
+.desktop-text {
+  display: inline !important;
+}
+
 @media (max-width: 900px) {
   .nav-header-buttons {
+    display: flex !important;
+    gap: 8px !important;
+    margin-left: 8px !important;
+    align-items: center !important;
+  }
+
+  .nav-header-buttons .nav-action-btn {
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+  }
+
+  .nav-btn-order {
     display: none !important;
+  }
+
+  .desktop-text {
+    display: none !important;
+  }
+
+  .mobile-text {
+    display: inline !important;
   }
 
   .nav-links-mobile-only {
     display: flex !important;
+  }
+}
+
+@media (max-width: 375px) {
+  .nav-header-buttons {
+    gap: 5px !important;
+    margin-left: 4px !important;
+  }
+  .nav-header-buttons .nav-action-btn {
+    font-size: 10px !important;
+    padding: 5px 8px !important;
   }
 }
 
