@@ -4948,6 +4948,52 @@ footer{background:#F26000;padding:28px 5% 24px}
   display: inline !important;
 }
 
+/* Dropdown Menu Styles */
+.download-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(242, 96, 0, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(242, 96, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
+  z-index: 1000;
+  min-width: 150px;
+  animation: fadeInDropdown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInDropdown {
+  from { opacity: 0; transform: translateY(-8px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.download-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  color: #333 !important;
+  text-decoration: none !important;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.download-dropdown-item:hover {
+  background-color: var(--orange-pale) !important;
+  color: var(--orange) !important;
+  transform: translateX(4px);
+}
+
 @media (max-width: 900px) {
   .nav-header-buttons {
     display: flex !important;
@@ -4980,7 +5026,7 @@ footer{background:#F26000;padding:28px 5% 24px}
 
 @media (max-width: 375px) {
   .nav-header-buttons {
-    gap: 5px !important;
+    gap: 4px !important;
     margin-left: 4px !important;
   }
   .nav-header-buttons .nav-action-btn {

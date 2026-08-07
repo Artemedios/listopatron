@@ -66,6 +66,17 @@ export default function HomePage({ onNavigate }) {
   };
 
   const [portadaIndex, setPortadaIndex] = React.useState(0);
+  const [downloadDropdownOpen, setDownloadDropdownOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!event.target.closest('.dropdown-container')) {
+        setDownloadDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
 
 
 
@@ -135,15 +146,43 @@ export default function HomePage({ onNavigate }) {
   <div style={{"display": "flex", "alignItems": "center"}}>
     <img className="nav-logo" src="./assets/logo_listo.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
     
-    <div className="nav-header-buttons">
-      <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn nav-btn-download">
-        <span className="desktop-text">Descargar la app</span>
-        <span className="mobile-text">Descargar App</span>
-      </a>
+    <div className="nav-header-buttons" style={{"display": "flex", "alignItems": "center", "gap": "10px"}}>
+      <div className="dropdown-container" style={{"position": "relative"}}>
+        <button 
+          onClick={() => setDownloadDropdownOpen(!downloadDropdownOpen)} 
+          className="nav-action-btn nav-btn-download"
+          style={{"cursor": "pointer", "border": "none"}}
+        >
+          <span className="desktop-text">Descargar la app ▾</span>
+          <span className="mobile-text">Descargar ▾</span>
+        </button>
+        
+        {downloadDropdownOpen && (
+          <div className="download-dropdown">
+            <a 
+              href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="download-dropdown-item"
+              onClick={() => { trackAppDownload('android'); setDownloadDropdownOpen(false); }}
+            >
+              🤖 Google Play
+            </a>
+            <a 
+              href="https://apps.apple.com/app/listopatron/id000000000" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="download-dropdown-item"
+              onClick={() => { trackAppDownload('ios'); setDownloadDropdownOpen(false); }}
+            >
+              🍏 App Store
+            </a>
+          </div>
+        )}
+      </div>
       <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-btn-order">Hacer un pedido</a>
       <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn nav-btn-shop">
-        <span className="desktop-text">VISITAR TIENDA 🛒</span>
-        <span className="mobile-text">Tienda 🛒</span>
+        <span>VISITAR TIENDA 🛒</span>
       </button>
     </div>
   </div>
