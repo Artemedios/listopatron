@@ -293,7 +293,7 @@ export default function ShopPage({ onNavigate }) {
       {/* SHOP NAVIGATION BAR */}
       <nav id="nav" className="shop-nav">
         <div style={{"display": "flex", "alignItems": "center"}}>
-          <img className="nav-logo" src="./assets/logo_listo_patron.png" alt="Listo Patrón" style={{"height": "40px", "objectFit": "contain"}} />
+          <img className="nav-logo" src="./assets/logo_listo_patron.png" alt="Listo Patrón" style={{"height": "52px", "objectFit": "contain"}} />
           <span className="shop-logo-text">Tienda</span>
         </div>
 
@@ -315,7 +315,10 @@ export default function ShopPage({ onNavigate }) {
         <div className="shop-hero-overlay"></div>
         <div className="shop-hero-content">
           <span className="shop-tag">INSUMOS PROFESIONALES</span>
-          <h1>Equípate con lo <br/><span>mejor para el trabajo</span></h1>
+          <h1 style={{ "display": "flex", "flexDirection": "column", "alignItems": "center", "gap": "15px", "fontSize": "clamp(28px, 4vw, 44px)" }}>
+            Equípate con
+            <img src="./assets/logo_listo_patron.png" alt="Listo Patrón" style={{ "height": "75px", "objectFit": "contain" }} />
+          </h1>
           <p>Herramientas y accesorios de seguridad industrial con envíos rápidos a todo el país. Especialmente seleccionados para los profesionales de Listo Patrón.</p>
         </div>
       </header>
