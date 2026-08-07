@@ -988,3 +988,25 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   background: linear-gradient(135deg, #FF8533 0%, #C24D00 100%) !important;
   box-shadow: 0 12px 28px rgba(242, 96, 0, 0.5) !important;
 }
+
+/* Buy Now Button Style */
+.buy-now-btn {
+  background: #1a1a1a !important;
+  color: white !important;
+  border: none !important;
+  padding: 10px 4px !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  flex: 1 !important;
+  text-align: center !important;
+}
+
+.buy-now-btn:hover {
+  background: #333333 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+

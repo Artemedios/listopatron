@@ -249,6 +249,11 @@ export default function ShopPage({ onNavigate }) {
     setIsCartOpen(true);
   };
 
+  const buyNow = (product) => {
+    setCart([{ ...product, quantity: 1 }]);
+    setIsCheckoutOpen(true);
+  };
+
   const updateQuantity = (id, amount) => {
     setCart(prevCart => {
       return prevCart.map(item => {
@@ -373,14 +378,21 @@ export default function ShopPage({ onNavigate }) {
                   <h3 className="product-title">{product.name}</h3>
                   <p className="product-desc">{product.description}</p>
                   
-                  <div className="product-footer">
-                    <div className="product-price">
-                      <span className="currency">RD$</span>
-                      <span className="amount">{product.price.toLocaleString()}</span>
+                  <div className="product-footer" style={{ "flexDirection": "column", "gap": "10px", "alignItems": "stretch" }}>
+                    <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center" }}>
+                      <div className="product-price">
+                        <span className="currency">RD$</span>
+                        <span className="amount">{product.price.toLocaleString()}</span>
+                      </div>
                     </div>
-                    <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
-                      Agregar 🛒
-                    </button>
+                    <div style={{ "display": "flex", "gap": "8px", "marginTop": "5px" }}>
+                      <button className="add-to-cart-btn" onClick={() => addToCart(product)} style={{ "flex": "1", "padding": "10px 4px", "fontSize": "12px", "whiteSpace": "nowrap" }}>
+                        Agregar 🛒
+                      </button>
+                      <button className="buy-now-btn" onClick={() => buyNow(product)}>
+                        Comprar 🚀
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
