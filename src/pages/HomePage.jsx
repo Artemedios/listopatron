@@ -453,7 +453,10 @@ export default function HomePage({ onNavigate }) {
         onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
         onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
       >
-        <span>💳 COMPRAR PLAN AQUÍ</span>
+        <span>
+          <span className="desktop-text">💳 COMPRAR PLAN AQUÍ</span>
+          <span className="mobile-text">💳 COMPRAR PLAN</span>
+        </span>
       </button>
     </div>
   </div>

@@ -5173,4 +5173,13 @@ footer{background:#F26000;padding:28px 5% 24px}
   .nav-btn-order {
     display: none !important;
   }
+  .nav-header-buttons .dropdown-container,
+  .nav-header-buttons .nav-btn-shop {
+    display: none !important;
+  }
+  .nav-btn-buy-plan {
+    display: inline-flex !important;
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+  }
 }
