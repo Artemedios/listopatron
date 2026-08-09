@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useListoLogic from '../useListoLogic';
+import { db } from '../firebase';
+import { collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import ad15 from '../assets/extracted_15.png';
 import ad16 from '../assets/extracted_16.png';
 import ad17 from '../assets/extracted_17.png';
@@ -20,6 +22,152 @@ const portadaImages = [
 
 export default function HomePage({ onNavigate }) {
   useListoLogic();
+
+  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
+  const [showPlanesModal, setShowPlanesModal] = useState(false);
+  const [selectedPlanForCheckout, setSelectedPlanForCheckout] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [cardName, setCardName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExp, setCardExp] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [accountEmail, setAccountEmail] = useState('');
+  const [accountPhone, setAccountPhone] = useState('');
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [purchasedPlanDetails, setPurchasedPlanDetails] = useState(null);
+  const [authCode, setAuthCode] = useState(0);
+  const [last4, setLast4] = useState('');
+  const [checkoutError, setCheckoutError] = useState('');
+  const [noAccountWarning, setNoAccountWarning] = useState(false);
+
+  const webPlanes = [
+    { id: 'standard', name: 'ESTÁNDAR', price: 'RD$500', period: '/ mes', contracts: '3 contratos', color: '#3B82F6', emoji: '🔹', desc: 'Plan básico mensual de mantenimiento.' },
+    { id: 'gold', name: 'GOLD', price: 'RD$1,000', period: '/ mes', contracts: '8 contratos', color: '#F59E0B', emoji: '🥇', desc: 'Aumenta tus oportunidades y presencia.' },
+    { id: 'platinum', name: 'PLATINUM', price: 'RD$1,500', period: '/ mes', contracts: '12 contratos', color: '#1A1A2E', emoji: '🥈', desc: 'Aumenta tu estatus y aplica sin límites.' },
+    { id: 'vip', name: 'VIP', price: 'RD$2,500', period: '/ mes', contracts: 'Ilimitados', color: '#EF4444', emoji: '💎', desc: 'Contratos ilimitados y máxima prioridad.' }
+  ];
+
+  const handleSelectPlanFromCard = (planId) => {
+    if (planId === 'basico') {
+      alert("El Plan Básico es gratuito durante tus primeros 3 meses. Para obtenerlo, solo debes registrarte directamente en la app Listo Patrón.");
+      return;
+    }
+    const planObj = webPlanes.find(p => p.id === planId);
+    if (planObj) {
+      setSelectedPlanForCheckout(planObj);
+      setCardName('');
+      setCardNumber('');
+      setCardExp('');
+      setCardCvv('');
+      setAccountEmail('');
+      setAccountPhone('');
+      setCheckoutError('');
+      setNoAccountWarning(false);
+    }
+  };
+
+  const handleConfirmPayment = async (e) => {
+    e.preventDefault();
+    if (!selectedPlanForCheckout) return;
+    setLoading(true);
+    setCheckoutError('');
+    setNoAccountWarning(false);
+    try {
+      // 1. Buscar el usuario profesional en Firestore por email
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', accountEmail.trim().toLowerCase()));
+      const snap = await getDocs(q);
+      
+      let userDocId = null;
+      let userName = cardName;
+      let userExists = false;
+      
+      if (!snap.empty) {
+        userExists = true;
+        const userDoc = snap.docs[0];
+        userDocId = userDoc.id;
+        const userData = userDoc.data();
+        userName = userData.name || cardName;
+        
+        // Calcular fecha de expiración (30 días a partir de ahora)
+        const expDate = new Date();
+        expDate.setDate(expDate.getDate() + 30);
+        
+        // Determinar contratos según el plan
+        let planContracts = 3;
+        if (selectedPlanForCheckout.id === 'gold') planContracts = 8;
+        if (selectedPlanForCheckout.id === 'platinum') planContracts = 12;
+        if (selectedPlanForCheckout.id === 'vip') planContracts = 9999;
+        
+        // Actualizar plan del usuario en Firestore
+        await updateDoc(doc(db, 'users', userDocId), {
+          plan: selectedPlanForCheckout.id,
+          planStatus: 'active',
+          contracts: planContracts,
+          planExpirationDate: expDate.toISOString(),
+          available: true
+        });
+
+        // Crear notificación para el usuario
+        try {
+          await addDoc(collection(db, 'notificaciones'), {
+            userId: userDocId,
+            type: 'plan_purchased',
+            title: '💎 ¡Plan Activado con Éxito!',
+            text: `Tu plan ${selectedPlanForCheckout.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
+            read: false,
+            createdAt: serverTimestamp()
+          });
+        } catch (errNotif) {
+          console.error("Error guardando notificación de usuario:", errNotif);
+        }
+      } else {
+        // Mostrar advertencia si el correo no está registrado en la app
+        setNoAccountWarning(true);
+      }
+
+      // Guardar el registro de la transacción en la colección 'plan_purchases'
+      await addDoc(collection(db, 'plan_purchases'), {
+        email: accountEmail.trim().toLowerCase(),
+        phone: accountPhone,
+        planId: selectedPlanForCheckout.id,
+        planName: selectedPlanForCheckout.name,
+        price: selectedPlanForCheckout.price,
+        cardName: cardName,
+        last4: cardNumber.replace(/\s/g, '').slice(-4),
+        userExists: userExists,
+        userDocId: userDocId,
+        createdAt: serverTimestamp()
+      });
+
+      // Crear notificación para el administrador
+      try {
+        await addDoc(collection(db, 'notificaciones'), {
+          userId: 'admin',
+          type: 'plan_purchased_web',
+          title: '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
+          text: `Compra de plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
+          read: false,
+          createdAt: serverTimestamp()
+        });
+      } catch (errNotif) {
+        console.error("Error guardando notificación de administrador:", errNotif);
+      }
+
+      // Mostrar el recibo de éxito
+      setAuthCode(Math.floor(10000 + Math.random() * 90000));
+      setLast4(cardNumber.replace(/\s/g, '').slice(-4) || '••••');
+      setPurchasedPlanDetails(selectedPlanForCheckout);
+      setShowReceipt(true);
+      setSelectedPlanForCheckout(null);
+      setShowPlanesModal(false);
+    } catch (err) {
+      console.error("Error al procesar el pago del plan en la web:", err);
+      setCheckoutError("Ocurrió un error al procesar el pago. Por favor intente de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const trackAppDownload = (platform) => {
     if (typeof window.gtag !== 'undefined') {
@@ -1358,17 +1506,41 @@ export default function HomePage({ onNavigate }) {
     <div style={{"display": "inline-flex", "alignItems": "center", "gap": "14px", "background": "var(--orange-pale)", "border": "2px solid var(--orange-pale2)", "borderRadius": "18px", "padding": "16px 28px", "marginBottom": "10px", "flexWrap": "wrap", "justifyContent": "center"}}>
       <span style={{"fontSize": "28px"}}>📲</span>
       <div style={{"textAlign": "left"}}>
-        <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Los planes se contratan desde la app</div>
-        <div style={{"fontSize": "13px", "color": "var(--gray)", "marginTop": "2px"}}>Descarga Listo Patrón, crea tu perfil de profesional y elige tu plan en segundos.</div>
+        <div style={{"fontWeight": "800", "fontSize": "15px", "color": "#222"}}>Los planes se contratan desde la app o la web</div>
+        <div style={{"fontSize": "13px", "color": "var(--gray)", "marginTop": "2px"}}>Descarga Listo Patrón o compra tu plan directamente aquí para activarte al instante.</div>
       </div>
-      <a href="https://listopatron.vercel.app/" className="btn-download-app">🚀 Descargar app</a>
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <a href="https://listopatron.vercel.app/" className="btn-download-app" style={{ textDecoration: 'none' }}>🚀 Descargar app</a>
+        <button 
+          onClick={() => setShowPlanesModal(true)} 
+          style={{
+            background: 'linear-gradient(135deg, #10B981, #059669)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '12px 20px',
+            fontSize: '13px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            boxShadow: '0 4px 10px rgba(16,185,129,0.3)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'transform 0.1s'
+          }}
+          onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
+          onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          💳 COMPRAR PLAN AQUÍ
+        </button>
+      </div>
     </div>
     <div className="planes-wrap" style={{"gridTemplateColumns": "repeat(auto-fit,minmax(220px,1fr))", "maxWidth": "1100px"}}>
     {/*  styles extracted  */}
     <div className="planes-wrap" style={{"gridTemplateColumns": "repeat(auto-fit,minmax(220px,1fr))", "maxWidth": "960px", "margin": "0 auto", "gap": "12px", "display": "grid"}}>
-
+ 
       {/*  PLAN 1: BÁSICO / ESTÁNDAR  */}
-      <a href="https://listopatron.vercel.app/" className="plan-3d-wrap plan-3d-standard">
+      <div onClick={() => handleSelectPlanFromCard('basico')} className="plan-3d-wrap plan-3d-standard" style={{ cursor: 'pointer' }}>
         <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
         <div className="plan-3d-inner">
           <div className="plan-3d-shine-top"></div>
@@ -1380,10 +1552,10 @@ export default function HomePage({ onNavigate }) {
           <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>Gratis</p></div>
           <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
         </div>
-      </a>
-
+      </div>
+ 
       {/*  PLAN 2: GOLD  */}
-      <a href="https://listopatron.vercel.app/" className="plan-3d-wrap plan-3d-gold">
+      <div onClick={() => handleSelectPlanFromCard('gold')} className="plan-3d-wrap plan-3d-gold" style={{ cursor: 'pointer' }}>
         <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
         <div className="plan-3d-inner">
           <div className="plan-3d-shine-top"></div>
@@ -1395,10 +1567,10 @@ export default function HomePage({ onNavigate }) {
           <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,000</p></div>
           <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
         </div>
-      </a>
-
+      </div>
+ 
       {/*  PLAN 3: PLATINUM  */}
-      <a href="https://listopatron.vercel.app/" className="plan-3d-wrap plan-3d-platinum">
+      <div onClick={() => handleSelectPlanFromCard('platinum')} className="plan-3d-wrap plan-3d-platinum" style={{ cursor: 'pointer' }}>
         <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
         <div className="plan-3d-inner">
           <div className="plan-3d-shine-top"></div>
@@ -1410,10 +1582,10 @@ export default function HomePage({ onNavigate }) {
           <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,500</p></div>
           <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
         </div>
-      </a>
-
+      </div>
+ 
       {/*  PLAN 4: VIP  */}
-      <a href="https://listopatron.vercel.app/" className="plan-3d-wrap plan-3d-vip">
+      <div onClick={() => handleSelectPlanFromCard('vip')} className="plan-3d-wrap plan-3d-vip" style={{ cursor: 'pointer' }}>
         <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
         <div className="plan-3d-inner">
           <div className="plan-3d-shine-top"></div>
@@ -1429,7 +1601,7 @@ export default function HomePage({ onNavigate }) {
           <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$2,500/mes</p></div>
           <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
         </div>
-      </a>
+      </div>
       </div>
 
     </div>
@@ -1926,6 +2098,319 @@ export default function HomePage({ onNavigate }) {
       </div>
     </div>
   </footer>
+
+      {/* ── MODAL SELECCIÓN DE PLANES DESDE WEB ── */}
+      {showPlanesModal && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 10000,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '800px', background: 'white', borderRadius: '28px',
+            padding: '30px', boxSizing: 'border-box', boxShadow: '0 25px 60px rgba(0,0,0,0.25)',
+            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Syne', sans-serif"
+          }}>
+            <button 
+              onClick={() => setShowPlanesModal(false)}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              ✕
+            </button>
+            <h2 style={{ fontSize: '26px', fontWeight: '900', color: '#1a1a2e', margin: '0 0 8px 0', textAlign: 'center' }}>Adquirir Plan Profesional</h2>
+            <p style={{ fontSize: '14px', color: '#64748B', margin: '0 0 24px 0', textAlign: 'center' }}>Selecciona el plan que se adapte a tus necesidades para habilitar tu cuenta Listo Patrón.</p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+              {webPlanes.map(plan => (
+                <div key={plan.id} style={{ border: '2px solid #E2E8F0', borderRadius: '20px', padding: '20px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', background: '#FAF9F6' }}>
+                  <span style={{ fontSize: '32px', marginBottom: '8px' }}>{plan.emoji}</span>
+                  <h3 style={{ fontSize: '16px', fontWeight: '800', margin: '0 0 4px 0', color: '#1A1A2E' }}>{plan.name}</h3>
+                  <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 10px 0', textAlign: 'center', minHeight: '34px' }}>{plan.desc}</p>
+                  <div style={{ fontSize: '18px', fontWeight: '900', color: '#F26000', marginBottom: '4px' }}>{plan.price}</div>
+                  <span style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 'bold', marginBottom: '16px' }}>{plan.contracts}</span>
+                  <button
+                    onClick={() => {
+                      setSelectedPlanForCheckout(plan);
+                      setShowPlanesModal(false);
+                    }}
+                    style={{
+                      width: '100%', background: '#F26000', color: 'white', border: 'none', borderRadius: '10px',
+                      padding: '8px 12px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s'
+                    }}
+                  >
+                    Elegir Plan
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL FORMULARIO CHECKOUT AZUL ── */}
+      {selectedPlanForCheckout && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 10000,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '440px', background: 'white', borderRadius: '28px',
+            padding: '30px', boxSizing: 'border-box', boxShadow: '0 25px 60px rgba(0,0,0,0.25)',
+            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Syne', sans-serif"
+          }}>
+            <button 
+              onClick={() => {
+                setSelectedPlanForCheckout(null);
+                setCheckoutError('');
+                setNoAccountWarning(false);
+              }}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              ✕
+            </button>
+
+            {/* Logo de Azul simulado */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
+              <div style={{ background: '#002F6C', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', fontStyle: 'italic', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(0,47,108,0.2)' }}>
+                AZUL
+              </div>
+              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pasarela de Pagos Segura</span>
+            </div>
+
+            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
+              Pagar Plan {selectedPlanForCheckout.name} ({selectedPlanForCheckout.price})
+            </h3>
+
+            {checkoutError && (
+              <div style={{ padding: '12px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#991B1B', fontSize: '13px', marginBottom: '16px', fontWeight: '500' }}>
+                ⚠️ {checkoutError}
+              </div>
+            )}
+
+            <form onSubmit={handleConfirmPayment} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              
+              {/* Email de la cuenta Listo */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
+                <input 
+                  type="email" 
+                  required
+                  placeholder="ejemplo@correo.com"
+                  value={accountEmail}
+                  onChange={e => setAccountEmail(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+                <span style={{ fontSize: '10.5px', color: '#94A3B8', marginTop: '4px', display: 'block' }}>
+                  ⚠️ Introduce el correo exacto con el que te registraste en la app.
+                </span>
+              </div>
+
+              {/* Teléfono */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Teléfono / WhatsApp</label>
+                <input 
+                  type="tel" 
+                  required
+                  placeholder="809-909-0455"
+                  value={accountPhone}
+                  onChange={e => setAccountPhone(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Nombre de la tarjeta */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre en la Tarjeta</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ej. Juan Pérez"
+                  value={cardName}
+                  onChange={e => setCardName(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Número de Tarjeta */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Número de Tarjeta</label>
+                <input 
+                  type="tel" 
+                  required
+                  placeholder="0000 0000 0000 0000"
+                  maxLength={19}
+                  value={cardNumber}
+                  onChange={e => {
+                    let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+                    let parts = []
+                    for (let i = 0; i < v.length; i += 4) {
+                      parts.push(v.substring(i, i + 4))
+                    }
+                    setCardNumber(parts.join(' '))
+                  }}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Vencimiento y CVV */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Vencimiento</label>
+                  <input 
+                    type="tel" 
+                    required
+                    placeholder="MM/AA"
+                    maxLength={5}
+                    value={cardExp}
+                    onChange={e => {
+                      let val = e.target.value
+                      let clean = val.replace(/\D/g, '')
+                      if (clean.length === 1 && clean > '1') clean = '0' + clean
+                      if (clean.length >= 2) {
+                        let m = parseInt(clean.substring(0,2), 10)
+                        if (m < 1) m = 1
+                        if (m > 12) m = 12
+                        clean = (m < 10 ? '0' + m : String(m)) + clean.substring(2)
+                      }
+                      if (clean.length > 2) setCardExp(clean.substring(0,2) + '/' + clean.substring(2,4))
+                      else setCardExp(clean)
+                    }}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>CVV</label>
+                  <input 
+                    type="tel" 
+                    required
+                    placeholder="123"
+                    maxLength={4}
+                    value={cardCvv}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    onChange={e => setCardCvv(e.target.value.replace(/[^0-9]/g, ''))}
+                  />
+                </div>
+              </div>
+
+              {/* Security Badge */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', opacity: 0.8, fontSize: '12px', color: '#64748B', margin: '4px 0' }}>
+                <span>🔒 Transacción encriptada de 256-bits</span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === ''}
+                style={{
+                  background: 'linear-gradient(135deg, #10B981, #059669)',
+                  color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                  fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
+                  opacity: (cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === '') ? 0.6 : 1
+                }}
+              >
+                {loading ? 'Procesando Pago con AZUL...' : `Pagar ${selectedPlanForCheckout.price} con AZUL`}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL RECIBO DE PAGO DE AZUL APROBADO ── */}
+      {showReceipt && purchasedPlanDetails && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 10001,
+          background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(10px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '380px', background: '#FFFFFF',
+            borderRadius: '24px', overflow: 'hidden',
+            boxShadow: '0 24px 50px rgba(0,0,0,0.3)',
+            borderTop: '8px solid #002F6C',
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            padding: '30px 24px', boxSizing: 'border-box', color: '#1a1a2e',
+            fontFamily: "'Syne', sans-serif"
+          }}>
+            
+            {/* Logo de Azul */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <div style={{ background: '#002F6C', color: 'white', padding: '4px 12px', borderRadius: '6px', fontWeight: '900', fontStyle: 'italic', fontSize: '14px' }}>
+                AZUL
+              </div>
+              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '700' }}>COMPROBANTE</span>
+            </div>
+
+            {/* Success Check */}
+            <div style={{
+              width: '56px', height: '56px', borderRadius: '50%',
+              background: '#ECFDF5', border: '2px solid #10B981',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '24px', color: '#10B981', marginBottom: '16px',
+              boxShadow: '0 4px 12px rgba(16,185,129,0.2)'
+            }}>✓</div>
+
+            {/* Title / Subtitle */}
+            <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 4px', textAlign: 'center' }}>¡Pago Exitoso!</h2>
+            <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 20px', textAlign: 'center' }}>El recibo de Azul fue generado.</p>
+
+            {/* Amount */}
+            <div style={{ fontSize: '28px', fontWeight: '900', color: '#1A1A2E', marginBottom: '24px', letterSpacing: '-0.5px' }}>
+              {purchasedPlanDetails.price}
+            </div>
+
+            {/* Details Box */}
+            <div style={{
+              width: '100%', background: '#F8FAFC', border: '1px solid #E2E8F0',
+              borderRadius: '16px', padding: '16px', display: 'flex', flexDirection: 'column',
+              gap: '12px', boxSizing: 'border-box', marginBottom: '16px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>Concepto:</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>Plan {purchasedPlanDetails.name}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>Cuenta Listo:</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right', wordBreak: 'break-all' }}>{purchasedPlanDetails.email || accountEmail}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>Método de pago:</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>VISA •••• {last4}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>Autorización AZUL:</span>
+                <span style={{ color: '#00b050', fontWeight: '800', textAlign: 'right' }}>Aprobado #{authCode}</span>
+              </div>
+            </div>
+
+            {noAccountWarning ? (
+              <div style={{ padding: '10px', background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: '10px', color: '#B45309', fontSize: '11px', textAlign: 'center', lineHeight: '1.4', marginBottom: '16px' }}>
+                ⚠️ No encontramos ninguna cuenta Listo Patrón con el correo ingresado. Tu solicitud ha sido registrada y soporte la activará manualmente en unos minutos.
+              </div>
+            ) : (
+              <div style={{ padding: '10px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '10px', color: '#065F46', fontSize: '11px', textAlign: 'center', lineHeight: '1.4', marginBottom: '16px' }}>
+                ✅ Tu plan ha sido activado con éxito. Abre tu app Listo Patrón y actívate en línea.
+              </div>
+            )}
+
+            <button 
+              onClick={() => {
+                setShowReceipt(false);
+                setPurchasedPlanDetails(null);
+                setNoAccountWarning(false);
+              }}
+              style={{
+                width: '100%', background: 'linear-gradient(135deg, #002F6C, #004BAB)',
+                color: 'white', border: 'none', borderRadius: '14px', padding: '16px',
+                fontSize: '15px', fontWeight: '700', cursor: 'pointer', outline: 'none',
+                boxShadow: '0 4px 16px rgba(0,47,108,0.3)', fontFamily: "'Syne', sans-serif"
+              }}
+            >
+              Cerrar y Volver
+            </button>
+          </div>
+        </div>
+      )}
 
     </>
   );
