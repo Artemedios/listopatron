@@ -5099,3 +5099,78 @@ footer{background:#F26000;padding:28px 5% 24px}
     padding: 5px 8px;
   }
 }
+
+/* --- RESPONSIVE HEADER AND NAVIGATION FIXES --- */
+@media (max-width: 1440px) {
+  nav {
+    padding: 0 3% !important;
+  }
+  .nav-links {
+    gap: 16px !important;
+  }
+  .nav-header-buttons {
+    gap: 8px !important;
+    margin-left: 10px !important;
+  }
+  .nav-action-btn {
+    padding: 7px 12px !important;
+    font-size: 13px !important;
+  }
+  .nav-links a {
+    font-size: 14px !important;
+  }
+  .desktop-text {
+    display: none !important;
+  }
+  .mobile-text {
+    display: inline !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  nav {
+    padding: 0 2% !important;
+  }
+  .nav-links {
+    gap: 10px !important;
+  }
+  .nav-header-buttons {
+    gap: 6px !important;
+    margin-left: 6px !important;
+  }
+  .nav-action-btn {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  .nav-links a {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 1120px) {
+  /* Trigger the hamburger menu at 1120px instead of 900px to prevent overflow */
+  .nav-links:not(.open) {
+    display: none !important;
+  }
+  .burger {
+    display: flex !important;
+  }
+  .nav-links.open {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    position: fixed !important;
+    top: 70px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #fff !important;
+    padding: 24px 5% !important;
+    gap: 20px !important;
+    box-shadow: 0 8px 30px rgba(242,96,0,0.12) !important;
+    border-top: 2px solid rgba(242,96,0,0.1) !important;
+    z-index: 199 !important;
+  }
+  .nav-btn-order {
+    display: none !important;
+  }
+}
