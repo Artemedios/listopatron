@@ -332,6 +332,30 @@ export default function HomePage({ onNavigate }) {
       <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn nav-btn-shop">
         <span>VISITAR TIENDA 🛒</span>
       </button>
+      <button 
+        onClick={() => setShowPlanesModal(true)} 
+        className="nav-action-btn nav-btn-buy-plan"
+        style={{
+          background: 'linear-gradient(135deg, #10B981, #059669)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50px',
+          padding: '8px 16px',
+          fontSize: '14px',
+          fontWeight: '700',
+          cursor: 'pointer',
+          boxShadow: '0 4px 10px rgba(16,185,129,0.3)',
+          marginLeft: '4px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          transition: 'transform 0.2s'
+        }}
+        onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
+        onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+      >
+        <span>💳 COMPRAR PLAN AQUÍ</span>
+      </button>
     </div>
   </div>
 
@@ -339,7 +363,34 @@ export default function HomePage({ onNavigate }) {
     {/* Botones móviles (solo se muestran en pantallas pequeñas mediante CSS) */}
     <a href="https://play.google.com/store/apps/details?id=com.listopatron.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Descargar la app</a>
     <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-links-mobile-only" style={{"marginBottom": "10px", "width": "100%"}}>Hacer un pedido</a>
-    <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-links-mobile-only nav-shop-highlight-btn" style={{"marginBottom": "20px", "width": "100%"}}>VISITAR TIENDA 🛒</button>
+    <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-links-mobile-only nav-shop-highlight-btn" style={{"marginBottom": "10px", "width": "100%"}}>VISITAR TIENDA 🛒</button>
+    <button 
+      onClick={() => {
+        setShowPlanesModal(true);
+        const navLinksEl = document.getElementById('navLinks');
+        if (navLinksEl) navLinksEl.classList.remove('open');
+      }} 
+      className="nav-action-btn nav-links-mobile-only" 
+      style={{
+        background: 'linear-gradient(135deg, #10B981, #059669)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '50px',
+        padding: '12px',
+        fontSize: '13px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        boxShadow: '0 4px 10px rgba(16,185,129,0.3)',
+        marginBottom: '20px', 
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px'
+      }}
+    >
+      <span>💳 COMPRAR PLAN AQUÍ</span>
+    </button>
     
     <a href="#servicios">Servicios</a>
     <a href="#como-funciona">Cómo funciona</a>
