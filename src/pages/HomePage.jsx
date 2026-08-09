@@ -42,6 +42,8 @@ export default function HomePage({ onNavigate }) {
   const [paymentTab, setPaymentTab] = useState('card'); // 'card' | 'transfer'
   const [selectedTransferBank, setSelectedTransferBank] = useState('');
   const [depositorName, setDepositorName] = useState('');
+  const [showTransferAccordion, setShowTransferAccordion] = useState(false);
+  const [copiedIdx, setCopiedIdx] = useState(null);
 
   const webPlanes = [
     { 
@@ -143,9 +145,10 @@ export default function HomePage({ onNavigate }) {
     }
   };
 
-  const handleConfirmPayment = async (e) => {
-    e.preventDefault();
-    if (!selectedPlanForCheckout) return;
+  const handleConfirmPayment = async (e, planOverride = null) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const activePlan = planOverride || selectedPlanForCheckout;
+    if (!activePlan) return;
     setLoading(true);
     setCheckoutError('');
     setNoAccountWarning(false);
@@ -172,13 +175,13 @@ export default function HomePage({ onNavigate }) {
         
         // Determinar contratos según el plan
         let planContracts = 3;
-        if (selectedPlanForCheckout.id === 'gold') planContracts = 8;
-        if (selectedPlanForCheckout.id === 'platinum') planContracts = 12;
-        if (selectedPlanForCheckout.id === 'vip') planContracts = 9999;
+        if (activePlan.id === 'gold') planContracts = 8;
+        if (activePlan.id === 'platinum') planContracts = 12;
+        if (activePlan.id === 'vip') planContracts = 9999;
         
         // Actualizar plan del usuario en Firestore
         await updateDoc(doc(db, 'users', userDocId), {
-          plan: selectedPlanForCheckout.id,
+          plan: activePlan.id,
           planStatus: 'active',
           contracts: planContracts,
           planExpirationDate: expDate.toISOString(),
@@ -191,7 +194,7 @@ export default function HomePage({ onNavigate }) {
             userId: userDocId,
             type: 'plan_purchased',
             title: '💎 ¡Plan Activado con Éxito!',
-            text: `Tu plan ${selectedPlanForCheckout.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
+            text: `Tu plan ${activePlan.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
             read: false,
             createdAt: serverTimestamp()
           });
@@ -207,9 +210,9 @@ export default function HomePage({ onNavigate }) {
       const purchaseData = {
         email: accountEmail.trim().toLowerCase(),
         phone: accountPhone,
-        planId: selectedPlanForCheckout.id,
-        planName: selectedPlanForCheckout.name,
-        price: selectedPlanForCheckout.price,
+        planId: activePlan.id,
+        planName: activePlan.name,
+        price: activePlan.price,
         userExists: userExists,
         userDocId: userDocId,
         createdAt: serverTimestamp()
@@ -230,15 +233,15 @@ export default function HomePage({ onNavigate }) {
 
       await addDoc(collection(db, 'plan_purchases'), purchaseData);
 
-      // Crear notificación para el usuario
+      // Crear notificación para el administrador
       try {
         await addDoc(collection(db, 'notificaciones'), {
           userId: 'admin',
           type: paymentTab === 'transfer' ? 'plan_purchased_web_transfer' : 'plan_purchased_web',
           title: paymentTab === 'transfer' ? '🏦 NUEVA TRANSFERENCIA PLAN WEB' : '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
           text: paymentTab === 'transfer'
-            ? `Notificación de transferencia para el plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.`
-            : `Compra de plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
+            ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.`
+            : `Compra de plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
           read: false,
           createdAt: serverTimestamp()
         });
@@ -249,13 +252,14 @@ export default function HomePage({ onNavigate }) {
       // Mostrar el recibo de éxito
       setAuthCode(Math.floor(10000 + Math.random() * 90000));
       setLast4(paymentTab === 'transfer' ? 'Transferencia' : (cardNumber.replace(/\s/g, '').slice(-4) || '••••'));
-      setPurchasedPlanDetails(selectedPlanForCheckout);
+      setPurchasedPlanDetails(activePlan);
       setShowReceipt(true);
       setSelectedPlanForCheckout(null);
       setShowPlanesModal(false);
       setPaymentTab('card');
       setSelectedTransferBank('');
       setDepositorName('');
+      setShowTransferAccordion(false);
     } catch (err) {
       console.error("Error al procesar el pago del plan en la web:", err);
       setCheckoutError("Ocurrió un error al procesar el pago. Por favor intente de nuevo.");
@@ -2369,6 +2373,7 @@ export default function HomePage({ onNavigate }) {
                 onClick={() => {
                   setSelectedPlanForCheckout(selectedPlanForBenefits);
                   setSelectedPlanForBenefits(null);
+                  setPaymentTab('card');
                   setCardName('');
                   setCardNumber('');
                   setCardExp('');
@@ -2389,10 +2394,187 @@ export default function HomePage({ onNavigate }) {
               >
                 💳 Adquirir con AZUL
               </button>
+
+              <button
+                type="button"
+                onClick={() => setShowTransferAccordion(!showTransferAccordion)}
+                style={{
+                  width: '100%', background: 'linear-gradient(135deg, #F26000, #FF8533)',
+                  color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                  fontSize: '15px', fontWeight: '700', cursor: 'pointer', outline: 'none',
+                  boxShadow: '0 4px 16px rgba(242,96,0,0.3)', transition: 'transform 0.1s',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                }}
+                onMouseDown={e => e.currentTarget.style.transform = 'scale(0.97)'}
+                onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                🏦 Pagos por Transferencia {showTransferAccordion ? '▲' : '▼'}
+              </button>
+
+              {showTransferAccordion && (
+                <div style={{
+                  background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '18px',
+                  padding: '20px', marginTop: '4px', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '14px'
+                }}>
+                  {/* Dropdown de bancos del país */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Banco desde el que transfieres (Origen)</label>
+                    <select
+                      required
+                      value={selectedTransferBank}
+                      onChange={e => setSelectedTransferBank(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box', color: '#1A1A2E' }}
+                    >
+                      <option value="" disabled>Selecciona tu banco...</option>
+                      <option value="Banco de Reservas">Banco de Reservas (Banreservas)</option>
+                      <option value="Banco BHD">Banco BHD</option>
+                      <option value="Banco Popular">Banco Popular Dominicano</option>
+                      <option value="Scotiabank">Scotiabank</option>
+                      <option value="Asociacion Popular">Asoc. Popular (APAP)</option>
+                      <option value="Banco Promerica">Banco Promerica</option>
+                      <option value="Bancaribe">Bancaribe</option>
+                      <option value="Banco Vimenca">Banco Vimenca</option>
+                      <option value="Otro">Otro Banco / Interbancario</option>
+                    </select>
+                  </div>
+
+                  {/* Cuentas receptoras de Listo Patrón */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px', background: '#FFF7ED', border: '1px solid #FFEDD5', borderRadius: '16px', padding: '14px', boxSizing: 'border-box' }}>
+                    <p style={{ margin: '0 0 6px 0', fontWeight: '800', color: '#C2410C', fontSize: '12.5px' }}>Cuentas receptoras de Listo Patrón:</p>
+                    
+                    <div style={{
+                      display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #FED7AA', paddingBottom: '8px', marginBottom: '6px', textAlign: 'left', alignItems: 'center',
+                      opacity: (selectedTransferBank && selectedTransferBank !== 'Banco Popular' && selectedTransferBank !== 'Otro') ? 0.5 : 1,
+                      transition: 'opacity 0.2s'
+                    }}>
+                      <div>
+                        <strong style={{ color: '#00843D' }}>Banco Popular</strong><br/>
+                        Cuenta: 746424456 (Ahorros)<br/>
+                        Titular: Julio de Jesús Francisco
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('746424456');
+                          setCopiedIdx(1);
+                          setTimeout(() => setCopiedIdx(null), 1800);
+                        }}
+                        style={{ background: copiedIdx === 1 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', color: copiedIdx === 1 ? 'white' : '#475569' }}
+                      >
+                        {copiedIdx === 1 ? '✓ Copiado' : 'Copiar'}
+                      </button>
+                    </div>
+                    
+                    <div style={{
+                      display: 'flex', justifyContent: 'space-between', textAlign: 'left', alignItems: 'center',
+                      opacity: (selectedTransferBank && selectedTransferBank !== 'Banco de Reservas' && selectedTransferBank !== 'Otro') ? 0.5 : 1,
+                      transition: 'opacity 0.2s'
+                    }}>
+                      <div>
+                        <strong style={{ color: '#003087' }}>Banreservas</strong><br/>
+                        Cuenta: 9607282472 (Ahorros)<br/>
+                        Titular: Julio de Jesús Francisco
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('9607282472');
+                          setCopiedIdx(2);
+                          setTimeout(() => setCopiedIdx(null), 1800);
+                        }}
+                        style={{ background: copiedIdx === 2 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', color: copiedIdx === 2 ? 'white' : '#475569' }}
+                      >
+                        {copiedIdx === 2 ? '✓ Copiado' : 'Copiar'}
+                      </button>
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0', lineHeight: '1.4', textAlign: 'left' }}>
+                    💡 Realiza la transferencia por valor de <strong>{selectedPlanForBenefits.price}</strong> y luego completa los datos de tu cuenta para notificar la activación:
+                  </p>
+
+                  {/* Correo */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
+                    <input 
+                      type="email" 
+                      required
+                      placeholder="ejemplo@correo.com"
+                      value={accountEmail}
+                      onChange={e => setAccountEmail(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+
+                  {/* Teléfono */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Teléfono / WhatsApp</label>
+                    <input 
+                      type="tel" 
+                      required
+                      placeholder="809-909-0455"
+                      value={accountPhone}
+                      onChange={e => setAccountPhone(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+
+                  {/* Nombre de quien transfiere */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Titular de la cuenta que transfiere</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Ej. Juan Pérez"
+                      value={depositorName}
+                      onChange={e => setDepositorName(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
+                    <a
+                      href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20realizar%20la%20transferencia%20para%20activar%20mi%20Plan%20${encodeURIComponent(selectedPlanForBenefits.name)}%20desde%20el%20correo%20${encodeURIComponent(accountEmail)}.%20Titular%20de%20cuenta:%20${encodeURIComponent(depositorName)}.%20Banco:%20${encodeURIComponent(selectedTransferBank || 'No seleccionado')}.`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        background: '#25D366', textDecoration: 'none', textAlign: 'center',
+                        color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                        fontSize: '14px', fontWeight: '700', cursor: 'pointer',
+                        boxShadow: '0 4px 16px rgba(37,211,102,0.3)', outline: 'none'
+                      }}
+                    >
+                      💬 Enviar Comprobante por WhatsApp
+                    </a>
+                    <button
+                      type="button"
+                      disabled={loading || depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === ''}
+                      onClick={async (e) => {
+                        setPaymentTab('transfer');
+                        await handleConfirmPayment(e, selectedPlanForBenefits);
+                      }}
+                      style={{
+                        background: 'linear-gradient(135deg, #F26000, #FF8533)',
+                        color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                        fontSize: '14px', fontWeight: '700', cursor: 'pointer',
+                        boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
+                        opacity: (depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '') ? 0.6 : 1
+                      }}
+                    >
+                      {loading ? 'Procesando...' : '✓ Notificar Pago de Transferencia'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <button
                 onClick={() => {
                   setSelectedPlanForBenefits(null);
                   setShowPlanesModal(true); // Vuelve a la lista de planes
+                  setShowTransferAccordion(false);
+                  setPaymentTab('card');
+                  setSelectedTransferBank('');
+                  setDepositorName('');
                 }}
                 style={{
                   width: '100%', background: 'none', color: '#64748B', border: '2px solid #E2E8F0', borderRadius: '14px', padding: '12px',
