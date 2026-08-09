@@ -23,8 +23,8 @@ const portadaImages = [
 export default function HomePage({ onNavigate }) {
   useListoLogic();
 
-  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
-  const [showPlanesModal, setShowPlanesModal] = useState(false);
+  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB  const [showPlanesModal, setShowPlanesModal] = useState(false);
+  const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
   const [selectedPlanForCheckout, setSelectedPlanForCheckout] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cardName, setCardName] = useState('');
@@ -53,7 +53,14 @@ export default function HomePage({ onNavigate }) {
       badge: 'BÁSICO',
       num: 1,
       subText: '⭐ 0-3.9 | 3 contratos',
-      glowColor: 'rgba(46,125,50,0.28)'
+      glowColor: 'rgba(46,125,50,0.28)',
+      benefits: [
+        '3 contratos al mes incluidos en la aplicación.',
+        'Ideal para profesionales que realizan servicios ocasionales.',
+        'Visibilidad básica en los listados de búsqueda.',
+        'Calificaciones y comentarios de clientes habilitados.',
+        'Soporte técnico estándar a través de la aplicación.'
+      ]
     },
     { 
       id: 'gold', 
@@ -67,7 +74,14 @@ export default function HomePage({ onNavigate }) {
       badge: 'POPULAR',
       num: 2,
       subText: '⭐ 4.0-4.7 | 8 contratos',
-      glowColor: 'rgba(212,160,23,0.28)'
+      glowColor: 'rgba(212,160,23,0.28)',
+      benefits: [
+        '8 contratos al mes incluidos (¡Más del doble que el plan estándar!).',
+        'Destacado popular en los listados de búsqueda.',
+        'Posicionamiento mejorado en los resultados de búsqueda.',
+        'Acceso prioritario a nuevas solicitudes en tu área de cobertura.',
+        'Soporte directo y personalizado a través de WhatsApp.'
+      ]
     },
     { 
       id: 'platinum', 
@@ -81,7 +95,14 @@ export default function HomePage({ onNavigate }) {
       badge: 'ACTIVO',
       num: 3,
       subText: '⭐ 4.5-4.7 | 12 contratos',
-      glowColor: 'rgba(110,130,155,0.28)'
+      glowColor: 'rgba(110,130,155,0.28)',
+      benefits: [
+        '12 contratos al mes incluidos (¡Ideal para profesionales muy activos!).',
+        'Insignia de "Profesional Recomendado" visible en tu perfil.',
+        'Posicionamiento de búsqueda prioritario sobre Estándar y Gold.',
+        'Notificaciones de solicitudes en tiempo real con 5 segundos de ventaja.',
+        'Soporte VIP y asesoría personalizada de Listo Patrón.'
+      ]
     },
     { 
       id: 'vip', 
@@ -96,7 +117,14 @@ export default function HomePage({ onNavigate }) {
       num: 4,
       subText: '⭐ 4.8-5.0 | ∞ contratos',
       glowColor: 'rgba(242,96,0,0.28)',
-      isVip: true
+      isVip: true,
+      benefits: [
+        'Contratos ILIMITADOS (Aplica a todos los trabajos que quieras sin restricciones).',
+        'Insignia de "Élite VIP" en tu perfil y máxima exposición en la app.',
+        'Primeros resultados de búsqueda garantizados siempre.',
+        'Alertas instantáneas y prioritarias de todas las solicitudes publicadas.',
+        'Soporte telefónico dedicado 24/7 y asistencia de cuenta premium.'
+      ]
     }
   ];
 
@@ -107,15 +135,8 @@ export default function HomePage({ onNavigate }) {
     }
     const planObj = webPlanes.find(p => p.id === planId);
     if (planObj) {
-      setSelectedPlanForCheckout(planObj);
-      setCardName('');
-      setCardNumber('');
-      setCardExp('');
-      setCardCvv('');
-      setAccountEmail('');
-      setAccountPhone('');
-      setCheckoutError('');
-      setNoAccountWarning(false);
+      setSelectedPlanForBenefits(planObj);
+      setShowPlanesModal(false);
     }
   };
 
@@ -2228,10 +2249,7 @@ export default function HomePage({ onNavigate }) {
               {webPlanes.map(plan => (
                 <div 
                   key={plan.id} 
-                  onClick={() => {
-                    setSelectedPlanForCheckout(plan);
-                    setShowPlanesModal(false);
-                  }}
+                  onClick={() => handleSelectPlanFromCard(plan.id)}
                   className={`plan-3d-wrap ${plan.class}`}
                   style={{ cursor: 'pointer' }}
                 >
@@ -2256,6 +2274,114 @@ export default function HomePage({ onNavigate }) {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL BENEFICIOS DE UN PLAN SELECCIONADO ── */}
+      {selectedPlanForBenefits && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 10000,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '500px', background: 'white', borderRadius: '28px',
+            padding: '30px', boxSizing: 'border-box', boxShadow: '0 25px 60px rgba(0,0,0,0.25)',
+            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Syne', sans-serif"
+          }}>
+            <button 
+              onClick={() => {
+                setSelectedPlanForBenefits(null);
+                setShowPlanesModal(true); // Vuelve a mostrar la lista de planes
+              }}
+              style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              ✕
+            </button>
+
+            {/* Header del Plan Seleccionado (Estilo 3D) */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+              <div 
+                className={`plan-3d-wrap ${selectedPlanForBenefits.class}`}
+                style={{ width: '220px', pointerEvents: 'none', transform: 'none', filter: `drop-shadow(0 5px 12px ${selectedPlanForBenefits.glowColor})` }}
+              >
+                <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+                <div className="plan-3d-inner" style={{ minHeight: '170px' }}>
+                  <div className="plan-3d-shine-top"></div>
+                  <div className="plan-3d-badge">{selectedPlanForBenefits.badge}</div>
+                  <div className="plan-3d-num">{selectedPlanForBenefits.num}</div>
+                  <div style={{"marginTop": "12px", "position": "relative"}}>
+                    <span className="plan-3d-emoji">{selectedPlanForBenefits.emoji}</span>
+                    {selectedPlanForBenefits.isVip && (
+                      <>
+                        <span style={{"position": "absolute", "top": "-8px", "right": "-13px", "fontSize": "13px", "animation": "twinkle 0.8s ease-in-out infinite alternate"}}>✨</span>
+                        <span style={{"position": "absolute", "bottom": "-5px", "left": "-11px", "fontSize": "11px", "animation": "twinkle 1.2s ease-in-out infinite alternate"}}>⭐</span>
+                      </>
+                    )}
+                  </div>
+                  <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>{selectedPlanForBenefits.name}</p>
+                  <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>{selectedPlanForBenefits.subText}</p>
+                  <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>{selectedPlanForBenefits.price}</p></div>
+                </div>
+              </div>
+            </div>
+
+            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1a1a2e', margin: '0 0 12px 0', textAlign: 'center' }}>
+              Beneficios Incluidos
+            </h3>
+
+            {/* Lista de beneficios */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px', background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '18px', padding: '20px' }}>
+              {selectedPlanForBenefits.benefits.map((benefit, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                  <span style={{ color: '#10B981', fontSize: '16px', fontWeight: 'bold', lineHeight: '1.2' }}>✓</span>
+                  <span style={{ fontSize: '13px', color: '#475569', lineHeight: '1.4', fontWeight: '500' }}>{benefit}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Botones de acción: Comprar con Azul o Ver otras opciones */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  setSelectedPlanForCheckout(selectedPlanForBenefits);
+                  setSelectedPlanForBenefits(null);
+                  setCardName('');
+                  setCardNumber('');
+                  setCardExp('');
+                  setCardCvv('');
+                  setAccountEmail('');
+                  setAccountPhone('');
+                  setCheckoutError('');
+                  setNoAccountWarning(false);
+                }}
+                style={{
+                  width: '100%', background: 'linear-gradient(135deg, #10B981, #059669)',
+                  color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                  fontSize: '15px', fontWeight: '700', cursor: 'pointer', outline: 'none',
+                  boxShadow: '0 4px 16px rgba(16,185,129,0.3)', transition: 'transform 0.1s'
+                }}
+                onMouseDown={e => e.currentTarget.style.transform = 'scale(0.97)'}
+                onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                💳 Adquirir con AZUL
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedPlanForBenefits(null);
+                  setShowPlanesModal(true); // Vuelve a la lista de planes
+                }}
+                style={{
+                  width: '100%', background: 'none', color: '#64748B', border: '2px solid #E2E8F0', borderRadius: '14px', padding: '12px',
+                  fontSize: '14px', fontWeight: '700', cursor: 'pointer', outline: 'none', transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#F8FAFC'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                👀 Mirar otras opciones
+              </button>
             </div>
           </div>
         </div>
