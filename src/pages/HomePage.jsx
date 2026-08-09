@@ -39,6 +39,9 @@ export default function HomePage({ onNavigate }) {
   const [last4, setLast4] = useState('');
   const [checkoutError, setCheckoutError] = useState('');
   const [noAccountWarning, setNoAccountWarning] = useState(false);
+  const [paymentTab, setPaymentTab] = useState('card'); // 'card' | 'transfer'
+  const [selectedTransferBank, setSelectedTransferBank] = useState('');
+  const [depositorName, setDepositorName] = useState('');
 
   const webPlanes = [
     { 
@@ -201,26 +204,41 @@ export default function HomePage({ onNavigate }) {
       }
 
       // Guardar el registro de la transacción en la colección 'plan_purchases'
-      await addDoc(collection(db, 'plan_purchases'), {
+      const purchaseData = {
         email: accountEmail.trim().toLowerCase(),
         phone: accountPhone,
         planId: selectedPlanForCheckout.id,
         planName: selectedPlanForCheckout.name,
         price: selectedPlanForCheckout.price,
-        cardName: cardName,
-        last4: cardNumber.replace(/\s/g, '').slice(-4),
         userExists: userExists,
         userDocId: userDocId,
         createdAt: serverTimestamp()
-      });
+      };
 
-      // Crear notificación para el administrador
+      if (paymentTab === 'transfer') {
+        purchaseData.paymentMethod = 'transfer';
+        purchaseData.originBank = selectedTransferBank;
+        purchaseData.depositorName = depositorName;
+        purchaseData.cardName = depositorName;
+        purchaseData.last4 = 'Transferencia';
+        purchaseData.status = 'pending_verification';
+      } else {
+        purchaseData.paymentMethod = 'card';
+        purchaseData.cardName = cardName;
+        purchaseData.last4 = cardNumber.replace(/\s/g, '').slice(-4);
+      }
+
+      await addDoc(collection(db, 'plan_purchases'), purchaseData);
+
+      // Crear notificación para el usuario
       try {
         await addDoc(collection(db, 'notificaciones'), {
           userId: 'admin',
-          type: 'plan_purchased_web',
-          title: '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
-          text: `Compra de plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
+          type: paymentTab === 'transfer' ? 'plan_purchased_web_transfer' : 'plan_purchased_web',
+          title: paymentTab === 'transfer' ? '🏦 NUEVA TRANSFERENCIA PLAN WEB' : '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
+          text: paymentTab === 'transfer'
+            ? `Notificación de transferencia para el plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.`
+            : `Compra de plan ${selectedPlanForCheckout.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
           read: false,
           createdAt: serverTimestamp()
         });
@@ -230,11 +248,14 @@ export default function HomePage({ onNavigate }) {
 
       // Mostrar el recibo de éxito
       setAuthCode(Math.floor(10000 + Math.random() * 90000));
-      setLast4(cardNumber.replace(/\s/g, '').slice(-4) || '••••');
+      setLast4(paymentTab === 'transfer' ? 'Transferencia' : (cardNumber.replace(/\s/g, '').slice(-4) || '••••'));
       setPurchasedPlanDetails(selectedPlanForCheckout);
       setShowReceipt(true);
       setSelectedPlanForCheckout(null);
       setShowPlanesModal(false);
+      setPaymentTab('card');
+      setSelectedTransferBank('');
+      setDepositorName('');
     } catch (err) {
       console.error("Error al procesar el pago del plan en la web:", err);
       setCheckoutError("Ocurrió un error al procesar el pago. Por favor intente de nuevo.");
@@ -2404,23 +2425,67 @@ export default function HomePage({ onNavigate }) {
                 setSelectedPlanForCheckout(null);
                 setCheckoutError('');
                 setNoAccountWarning(false);
+                setPaymentTab('card');
+                setSelectedTransferBank('');
+                setDepositorName('');
               }}
               style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
             >
               ✕
             </button>
 
-            {/* Logo de Azul simulado */}
+            {/* Logo o Título */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ background: '#002F6C', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', fontStyle: 'italic', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(0,47,108,0.2)' }}>
-                AZUL
-              </div>
-              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pasarela de Pagos Segura</span>
+              {paymentTab === 'card' ? (
+                <>
+                  <div style={{ background: '#002F6C', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', fontStyle: 'italic', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(0,47,108,0.2)' }}>
+                    AZUL
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pasarela de Pagos Segura</span>
+                </>
+              ) : (
+                <>
+                  <div style={{ background: '#F26000', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(242,96,0,0.2)' }}>
+                    TRANSFERENCIA
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pago Directo / Interbancario</span>
+                </>
+              )}
             </div>
 
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
               Pagar Plan {selectedPlanForCheckout.name} ({selectedPlanForCheckout.price})
             </h3>
+
+            {/* Tabs de Selección de Método de Pago */}
+            <div style={{ display: 'flex', background: '#F1F5F9', padding: '4px', borderRadius: '14px', marginBottom: '20px' }}>
+              <button
+                type="button"
+                onClick={() => setPaymentTab('card')}
+                style={{
+                  flex: 1, border: 'none', padding: '10px 0', borderRadius: '10px', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
+                  background: paymentTab === 'card' ? 'white' : 'transparent',
+                  color: paymentTab === 'card' ? '#002F6C' : '#64748B',
+                  boxShadow: paymentTab === 'card' ? '0 2px 6px rgba(0,0,0,0.08)' : 'none',
+                  transition: 'all 0.2s'
+                }}
+              >
+                💳 Tarjeta (AZUL)
+              </button>
+              <button
+                type="button"
+                onClick={() => setPaymentTab('transfer')}
+                style={{
+                  flex: 1, border: 'none', padding: '10px 0', borderRadius: '10px', fontSize: '13px', fontWeight: '700', cursor: 'pointer',
+                  background: paymentTab === 'transfer' ? 'white' : 'transparent',
+                  color: paymentTab === 'transfer' ? '#F26000' : '#64748B',
+                  boxShadow: paymentTab === 'transfer' ? '0 2px 6px rgba(0,0,0,0.08)' : 'none',
+                  transition: 'all 0.2s'
+                }}
+              >
+                🏦 Transferencia
+              </button>
+            </div>
 
             {checkoutError && (
               <div style={{ padding: '12px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#991B1B', fontSize: '13px', marginBottom: '16px', fontWeight: '500' }}>
@@ -2459,98 +2524,178 @@ export default function HomePage({ onNavigate }) {
                 />
               </div>
 
-              {/* Nombre de la tarjeta */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre en la Tarjeta</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Juan Pérez"
-                  value={cardName}
-                  onChange={e => setCardName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
+              {paymentTab === 'transfer' ? (
+                <>
+                  {/* Cuentas receptoras de Listo Patrón */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px', background: '#FFF7ED', border: '1px solid #FFEDD5', borderRadius: '16px', padding: '14px', marginBottom: '4px', boxSizing: 'border-box' }}>
+                    <p style={{ margin: '0 0 6px 0', fontWeight: '800', color: '#C2410C', fontSize: '12.5px' }}>Cuentas receptoras de Listo Patrón:</p>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #FED7AA', paddingBottom: '6px', marginBottom: '6px', textAlign: 'left' }}>
+                      <div>
+                        <strong style={{ color: '#00843D' }}>Banco Popular</strong><br/>
+                        Cuenta: 746424456 (Ahorros)<br/>
+                        Titular: Julio de Jesús Francisco
+                      </div>
+                    </div>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left' }}>
+                      <div>
+                        <strong style={{ color: '#003087' }}>Banreservas</strong><br/>
+                        Cuenta: 9607282472 (Ahorros)<br/>
+                        Titular: Julio de Jesús Francisco
+                      </div>
+                    </div>
+                  </div>
 
-              {/* Número de Tarjeta */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Número de Tarjeta</label>
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="0000 0000 0000 0000"
-                  maxLength={19}
-                  value={cardNumber}
-                  onChange={e => {
-                    let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
-                    let parts = []
-                    for (let i = 0; i < v.length; i += 4) {
-                      parts.push(v.substring(i, i + 4))
-                    }
-                    setCardNumber(parts.join(' '))
-                  }}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
+                  <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0 0 4px 0', lineHeight: '1.4', textAlign: 'left' }}>
+                    💡 Realiza la transferencia desde tu banco a cualquiera de las cuentas indicadas arriba, y luego completa los datos a continuación para notificar el pago:
+                  </p>
 
-              {/* Vencimiento y CVV */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Vencimiento</label>
-                  <input 
-                    type="tel" 
-                    required
-                    placeholder="MM/AA"
-                    maxLength={5}
-                    value={cardExp}
-                    onChange={e => {
-                      let val = e.target.value
-                      let clean = val.replace(/\D/g, '')
-                      if (clean.length === 1 && clean > '1') clean = '0' + clean
-                      if (clean.length >= 2) {
-                        let m = parseInt(clean.substring(0,2), 10)
-                        if (m < 1) m = 1
-                        if (m > 12) m = 12
-                        clean = (m < 10 ? '0' + m : String(m)) + clean.substring(2)
-                      }
-                      if (clean.length > 2) setCardExp(clean.substring(0,2) + '/' + clean.substring(2,4))
-                      else setCardExp(clean)
+                  {/* Banco de Origen selector */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Banco desde el que transfieres (Origen)</label>
+                    <select
+                      required
+                      value={selectedTransferBank}
+                      onChange={e => setSelectedTransferBank(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box', color: '#1A1A2E' }}
+                    >
+                      <option value="" disabled>Selecciona tu banco...</option>
+                      <option value="Banco de Reservas">Banco de Reservas (Banreservas)</option>
+                      <option value="Banco BHD">Banco BHD</option>
+                      <option value="Banco Popular">Banco Popular Dominicano</option>
+                      <option value="Scotiabank">Scotiabank</option>
+                      <option value="Asociacion Popular">Asoc. Popular (APAP)</option>
+                      <option value="Banco Promerica">Banco Promerica</option>
+                      <option value="Bancaribe">Bancaribe</option>
+                      <option value="Banco Vimenca">Banco Vimenca</option>
+                      <option value="Otro">Otro Banco / Interbancario</option>
+                    </select>
+                  </div>
+
+                  {/* Nombre de quien deposita / transfiere */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Titular / Nombre de quien transfiere</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Ej. Juan Pérez"
+                      value={depositorName}
+                      onChange={e => setDepositorName(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === ''}
+                    style={{
+                      background: 'linear-gradient(135deg, #F26000, #FF8533)',
+                      color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                      fontSize: '15px', fontWeight: '700', cursor: 'pointer', marginTop: '10px',
+                      boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
+                      opacity: (depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '') ? 0.6 : 1
                     }}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>CVV</label>
-                  <input 
-                    type="tel" 
-                    required
-                    placeholder="123"
-                    maxLength={4}
-                    value={cardCvv}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                    onChange={e => setCardCvv(e.target.value.replace(/[^0-9]/g, ''))}
-                  />
-                </div>
-              </div>
+                  >
+                    {loading ? 'Procesando Solicitud...' : `✓ Notificar Transferencia de ${selectedPlanForCheckout.price}`}
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* Nombre de la tarjeta */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre en la Tarjeta</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="Ej. Juan Pérez"
+                      value={cardName}
+                      onChange={e => setCardName(e.target.value)}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
 
-              {/* Security Badge */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', opacity: 0.8, fontSize: '12px', color: '#64748B', margin: '4px 0' }}>
-                <span>🔒 Transacción encriptada de 256-bits</span>
-              </div>
+                  {/* Número de Tarjeta */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Número de Tarjeta</label>
+                    <input 
+                      type="tel" 
+                      required
+                      placeholder="0000 0000 0000 0000"
+                      maxLength={19}
+                      value={cardNumber}
+                      onChange={e => {
+                        let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+                        let parts = []
+                        for (let i = 0; i < v.length; i += 4) {
+                          parts.push(v.substring(i, i + 4))
+                        }
+                        setCardNumber(parts.join(' '))
+                      }}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
 
-              <button
-                type="submit"
-                disabled={loading || cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === ''}
-                style={{
-                  background: 'linear-gradient(135deg, #10B981, #059669)',
-                  color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
-                  fontSize: '15px', fontWeight: '700', cursor: 'pointer',
-                  boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
-                  opacity: (cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === '') ? 0.6 : 1
-                }}
-              >
-                {loading ? 'Procesando Pago con AZUL...' : `Pagar ${selectedPlanForCheckout.price} con AZUL`}
-              </button>
+                  {/* Vencimiento y CVV */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Vencimiento</label>
+                      <input 
+                        type="tel" 
+                        required
+                        placeholder="MM/AA"
+                        maxLength={5}
+                        value={cardExp}
+                        onChange={e => {
+                          let val = e.target.value
+                          let clean = val.replace(/\D/g, '')
+                          if (clean.length === 1 && clean > '1') clean = '0' + clean
+                          if (clean.length >= 2) {
+                            let m = parseInt(clean.substring(0,2), 10)
+                            if (m < 1) m = 1
+                            if (m > 12) m = 12
+                            clean = (m < 10 ? '0' + m : String(m)) + clean.substring(2)
+                          }
+                          if (clean.length > 2) setCardExp(clean.substring(0,2) + '/' + clean.substring(2,4))
+                          else setCardExp(clean)
+                        }}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>CVV</label>
+                      <input 
+                        type="tel" 
+                        required
+                        placeholder="123"
+                        maxLength={4}
+                        value={cardCvv}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                        onChange={e => setCardCvv(e.target.value.replace(/[^0-9]/g, ''))}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Security Badge */}
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', opacity: 0.8, fontSize: '12px', color: '#64748B', margin: '4px 0' }}>
+                    <span>🔒 Transacción encriptada de 256-bits</span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === ''}
+                    style={{
+                      background: 'linear-gradient(135deg, #10B981, #059669)',
+                      color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                      fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+                      boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
+                      opacity: (cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === '') ? 0.6 : 1
+                    }}
+                  >
+                    {loading ? 'Procesando Pago con AZUL...' : `Pagar ${selectedPlanForCheckout.price} con AZUL`}
+                  </button>
+                </>
+              )}
             </form>
           </div>
         </div>
@@ -2567,18 +2712,29 @@ export default function HomePage({ onNavigate }) {
             width: '100%', maxWidth: '380px', background: '#FFFFFF',
             borderRadius: '24px', overflow: 'hidden',
             boxShadow: '0 24px 50px rgba(0,0,0,0.3)',
-            borderTop: '8px solid #002F6C',
+            borderTop: last4 === 'Transferencia' ? '8px solid #F26000' : '8px solid #002F6C',
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             padding: '30px 24px', boxSizing: 'border-box', color: '#1a1a2e',
             fontFamily: "'Syne', sans-serif"
           }}>
             
-            {/* Logo de Azul */}
+            {/* Logo de pago */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-              <div style={{ background: '#002F6C', color: 'white', padding: '4px 12px', borderRadius: '6px', fontWeight: '900', fontStyle: 'italic', fontSize: '14px' }}>
-                AZUL
-              </div>
-              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '700' }}>COMPROBANTE</span>
+              {last4 === 'Transferencia' ? (
+                <>
+                  <div style={{ background: '#F26000', color: 'white', padding: '4px 12px', borderRadius: '6px', fontWeight: '900', fontSize: '12px' }}>
+                    TRANSFERENCIA
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '700' }}>SOLICITUD</span>
+                </>
+              ) : (
+                <>
+                  <div style={{ background: '#002F6C', color: 'white', padding: '4px 12px', borderRadius: '6px', fontWeight: '900', fontStyle: 'italic', fontSize: '14px' }}>
+                    AZUL
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '700' }}>COMPROBANTE</span>
+                </>
+              )}
             </div>
 
             {/* Success Check */}
@@ -2591,8 +2747,12 @@ export default function HomePage({ onNavigate }) {
             }}>✓</div>
 
             {/* Title / Subtitle */}
-            <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 4px', textAlign: 'center' }}>¡Pago Exitoso!</h2>
-            <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 20px', textAlign: 'center' }}>El recibo de Azul fue generado.</p>
+            <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 4px', textAlign: 'center' }}>
+              {last4 === 'Transferencia' ? '¡Solicitud Recibida!' : '¡Pago Exitoso!'}
+            </h2>
+            <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 20px', textAlign: 'center' }}>
+              {last4 === 'Transferencia' ? 'Tu solicitud de pago fue registrada con éxito.' : 'El recibo de Azul fue generado.'}
+            </p>
 
             {/* Amount */}
             <div style={{ fontSize: '28px', fontWeight: '900', color: '#1A1A2E', marginBottom: '24px', letterSpacing: '-0.5px' }}>
@@ -2615,13 +2775,48 @@ export default function HomePage({ onNavigate }) {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                 <span style={{ color: '#64748B', fontWeight: '500' }}>Método de pago:</span>
-                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>VISA •••• {last4}</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>
+                  {last4 === 'Transferencia' ? 'Transferencia Bancaria' : `VISA •••• ${last4}`}
+                </span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                <span style={{ color: '#64748B', fontWeight: '500' }}>Autorización AZUL:</span>
-                <span style={{ color: '#00b050', fontWeight: '800', textAlign: 'right' }}>Aprobado #{authCode}</span>
-              </div>
+              {last4 === 'Transferencia' ? (
+                <>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: '#64748B', fontWeight: '500' }}>Banco de Origen:</span>
+                    <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{selectedTransferBank}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: '#64748B', fontWeight: '500' }}>Depositante:</span>
+                    <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{depositorName}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: '#64748B', fontWeight: '500' }}>Estado:</span>
+                    <span style={{ color: '#F59E0B', fontWeight: '800', textAlign: 'right' }}>Pendiente de Verificación</span>
+                  </div>
+                </>
+              ) : (
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                  <span style={{ color: '#64748B', fontWeight: '500' }}>Autorización AZUL:</span>
+                  <span style={{ color: '#00b050', fontWeight: '800', textAlign: 'right' }}>Aprobado #{authCode}</span>
+                </div>
+              )}
             </div>
+
+            {last4 === 'Transferencia' && (
+              <a
+                href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}%20desde%20el%20correo%20${encodeURIComponent(accountEmail)}.%20Banco%20de%20Origen:%20${encodeURIComponent(selectedTransferBank)}.`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'block', width: '100%', boxSizing: 'border-box',
+                  background: '#25D366', color: 'white', textDecoration: 'none', textAlign: 'center',
+                  borderRadius: '14px', padding: '14px', fontSize: '14px', fontWeight: '700',
+                  boxShadow: '0 4px 12px rgba(37,211,102,0.3)', marginBottom: '16px'
+                }}
+              >
+                💬 Enviar Comprobante por WhatsApp
+              </a>
+            )}
 
             {noAccountWarning ? (
               <div style={{ padding: '10px', background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: '10px', color: '#B45309', fontSize: '11px', textAlign: 'center', lineHeight: '1.4', marginBottom: '16px' }}>
@@ -2629,7 +2824,9 @@ export default function HomePage({ onNavigate }) {
               </div>
             ) : (
               <div style={{ padding: '10px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '10px', color: '#065F46', fontSize: '11px', textAlign: 'center', lineHeight: '1.4', marginBottom: '16px' }}>
-                ✅ Tu plan ha sido activado con éxito. Abre tu app Listo Patrón y actívate en línea.
+                {last4 === 'Transferencia' 
+                  ? '✅ Tu solicitud fue recibida. En unos minutos, tras validar la transferencia, tu plan será activado.' 
+                  : '✅ Tu plan ha sido activado con éxito. Abre tu app Listo Patrón y actívate en línea.'}
               </div>
             )}
 
@@ -2640,10 +2837,10 @@ export default function HomePage({ onNavigate }) {
                 setNoAccountWarning(false);
               }}
               style={{
-                width: '100%', background: 'linear-gradient(135deg, #002F6C, #004BAB)',
+                width: '100%', background: last4 === 'Transferencia' ? 'linear-gradient(135deg, #F26000, #FF8533)' : 'linear-gradient(135deg, #002F6C, #004BAB)',
                 color: 'white', border: 'none', borderRadius: '14px', padding: '16px',
                 fontSize: '15px', fontWeight: '700', cursor: 'pointer', outline: 'none',
-                boxShadow: '0 4px 16px rgba(0,47,108,0.3)', fontFamily: "'Syne', sans-serif"
+                boxShadow: last4 === 'Transferencia' ? '0 4px 16px rgba(242,96,0,0.3)' : '0 4px 16px rgba(0,47,108,0.3)', fontFamily: "'Syne', sans-serif"
               }}
             >
               Cerrar y Volver
