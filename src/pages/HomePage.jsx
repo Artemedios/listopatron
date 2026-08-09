@@ -411,18 +411,20 @@ export default function HomePage({ onNavigate }) {
               target="_blank" 
               rel="noopener noreferrer" 
               className="download-dropdown-item"
+              style={{ padding: '2px 4px' }}
               onClick={() => { trackAppDownload('android'); setDownloadDropdownOpen(false); }}
             >
-              🤖 Google Play
+              <img src="./assets/google_play_badge.png" alt="Google Play" style={{ height: '34px', width: 'auto', display: 'block', borderRadius: '6px' }} />
             </a>
             <a 
               href="https://apps.apple.com/app/listopatron/id000000000" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="download-dropdown-item"
+              style={{ padding: '2px 4px' }}
               onClick={() => { trackAppDownload('ios'); setDownloadDropdownOpen(false); }}
             >
-              🍏 App Store
+              <img src="./assets/app_store_badge.png" alt="App Store" style={{ height: '34px', width: 'auto', display: 'block', borderRadius: '6px' }} />
             </a>
           </div>
         )}
@@ -458,7 +460,7 @@ export default function HomePage({ onNavigate }) {
       >
         <span>
           <span className="desktop-text">💳 COMPRAR PLAN AQUÍ</span>
-          <span className="mobile-text">💳 Comprar</span>
+          <span className="mobile-text">💳 Comprar Plan</span>
         </span>
       </button>
     </div>
