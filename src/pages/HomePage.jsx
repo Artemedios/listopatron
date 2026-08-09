@@ -429,7 +429,10 @@ export default function HomePage({ onNavigate }) {
       </div>
       <a href="https://listopatron.vercel.app/" className="nav-action-btn nav-btn-order">Hacer un pedido</a>
       <button onClick={() => onNavigate('shop')} className="nav-action-btn nav-shop-highlight-btn nav-btn-shop">
-        <span>VISITAR TIENDA 🛒</span>
+        <span>
+          <span className="desktop-text">VISITAR TIENDA 🛒</span>
+          <span className="mobile-text">Tienda 🛒</span>
+        </span>
       </button>
       <button 
         onClick={() => setShowPlanesModal(true)} 
@@ -455,7 +458,7 @@ export default function HomePage({ onNavigate }) {
       >
         <span>
           <span className="desktop-text">💳 COMPRAR PLAN AQUÍ</span>
-          <span className="mobile-text">💳 COMPRAR PLAN</span>
+          <span className="mobile-text">💳 Comprar</span>
         </span>
       </button>
     </div>

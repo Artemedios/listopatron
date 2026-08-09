@@ -5173,13 +5173,18 @@ footer{background:#F26000;padding:28px 5% 24px}
   .nav-btn-order {
     display: none !important;
   }
-  .nav-header-buttons .dropdown-container,
-  .nav-header-buttons .nav-btn-shop {
-    display: none !important;
+  .nav-header-buttons {
+    display: flex !important;
+    gap: 4px !important;
+    margin-left: 6px !important;
+  }
+  .nav-header-buttons .nav-action-btn,
+  .nav-header-buttons .dropdown-container button {
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+    white-space: nowrap !important;
   }
   .nav-btn-buy-plan {
     display: inline-flex !important;
-    font-size: 11px !important;
-    padding: 6px 12px !important;
   }
 }
