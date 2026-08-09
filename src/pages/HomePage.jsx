@@ -41,10 +41,63 @@ export default function HomePage({ onNavigate }) {
   const [noAccountWarning, setNoAccountWarning] = useState(false);
 
   const webPlanes = [
-    { id: 'standard', name: 'ESTÁNDAR', price: 'RD$500', period: '/ mes', contracts: '3 contratos', color: '#3B82F6', emoji: '🔹', desc: 'Plan básico mensual de mantenimiento.' },
-    { id: 'gold', name: 'GOLD', price: 'RD$1,000', period: '/ mes', contracts: '8 contratos', color: '#F59E0B', emoji: '🥇', desc: 'Aumenta tus oportunidades y presencia.' },
-    { id: 'platinum', name: 'PLATINUM', price: 'RD$1,500', period: '/ mes', contracts: '12 contratos', color: '#1A1A2E', emoji: '🥈', desc: 'Aumenta tu estatus y aplica sin límites.' },
-    { id: 'vip', name: 'VIP', price: 'RD$2,500', period: '/ mes', contracts: 'Ilimitados', color: '#EF4444', emoji: '💎', desc: 'Contratos ilimitados y máxima prioridad.' }
+    { 
+      id: 'standard', 
+      name: 'Plan Estándar', 
+      price: 'RD$500', 
+      period: '/ mes', 
+      contracts: '3 contratos', 
+      emoji: '🔹', 
+      desc: 'Plan básico mensual de mantenimiento.',
+      class: 'plan-3d-standard',
+      badge: 'BÁSICO',
+      num: 1,
+      subText: '⭐ 0-3.9 | 3 contratos',
+      glowColor: 'rgba(46,125,50,0.28)'
+    },
+    { 
+      id: 'gold', 
+      name: 'Plan Gold', 
+      price: 'RD$1,000', 
+      period: '/ mes', 
+      contracts: '8 contratos', 
+      emoji: '🥇', 
+      desc: 'Aumenta tus oportunidades y presencia.',
+      class: 'plan-3d-gold',
+      badge: 'POPULAR',
+      num: 2,
+      subText: '⭐ 4.0-4.7 | 8 contratos',
+      glowColor: 'rgba(212,160,23,0.28)'
+    },
+    { 
+      id: 'platinum', 
+      name: 'Plan Platinum', 
+      price: 'RD$1,500', 
+      period: '/ mes', 
+      contracts: '12 contratos', 
+      emoji: '🥈', 
+      desc: 'Aumenta tu estatus y aplica sin límites.',
+      class: 'plan-3d-platinum',
+      badge: 'ACTIVO',
+      num: 3,
+      subText: '⭐ 4.5-4.7 | 12 contratos',
+      glowColor: 'rgba(110,130,155,0.28)'
+    },
+    { 
+      id: 'vip', 
+      name: 'Plan VIP', 
+      price: 'RD$2,500', 
+      period: '/ mes', 
+      contracts: 'Ilimitados', 
+      emoji: '💎', 
+      desc: 'Contratos ilimitados y máxima prioridad.',
+      class: 'plan-3d-vip',
+      badge: 'ÉLITE',
+      num: 4,
+      subText: '⭐ 4.8-5.0 | ∞ contratos',
+      glowColor: 'rgba(242,96,0,0.28)',
+      isVip: true
+    }
   ];
 
   const handleSelectPlanFromCard = (planId) => {
@@ -2173,24 +2226,34 @@ export default function HomePage({ onNavigate }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '16px', marginBottom: '16px' }}>
               {webPlanes.map(plan => (
-                <div key={plan.id} style={{ border: '2px solid #E2E8F0', borderRadius: '20px', padding: '20px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', background: '#FAF9F6' }}>
-                  <span style={{ fontSize: '32px', marginBottom: '8px' }}>{plan.emoji}</span>
-                  <h3 style={{ fontSize: '16px', fontWeight: '800', margin: '0 0 4px 0', color: '#1A1A2E' }}>{plan.name}</h3>
-                  <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 10px 0', textAlign: 'center', minHeight: '34px' }}>{plan.desc}</p>
-                  <div style={{ fontSize: '18px', fontWeight: '900', color: '#F26000', marginBottom: '4px' }}>{plan.price}</div>
-                  <span style={{ fontSize: '10px', color: '#94A3B8', fontWeight: 'bold', marginBottom: '16px' }}>{plan.contracts}</span>
-                  <button
-                    onClick={() => {
-                      setSelectedPlanForCheckout(plan);
-                      setShowPlanesModal(false);
-                    }}
-                    style={{
-                      width: '100%', background: '#F26000', color: 'white', border: 'none', borderRadius: '10px',
-                      padding: '8px 12px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s'
-                    }}
-                  >
-                    Elegir Plan
-                  </button>
+                <div 
+                  key={plan.id} 
+                  onClick={() => {
+                    setSelectedPlanForCheckout(plan);
+                    setShowPlanesModal(false);
+                  }}
+                  className={`plan-3d-wrap ${plan.class}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+                  <div className="plan-3d-inner" style={{ minHeight: '170px' }}>
+                    <div className="plan-3d-shine-top"></div>
+                    <div className="plan-3d-badge">{plan.badge}</div>
+                    <div className="plan-3d-num">{plan.num}</div>
+                    <div style={{"marginTop": "12px", "position": "relative"}}>
+                      <span className="plan-3d-emoji">{plan.emoji}</span>
+                      {plan.isVip && (
+                        <>
+                          <span style={{"position": "absolute", "top": "-8px", "right": "-13px", "fontSize": "13px", "animation": "twinkle 0.8s ease-in-out infinite alternate"}}>✨</span>
+                          <span style={{"position": "absolute", "bottom": "-5px", "left": "-11px", "fontSize": "11px", "animation": "twinkle 1.2s ease-in-out infinite alternate"}}>⭐</span>
+                        </>
+                      )}
+                    </div>
+                    <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>{plan.name}</p>
+                    <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>{plan.subText}</p>
+                    <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>{plan.price}</p></div>
+                    <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>ELEGIR PLAN →</p>
+                  </div>
                 </div>
               ))}
             </div>
