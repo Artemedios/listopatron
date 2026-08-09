@@ -401,7 +401,7 @@ export default function HomePage({ onNavigate }) {
           style={{"cursor": "pointer", "border": "none"}}
         >
           <span className="desktop-text">Descargar la app ▾</span>
-          <span className="mobile-text">Descargar ▾</span>
+          <span className="mobile-text">Descargar App ▾</span>
         </button>
         
         {downloadDropdownOpen && (
