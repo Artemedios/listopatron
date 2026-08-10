@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import useListoLogic from '../useListoLogic';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import ad15 from '../assets/extracted_15.png';
 import ad16 from '../assets/extracted_16.png';
 import ad17 from '../assets/extracted_17.png';
@@ -44,6 +45,7 @@ export default function HomePage({ onNavigate }) {
   const [depositorName, setDepositorName] = useState('');
   const [copiedIdx, setCopiedIdx] = useState(null);
   const [selectedPlanForTransfer, setSelectedPlanForTransfer] = useState(null);
+  const [receiptFile, setReceiptFile] = useState(null);
 
   const webPlanes = [
     { 
@@ -218,6 +220,7 @@ export default function HomePage({ onNavigate }) {
         createdAt: serverTimestamp()
       };
 
+      let finalReceiptUrl = '';
       if (paymentTab === 'transfer') {
         purchaseData.paymentMethod = 'transfer';
         purchaseData.originBank = selectedTransferBank;
@@ -225,6 +228,18 @@ export default function HomePage({ onNavigate }) {
         purchaseData.cardName = depositorName;
         purchaseData.last4 = 'Transferencia';
         purchaseData.status = 'pending_verification';
+
+        if (receiptFile) {
+          try {
+            const fileRef = ref(storage, `comprobantes_transferencias/${Date.now()}_${receiptFile.name}`);
+            const uploadSnap = await uploadBytes(fileRef, receiptFile);
+            finalReceiptUrl = await getDownloadURL(uploadSnap.ref);
+            purchaseData.receiptUrl = finalReceiptUrl;
+          } catch (storageErr) {
+            console.error("Error al subir comprobante a Firebase Storage:", storageErr);
+            throw new Error("No se pudo subir la imagen del comprobante. Intente de nuevo.");
+          }
+        }
       } else {
         purchaseData.paymentMethod = 'card';
         purchaseData.cardName = cardName;
@@ -240,7 +255,7 @@ export default function HomePage({ onNavigate }) {
           type: paymentTab === 'transfer' ? 'plan_purchased_web_transfer' : 'plan_purchased_web',
           title: paymentTab === 'transfer' ? '🏦 NUEVA TRANSFERENCIA PLAN WEB' : '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
           text: paymentTab === 'transfer'
-            ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.`
+            ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.${finalReceiptUrl ? ' Comprobante: ' + finalReceiptUrl : ''}`
             : `Compra de plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
           read: false,
           createdAt: serverTimestamp()
@@ -260,6 +275,7 @@ export default function HomePage({ onNavigate }) {
       setPaymentTab('card');
       setSelectedTransferBank('');
       setDepositorName('');
+      setReceiptFile(null);
     } catch (err) {
       console.error("Error al procesar el pago del plan en la web:", err);
       setCheckoutError("Ocurrió un error al procesar el pago. Por favor intente de nuevo.");
@@ -2773,7 +2789,7 @@ export default function HomePage({ onNavigate }) {
 
               {/* Nombre de quien transfiere */}
               <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Titular de la cuenta que transfiere</label>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre de quien hizo el depósito / transferencia</label>
                 <input 
                   type="text" 
                   required
@@ -2782,6 +2798,48 @@ export default function HomePage({ onNavigate }) {
                   onChange={e => setDepositorName(e.target.value)}
                   style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
                 />
+              </div>
+
+              {/* Subir Comprobante de Banco */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Subir Comprobante de Pago (Foto o PDF)</label>
+                <div style={{
+                  border: '2px dashed #E2E8F0',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  textAlign: 'center',
+                  background: '#FAFAFA',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  transition: 'border-color 0.2s',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={e => e.currentTarget.style.borderColor = '#F26000'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = '#E2E8F0'}
+                >
+                  <span style={{ fontSize: '24px' }}>📁</span>
+                  <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#64748B' }}>
+                    {receiptFile ? `✓ ${receiptFile.name}` : 'Seleccionar comprobante...'}
+                  </span>
+                  <span style={{ fontSize: '10.5px', color: '#94A3B8' }}>Formatos aceptados: JPG, PNG, PDF</span>
+                  <input 
+                    type="file" 
+                    required
+                    accept="image/*,application/pdf"
+                    onChange={e => setReceiptFile(e.target.files[0])}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      opacity: 0,
+                      cursor: 'pointer',
+                      width: '100%',
+                      height: '100%'
+                    }}
+                  />
+                </div>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
@@ -2800,13 +2858,13 @@ export default function HomePage({ onNavigate }) {
                 </a>
                 <button
                   type="submit"
-                  disabled={loading || depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === ''}
+                  disabled={loading || depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '' || !receiptFile}
                   style={{
                     background: 'linear-gradient(135deg, #F26000, #FF8533)',
                     color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
                     fontSize: '15px', fontWeight: '700', cursor: 'pointer',
                     boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
-                    opacity: (depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '') ? 0.6 : 1
+                    opacity: (depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '' || !receiptFile) ? 0.6 : 1
                   }}
                 >
                   {loading ? 'Procesando...' : `✓ Notificar Transferencia de ${selectedPlanForTransfer.price}`}
