@@ -46,6 +46,8 @@ export default function HomePage({ onNavigate }) {
   const [copiedIdx, setCopiedIdx] = useState(null);
   const [selectedPlanForTransfer, setSelectedPlanForTransfer] = useState(null);
   const [receiptFile, setReceiptFile] = useState(null);
+  const [matchedProPhone, setMatchedProPhone] = useState('');
+  const [matchedProCategory, setMatchedProCategory] = useState('');
 
   const webPlanes = [
     { 
@@ -181,27 +183,47 @@ export default function HomePage({ onNavigate }) {
         if (activePlan.id === 'platinum') planContracts = 12;
         if (activePlan.id === 'vip') planContracts = 9999;
         
-        // Actualizar plan del usuario en Firestore
-        await updateDoc(doc(db, 'users', userDocId), {
-          plan: activePlan.id,
-          planStatus: 'active',
-          contracts: planContracts,
-          planExpirationDate: expDate.toISOString(),
-          available: true
-        });
+        // Guardar detalles del profesional encontrado en el estado
+        setMatchedProPhone(userData.phone || userData.phoneWhatsApp || accountPhone || '');
+        setMatchedProCategory(userData.category || userData.categoryEs || '');
 
-        // Crear notificación para el usuario
-        try {
-          await addDoc(collection(db, 'notificaciones'), {
-            userId: userDocId,
-            type: 'plan_purchased',
-            title: '💎 ¡Plan Activado con Éxito!',
-            text: `Tu plan ${activePlan.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
-            read: false,
-            createdAt: serverTimestamp()
+        if (paymentTab !== 'transfer') {
+          // Actualizar plan del usuario en Firestore (Solo para pagos aprobados instantáneos de tarjeta)
+          await updateDoc(doc(db, 'users', userDocId), {
+            plan: activePlan.id,
+            planStatus: 'active',
+            contracts: planContracts,
+            planExpirationDate: expDate.toISOString(),
+            available: true
           });
-        } catch (errNotif) {
-          console.error("Error guardando notificación de usuario:", errNotif);
+
+          // Crear notificación de activación para el usuario (Aprobado)
+          try {
+            await addDoc(collection(db, 'notificaciones'), {
+              userId: userDocId,
+              type: 'plan_purchased',
+              title: '💎 ¡Plan Activado con Éxito!',
+              text: `Tu plan ${activePlan.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
+              read: false,
+              createdAt: serverTimestamp()
+            });
+          } catch (errNotif) {
+            console.error("Error guardando notificación de usuario:", errNotif);
+          }
+        } else {
+          // Crear notificación de pendiente para el usuario si es transferencia
+          try {
+            await addDoc(collection(db, 'notificaciones'), {
+              userId: userDocId,
+              type: 'plan_pending',
+              title: '🏦 Solicitud de Plan Recibida',
+              text: `Hemos recibido tu pago por transferencia para el plan ${activePlan.name}. El administrador verificará tu comprobante en un plazo de hasta 72 horas para activarte el plan.`,
+              read: false,
+              createdAt: serverTimestamp()
+            });
+          } catch (errNotif) {
+            console.error("Error guardando notificación de usuario:", errNotif);
+          }
         }
       } else {
         // Mostrar advertencia si el correo no está registrado en la app
@@ -2857,7 +2879,7 @@ export default function HomePage({ onNavigate }) {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
                 <a
-                  href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20realizar%20la%20transferencia%20para%20activar%20mi%20Plan%20${encodeURIComponent(selectedPlanForTransfer.name)}%20desde%20el%20correo%20${encodeURIComponent(accountEmail)}.%20Titular%20de%20cuenta:%20${encodeURIComponent(depositorName)}.%20Banco:%20${encodeURIComponent(selectedTransferBank || 'No seleccionado')}.`}
+                  href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20realizar%20la%20transferencia%20para%20activar%20mi%20Plan%20${encodeURIComponent(selectedPlanForTransfer.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(accountPhone)}%0A-%20*Banco:*%20${encodeURIComponent(selectedTransferBank || 'No seleccionado')}%0A-%20*Depositante:*%20${encodeURIComponent(depositorName)}.`}
                   target="_blank"
                   rel="noreferrer"
                   style={{
@@ -2991,7 +3013,7 @@ export default function HomePage({ onNavigate }) {
 
             {last4 === 'Transferencia' && (
               <a
-                href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}%20desde%20el%20correo%20${encodeURIComponent(accountEmail)}.%20Banco%20de%20Origen:%20${encodeURIComponent(selectedTransferBank)}.`}
+                href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Banco%20de%20Origen:*%20${encodeURIComponent(selectedTransferBank)}.`}
                 target="_blank"
                 rel="noreferrer"
                 style={{
