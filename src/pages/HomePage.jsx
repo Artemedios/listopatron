@@ -2534,7 +2534,7 @@ export default function HomePage({ onNavigate }) {
             </div>
 
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
-              Pagar Plan {selectedPlanForCheckout.name} ({selectedPlanForCheckout.price})
+              Pagar {selectedPlanForCheckout.name} ({selectedPlanForCheckout.price})
             </h3>
 
             {checkoutError && (
@@ -2705,7 +2705,7 @@ export default function HomePage({ onNavigate }) {
             </div>
 
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
-              Pagar Plan {selectedPlanForTransfer.name} ({selectedPlanForTransfer.price})
+              Pagar {selectedPlanForTransfer.name} ({selectedPlanForTransfer.price})
             </h3>
 
             {checkoutError && (
