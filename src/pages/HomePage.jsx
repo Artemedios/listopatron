@@ -350,6 +350,19 @@ export default function HomePage({ onNavigate }) {
     return () => clearInterval(interval);
   }, []);
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('action') === 'buy_plan' || params.get('showPlanes') === 'true') {
+      setShowPlanesModal(true);
+      setTimeout(() => {
+        const target = document.getElementById('statsGrid');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500);
+    }
+  }, []);
+
 
 
   const shiftSlider = (d) => { if (window.shiftSlider) window.shiftSlider(d); };
