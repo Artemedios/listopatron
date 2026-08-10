@@ -46,6 +46,8 @@ export default function HomePage({ onNavigate }) {
   const [copiedIdx, setCopiedIdx] = useState(null);
   const [selectedPlanForTransfer, setSelectedPlanForTransfer] = useState(null);
   const [receiptFile, setReceiptFile] = useState(null);
+  const [proName, setProName] = useState('');
+  const [proCategory, setProCategory] = useState('');
   const [matchedProPhone, setMatchedProPhone] = useState('');
   const [matchedProCategory, setMatchedProCategory] = useState('');
 
@@ -239,7 +241,9 @@ export default function HomePage({ onNavigate }) {
         price: activePlan.price,
         userExists: userExists,
         userDocId: userDocId,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        proName: proName || cardName || depositorName || '',
+        proCategory: proCategory || ''
       };
 
       let finalReceiptUrl = '';
@@ -376,6 +380,17 @@ export default function HomePage({ onNavigate }) {
     const params = new URLSearchParams(window.location.search);
     if (params.get('action') === 'buy_plan' || params.get('showPlanes') === 'true') {
       setShowPlanesModal(true);
+      
+      const emailParam = params.get('email');
+      const phoneParam = params.get('phone');
+      const nameParam = params.get('name');
+      const catParam = params.get('category');
+      
+      if (emailParam) setAccountEmail(emailParam);
+      if (phoneParam) setAccountPhone(phoneParam);
+      if (nameParam) setProName(nameParam);
+      if (catParam) setProCategory(catParam);
+
       setTimeout(() => {
         const target = document.getElementById('statsGrid');
         if (target) {
@@ -2545,6 +2560,32 @@ export default function HomePage({ onNavigate }) {
 
             <form onSubmit={handleConfirmPayment} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               
+              {/* Nombre del Profesional */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre Completo del Profesional</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ej. Juan Pérez"
+                  value={proName}
+                  onChange={e => setProName(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Profesión / Categoría */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Profesión / Oficio</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ej. Pintor, Jardinero, Mecánico..."
+                  value={proCategory}
+                  onChange={e => setProCategory(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
               {/* Email de la cuenta Listo */}
               <div>
                 <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
@@ -2716,6 +2757,32 @@ export default function HomePage({ onNavigate }) {
 
             <form onSubmit={(e) => handleConfirmPayment(e, selectedPlanForTransfer)} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               
+              {/* Nombre del Profesional */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre Completo del Profesional</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ej. Juan Pérez"
+                  value={proName}
+                  onChange={e => setProName(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              {/* Profesión / Categoría */}
+              <div>
+                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Profesión / Oficio</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ej. Pintor, Jardinero, Mecánico..."
+                  value={proCategory}
+                  onChange={e => setProCategory(e.target.value)}
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+
               {/* Email de la cuenta Listo */}
               <div>
                 <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
