@@ -389,7 +389,11 @@ export default function HomePage({ onNavigate }) {
       
       if (emailParam) setAccountEmail(emailParam);
       if (phoneParam) setAccountPhone(phoneParam);
-      if (nameParam) setProName(nameParam);
+      if (nameParam) {
+        setProName(nameParam);
+        setCardName(nameParam);
+        setDepositorName(nameParam);
+      }
       if (catParam) setProCategory(catParam);
 
       setTimeout(() => {
