@@ -377,6 +377,7 @@ export default function HomePage({ onNavigate }) {
   }, []);
 
   React.useEffect(() => {
+    // Lee los parámetros de compra enviados desde la aplicación móvil
     const params = new URLSearchParams(window.location.search);
     if (params.get('action') === 'buy_plan' || params.get('showPlanes') === 'true') {
       setShowPlanesModal(true);
