@@ -24,7 +24,8 @@ const portadaImages = [
 export default function HomePage({ onNavigate }) {
   useListoLogic();
 
-  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB  const [showPlanesModal, setShowPlanesModal] = useState(false);
+  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
+  const [showPlanesModal, setShowPlanesModal] = useState(false);
   const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
   const [selectedPlanForCheckout, setSelectedPlanForCheckout] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -2453,12 +2454,10 @@ export default function HomePage({ onNavigate }) {
                   setSelectedPlanForCheckout(selectedPlanForBenefits);
                   setSelectedPlanForBenefits(null);
                   setPaymentTab('card');
-                  setCardName('');
+                  // Conservamos cardName, accountEmail y accountPhone si vienen pre-llenados desde la app
                   setCardNumber('');
                   setCardExp('');
                   setCardCvv('');
-                  setAccountEmail('');
-                  setAccountPhone('');
                   setCheckoutError('');
                   setNoAccountWarning(false);
                 }}
@@ -2481,9 +2480,7 @@ export default function HomePage({ onNavigate }) {
                   setSelectedPlanForBenefits(null);
                   setPaymentTab('transfer');
                   setSelectedTransferBank('');
-                  setDepositorName('');
-                  setAccountEmail('');
-                  setAccountPhone('');
+                  // Conservamos depositorName, accountEmail y accountPhone si vienen pre-llenados desde la app
                   setCheckoutError('');
                   setNoAccountWarning(false);
                 }}
