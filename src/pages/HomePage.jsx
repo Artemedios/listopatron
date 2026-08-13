@@ -307,6 +307,7 @@ export default function HomePage({ onNavigate }) {
             ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.${finalReceiptUrl ? ' Comprobante: ' + finalReceiptUrl : ''}`
             : `Compra de plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
           read: false,
+          date: new Date().toISOString(),
           createdAt: serverTimestamp()
         });
       } catch (errNotif) {
