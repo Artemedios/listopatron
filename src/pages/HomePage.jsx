@@ -2698,13 +2698,13 @@ export default function HomePage({ onNavigate }) {
 
               <button
                 type="submit"
-                disabled={loading || cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === ''}
+                disabled={loading}
                 style={{
                   background: 'linear-gradient(135deg, #10B981, #059669)',
                   color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
                   fontSize: '15px', fontWeight: '700', cursor: 'pointer',
                   boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
-                  opacity: (cardName.trim() === '' || cardNumber.replace(/\s/g, '').length < 15 || cardExp.length < 5 || cardCvv.length < 3 || accountEmail.trim() === '') ? 0.6 : 1
+                  opacity: loading ? 0.6 : 1
                 }}
               >
                 {loading ? 'Procesando Pago con AZUL...' : `Pagar ${selectedPlanForCheckout.price} con AZUL`}
@@ -2962,13 +2962,13 @@ export default function HomePage({ onNavigate }) {
                 </a>
                 <button
                   type="submit"
-                  disabled={loading || depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '' || !receiptFile}
+                  disabled={loading}
                   style={{
                     background: 'linear-gradient(135deg, #F26000, #FF8533)',
                     color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
                     fontSize: '15px', fontWeight: '700', cursor: 'pointer',
                     boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
-                    opacity: (depositorName.trim() === '' || selectedTransferBank === '' || accountEmail.trim() === '' || !receiptFile) ? 0.6 : 1
+                    opacity: loading ? 0.6 : 1
                   }}
                 >
                   {loading ? 'Procesando...' : `✓ Notificar Transferencia de ${selectedPlanForTransfer.price}`}
