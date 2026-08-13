@@ -279,7 +279,7 @@ export default function HomePage({ onNavigate }) {
       try {
         await addDoc(collection(db, 'notificaciones'), {
           userId: 'admin',
-          type: paymentTab === 'transfer' ? 'plan_purchased_web_transfer' : 'plan_purchased_web',
+          type: 'system',
           title: paymentTab === 'transfer' ? '🏦 NUEVA TRANSFERENCIA PLAN WEB' : '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
           text: paymentTab === 'transfer'
             ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.${finalReceiptUrl ? ' Comprobante: ' + finalReceiptUrl : ''}`
@@ -3080,9 +3080,12 @@ export default function HomePage({ onNavigate }) {
               )}
             </div>
 
-            {last4 === 'Transferencia' && (
+            {purchasedPlanDetails && (
               <a
-                href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Banco%20de%20Origen:*%20${encodeURIComponent(selectedTransferBank)}.`}
+                href={last4 === 'Transferencia'
+                  ? `https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Banco%20de%20Origen:*%20${encodeURIComponent(selectedTransferBank)}.`
+                  : `https://wa.me/18099090455?text=Hola,%20acabo%20de%20comprar%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}%20con%20tarjeta%20en%20la%20web.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}.`
+                }
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -3092,7 +3095,7 @@ export default function HomePage({ onNavigate }) {
                   boxShadow: '0 4px 12px rgba(37,211,102,0.3)', marginBottom: '16px'
                 }}
               >
-                💬 Enviar Comprobante por WhatsApp
+                💬 Notificar por WhatsApp al Administrador
               </a>
             )}
 
