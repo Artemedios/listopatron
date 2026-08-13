@@ -275,6 +275,28 @@ export default function HomePage({ onNavigate }) {
 
       await addDoc(collection(db, 'plan_purchases'), purchaseData);
 
+      // Guardar el registro en la colección 'payments' para que el admin lo valide en la app
+      const paymentData = {
+        proId: userDocId || '',
+        proName: proName || cardName || depositorName || '',
+        proCategory: proCategory || '',
+        email: accountEmail.trim().toLowerCase(),
+        phone: accountPhone,
+        planId: activePlan.id,
+        planName: activePlan.name,
+        planPriceVal: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2000 : 500)),
+        transferAmount: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2000 : 500)),
+        planContracts: planContracts,
+        planBonus: 0,
+        status: paymentTab === 'transfer' ? 'pending' : 'paid',
+        paymentMethod: paymentTab === 'transfer' ? 'transfer' : 'card',
+        bank: selectedTransferBank || 'Tarjeta',
+        depositorName: depositorName || cardName || '',
+        receiptUrl: finalReceiptUrl || '',
+        createdAt: serverTimestamp()
+      };
+      await addDoc(collection(db, 'payments'), paymentData);
+
       // Crear notificación para el administrador
       try {
         await addDoc(collection(db, 'notificaciones'), {
