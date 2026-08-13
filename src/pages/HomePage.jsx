@@ -152,6 +152,32 @@ export default function HomePage({ onNavigate }) {
     }
   };
 
+  const handleWhatsAppSubmit = async (e, activePlan) => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!activePlan) return;
+
+    // Validar campos obligatorios
+    if (
+      !proName.trim() || 
+      !proCategory.trim() || 
+      !accountEmail.trim() || 
+      !accountPhone.trim() || 
+      !selectedTransferBank || 
+      !depositorName.trim() || 
+      !receiptFile
+    ) {
+      setCheckoutError("Por favor, completa todos los campos del formulario, incluyendo el comprobante de pago, antes de enviar por WhatsApp.");
+      return;
+    }
+
+    // 1. Ejecutar la lógica de base de datos para guardar la transferencia y notificar al admin
+    await handleConfirmPayment(null, activePlan);
+
+    // 2. Abrir WhatsApp con el mensaje pre-llenado
+    const msg = `Hola, acabo de realizar la transferencia para activar mi Plan ${activePlan.name}.\n\n*Detalles del Profesional:*\n- *Correo:* ${accountEmail}\n- *Teléfono:* ${accountPhone}\n- *Banco Origen:* ${selectedTransferBank}\n- *Depositante:* ${depositorName}.`;
+    window.open(`https://wa.me/18099090455?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
   const handleConfirmPayment = async (e, planOverride = null) => {
     if (e && e.preventDefault) e.preventDefault();
     const activePlan = planOverride || selectedPlanForCheckout;
@@ -2970,19 +2996,20 @@ export default function HomePage({ onNavigate }) {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
-                <a
-                  href={`https://wa.me/18099090455?text=Hola,%20acabo%20de%20realizar%20la%20transferencia%20para%20activar%20mi%20Plan%20${encodeURIComponent(selectedPlanForTransfer.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(accountPhone)}%0A-%20*Banco:*%20${encodeURIComponent(selectedTransferBank || 'No seleccionado')}%0A-%20*Depositante:*%20${encodeURIComponent(depositorName)}.`}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={(e) => handleWhatsAppSubmit(e, selectedPlanForTransfer)}
+                  disabled={loading}
                   style={{
-                    background: '#25D366', textDecoration: 'none', textAlign: 'center',
+                    background: '#25D366', textAlign: 'center',
                     color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
                     fontSize: '14px', fontWeight: '700', cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(37,211,102,0.3)', outline: 'none'
+                    boxShadow: '0 4px 16px rgba(37,211,102,0.3)', outline: 'none',
+                    opacity: loading ? 0.6 : 1
                   }}
                 >
                   💬 Enviar Comprobante por WhatsApp
-                </a>
+                </button>
                 <button
                   type="submit"
                   disabled={loading}
