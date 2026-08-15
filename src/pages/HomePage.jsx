@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import useListoLogic from '../useListoLogic';
-import { db, storage } from '../firebase';
+import { db, storage, functions } from '../firebase';
 import { collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { httpsCallable } from 'firebase/functions';
 import ad15 from '../assets/extracted_15.png';
 import ad16 from '../assets/extracted_16.png';
 import ad17 from '../assets/extracted_17.png';
@@ -192,7 +193,7 @@ export default function HomePage({ onNavigate }) {
       const snap = await getDocs(q);
       
       let userDocId = null;
-      let userName = cardName;
+      let userName = proName;
       let userExists = false;
       
       if (!snap.empty) {
@@ -200,7 +201,7 @@ export default function HomePage({ onNavigate }) {
         const userDoc = snap.docs[0];
         userDocId = userDoc.id;
         const userData = userDoc.data();
-        userName = userData.name || cardName;
+        userName = userData.name || proName || '';
         
         // Calcular fecha de expiración (30 días a partir de ahora)
         const expDate = new Date();
@@ -215,51 +216,78 @@ export default function HomePage({ onNavigate }) {
         // Guardar detalles del profesional encontrado en el estado
         setMatchedProPhone(userData.phone || userData.phoneWhatsApp || accountPhone || '');
         setMatchedProCategory(userData.category || userData.categoryEs || '');
-
-        if (paymentTab !== 'transfer') {
-          // Actualizar plan del usuario en Firestore (Solo para pagos aprobados instantáneos de tarjeta)
-          await updateDoc(doc(db, 'users', userDocId), {
-            plan: activePlan.id,
-            planStatus: 'active',
-            contracts: planContracts,
-            planExpirationDate: expDate.toISOString(),
-            available: true
-          });
-
-          // Crear notificación de activación para el usuario (Aprobado)
-          try {
-            await addDoc(collection(db, 'notificaciones'), {
-              userId: userDocId,
-              type: 'plan_purchased',
-              title: '💎 ¡Plan Activado con Éxito!',
-              text: `Tu plan ${activePlan.name} ha sido activado por 30 días con ${planContracts === 9999 ? 'contratos ilimitados' : planContracts + ' contratos'}. Ya puedes ponerte en línea en la app Listo Patrón.`,
-              read: false,
-              createdAt: serverTimestamp()
-            });
-          } catch (errNotif) {
-            console.error("Error guardando notificación de usuario:", errNotif);
-          }
-        } else {
-          // Crear notificación de pendiente para el usuario si es transferencia
-          try {
-            await addDoc(collection(db, 'notificaciones'), {
-              userId: userDocId,
-              type: 'plan_pending',
-              title: '🏦 Solicitud de Plan Recibida',
-              text: `Hemos recibido tu pago por transferencia para el plan ${activePlan.name}. El administrador verificará tu comprobante en un plazo de hasta 72 horas para activarte el plan.`,
-              read: false,
-              createdAt: serverTimestamp()
-            });
-          } catch (errNotif) {
-            console.error("Error guardando notificación de usuario:", errNotif);
-          }
-        }
       } else {
-        // Mostrar advertencia si el correo no está registrado en la app
+        // Mostrar advertencia si el correo no está registrado en la app y no permitir continuar
         setNoAccountWarning(true);
+        setLoading(false);
+        return;
       }
 
-      // Guardar el registro de la transacción en la colección 'plan_purchases'
+      if (paymentTab === 'card') {
+        // ── PAGO REAL CON AZUL ───────────
+        try {
+          const generarFirma = httpsCallable(functions, 'generarFirmaAzul');
+          const planPriceVal = parseFloat(activePlan.price.replace(/[^0-9.]/g, ''));
+          
+          const params = {
+            MerchantName: "Listo Patron",
+            MerchantType: "E-Commerce",
+            CurrencyCode: "214", // DOP
+            OrderNumber: `PLAN_${activePlan.id.toUpperCase()}_${userDocId}_${Date.now()}`,
+            Amount: (planPriceVal * 100).toString(), // Monto en centavos (ej: 100000 para 1000)
+            ApprovedUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
+            DeclinedUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
+            CancelUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
+          };
+
+          const signatureResult = await generarFirma(params);
+          const signatureData = signatureResult.data;
+
+          // Crear un formulario dinámico y enviarlo mediante POST a la pasarela de Azul
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'https://pruebas.azul.com.do/paymentpage/post.aspx'; // Usar pasarela de pruebas de Azul
+
+          const formFields = {
+            MerchantId: signatureData.MerchantId,
+            MerchantName: params.MerchantName,
+            MerchantType: params.MerchantType,
+            CurrencyCode: params.CurrencyCode,
+            OrderNumber: params.OrderNumber,
+            Amount: params.Amount,
+            Itbis: signatureData.ITBIS,
+            ApprovedUrl: params.ApprovedUrl,
+            DeclinedUrl: params.DeclinedUrl,
+            CancelUrl: params.CancelUrl,
+            UseCustomField1: "0",
+            CustomField1Label: "",
+            CustomField1Value: "",
+            UseCustomField2: "0",
+            CustomField2Label: "",
+            CustomField2Value: "",
+            AuthHash: signatureData.AuthHash
+          };
+
+          for (const [key, value] of Object.entries(formFields)) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = value;
+            form.appendChild(input);
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+          return; // Detener la ejecución del flujo local
+        } catch (azulErr) {
+          console.error("Error al generar firma de Azul:", azulErr);
+          setCheckoutError("No se pudo iniciar el proceso de pago con Azul. Intente de nuevo.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      // ── PAGO POR TRANSFERENCIA (Existente) ──
       const purchaseData = {
         email: accountEmail.trim().toLowerCase(),
         phone: accountPhone,
@@ -269,69 +297,77 @@ export default function HomePage({ onNavigate }) {
         userExists: userExists,
         userDocId: userDocId,
         createdAt: serverTimestamp(),
-        proName: proName || cardName || depositorName || '',
+        proName: proName || depositorName || '',
         proCategory: proCategory || ''
       };
 
       let finalReceiptUrl = '';
-      if (paymentTab === 'transfer') {
-        purchaseData.paymentMethod = 'transfer';
-        purchaseData.originBank = selectedTransferBank;
-        purchaseData.depositorName = depositorName;
-        purchaseData.cardName = depositorName;
-        purchaseData.last4 = 'Transferencia';
-        purchaseData.status = 'pending_verification';
+      purchaseData.paymentMethod = 'transfer';
+      purchaseData.originBank = selectedTransferBank;
+      purchaseData.depositorName = depositorName;
+      purchaseData.cardName = depositorName;
+      purchaseData.last4 = 'Transferencia';
+      purchaseData.status = 'pending_verification';
 
-        if (receiptFile) {
-          try {
-            const fileRef = ref(storage, `comprobantes_transferencias/${Date.now()}_${receiptFile.name}`);
-            const uploadSnap = await uploadBytes(fileRef, receiptFile);
-            finalReceiptUrl = await getDownloadURL(uploadSnap.ref);
-            purchaseData.receiptUrl = finalReceiptUrl;
-          } catch (storageErr) {
-            console.error("Error al subir comprobante a Firebase Storage:", storageErr);
-            throw new Error("No se pudo subir la imagen del comprobante. Intente de nuevo.");
-          }
+      if (receiptFile) {
+        try {
+          const fileRef = ref(storage, `comprobantes_transferencias/${Date.now()}_${receiptFile.name}`);
+          const uploadSnap = await uploadBytes(fileRef, receiptFile);
+          finalReceiptUrl = await getDownloadURL(uploadSnap.ref);
+          purchaseData.receiptUrl = finalReceiptUrl;
+        } catch (storageErr) {
+          console.error("Error al subir comprobante a Firebase Storage:", storageErr);
+          throw new Error("No se pudo subir la imagen del comprobante. Intente de nuevo.");
         }
-      } else {
-        purchaseData.paymentMethod = 'card';
-        purchaseData.cardName = cardName;
-        purchaseData.last4 = cardNumber.replace(/\s/g, '').slice(-4);
       }
 
       await addDoc(collection(db, 'plan_purchases'), purchaseData);
 
+      const planContracts = activePlan.id === 'gold' ? 8 : (activePlan.id === 'platinum' ? 12 : (activePlan.id === 'vip' ? 9999 : 3));
+
       // Guardar el registro en la colección 'payments' para que el admin lo valide en la app
       const paymentData = {
         proId: userDocId || '',
-        proName: proName || cardName || depositorName || '',
+        proName: proName || depositorName || '',
         proCategory: proCategory || '',
         email: accountEmail.trim().toLowerCase(),
         phone: accountPhone,
         planId: activePlan.id,
         planName: activePlan.name,
-        planPriceVal: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2000 : 500)),
-        transferAmount: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2000 : 500)),
+        planPriceVal: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2500 : 500)),
+        transferAmount: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2500 : 500)),
         planContracts: planContracts,
         planBonus: 0,
-        status: paymentTab === 'transfer' ? 'pending' : 'paid',
-        paymentMethod: paymentTab === 'transfer' ? 'transfer' : 'card',
-        bank: selectedTransferBank || 'Tarjeta',
-        depositorName: depositorName || cardName || '',
+        status: 'pending',
+        paymentMethod: 'transfer',
+        bank: selectedTransferBank || 'Transferencia',
+        depositorName: depositorName || '',
         receiptUrl: finalReceiptUrl || '',
         createdAt: serverTimestamp()
       };
       await addDoc(collection(db, 'payments'), paymentData);
+
+      // Crear notificación de pendiente para el usuario si es transferencia
+      try {
+        await addDoc(collection(db, 'notificaciones'), {
+          userId: userDocId,
+          type: 'plan_pending',
+          title: '🏦 Solicitud de Plan Recibida',
+          text: `Hemos recibido tu pago por transferencia para el plan ${activePlan.name}. El administrador verificará tu comprobante en un plazo de hasta 72 horas para activarte el plan.`,
+          read: false,
+          createdAt: serverTimestamp()
+        });
+      } catch (errNotif) {
+        console.error("Error guardando notificación de usuario:", errNotif);
+      }
 
       // Crear notificación para el administrador
       try {
         await addDoc(collection(db, 'notificaciones'), {
           userId: 'admin',
           type: 'system',
-          title: paymentTab === 'transfer' ? '🏦 NUEVA TRANSFERENCIA PLAN WEB' : '🌐 NUEVA COMPRA DE PLAN DESDE LA WEB',
-          text: paymentTab === 'transfer'
-            ? `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.${finalReceiptUrl ? ' Comprobante: ' + finalReceiptUrl : ''}`
-            : `Compra de plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()}. Estado del usuario Listo: ${userExists ? 'Encontrado y Activado' : 'No Encontrado (Requiere activación manual)'}.`,
+          title: '🏦 NUEVA TRANSFERENCIA PLAN WEB',
+          text: `Notificación de transferencia para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} desde el banco ${selectedTransferBank} por ${depositorName}.${finalReceiptUrl ? ' Comprobante: ' + finalReceiptUrl : ''}`,
           read: false,
           date: new Date().toISOString(),
           createdAt: serverTimestamp()
@@ -342,7 +378,7 @@ export default function HomePage({ onNavigate }) {
 
       // Mostrar el recibo de éxito
       setAuthCode(Math.floor(10000 + Math.random() * 90000));
-      setLast4(paymentTab === 'transfer' ? 'Transferencia' : (cardNumber.replace(/\s/g, '').slice(-4) || '••••'));
+      setLast4('Transferencia');
       setPurchasedPlanDetails(activePlan);
       setShowReceipt(true);
       setSelectedPlanForCheckout(null);
@@ -352,12 +388,11 @@ export default function HomePage({ onNavigate }) {
       setSelectedTransferBank('');
       setDepositorName('');
       setReceiptFile(null);
-    } catch (err) {
-      console.error("Error al procesar el pago del plan en la web:", err);
-      setCheckoutError("Ocurrió un error al procesar el pago. Por favor intente de nuevo.");
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error("Error en el pago de plan:", error);
+      setCheckoutError(error.message || "Ocurrió un error al procesar el pago.");
     }
+    setLoading(false);
   };
 
   const trackAppDownload = (platform) => {
@@ -2666,83 +2701,14 @@ export default function HomePage({ onNavigate }) {
                 />
               </div>
 
-              {/* Nombre de la tarjeta */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre en la Tarjeta</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Juan Pérez"
-                  value={cardName}
-                  onChange={e => setCardName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Número de Tarjeta */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Número de Tarjeta</label>
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="0000 0000 0000 0000"
-                  maxLength={19}
-                  value={cardNumber}
-                  onChange={e => {
-                    let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
-                    let parts = []
-                    for (let i = 0; i < v.length; i += 4) {
-                      parts.push(v.substring(i, i + 4))
-                    }
-                    setCardNumber(parts.join(' '))
-                  }}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Vencimiento y CVV */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Vencimiento</label>
-                  <input 
-                    type="tel" 
-                    required
-                    placeholder="MM/AA"
-                    maxLength={5}
-                    value={cardExp}
-                    onChange={e => {
-                      let val = e.target.value
-                      let clean = val.replace(/\D/g, '')
-                      if (clean.length === 1 && clean > '1') clean = '0' + clean
-                      if (clean.length >= 2) {
-                        let m = parseInt(clean.substring(0,2), 10)
-                        if (m < 1) m = 1
-                        if (m > 12) m = 12
-                        clean = (m < 10 ? '0' + m : String(m)) + clean.substring(2)
-                      }
-                      if (clean.length > 2) setCardExp(clean.substring(0,2) + '/' + clean.substring(2,4))
-                      else setCardExp(clean)
-                    }}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>CVV</label>
-                  <input 
-                    type="tel" 
-                    required
-                    placeholder="123"
-                    maxLength={4}
-                    value={cardCvv}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                    onChange={e => setCardCvv(e.target.value.replace(/[^0-9]/g, ''))}
-                  />
-                </div>
-              </div>
-
-              {/* Security Badge */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', opacity: 0.8, fontSize: '12px', color: '#64748B', margin: '4px 0' }}>
-                <span>🔒 Transacción encriptada de 256-bits</span>
+              {/* Mensaje de Redirección Seguro a Azul */}
+              <div style={{
+                background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px',
+                padding: '16px', color: '#0369A1', fontSize: '13.5px', lineHeight: '1.4',
+                fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '8px'
+              }}>
+                <span style={{ fontSize: '18px' }}>🛡️ Conexión Segura</span>
+                <span>Al continuar, serás redirigido a la plataforma oficial y segura de <strong>AZUL</strong> para introducir los datos de tu tarjeta de crédito o débito. Ninguno de tus datos bancarios se guardará en nuestros servidores.</span>
               </div>
 
               <button
