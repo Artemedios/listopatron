@@ -306,18 +306,23 @@ export default function HomePage({ onNavigate }) {
       return;
     }
 
+    // Guardamos los datos antes de que handleConfirmPayment limpie el estado
+    const savedBank = selectedTransferBank;
+    const savedDepositor = depositorName;
+
     // 1. Ejecutar la lógica de base de datos para guardar la transferencia y notificar al admin
-    await handleConfirmPayment(null, activePlan);
+    const success = await handleConfirmPayment(null, activePlan);
+    if (!success) return;
 
     // 2. Abrir WhatsApp con el mensaje pre-llenado
-    const msg = `Hola, acabo de realizar la transferencia para activar mi Plan ${activePlan.name}.\n\n*Detalles del Profesional:*\n- *Correo:* ${accountEmail}\n- *Teléfono:* ${accountPhone}\n- *Banco Origen:* ${selectedTransferBank}\n- *Depositante:* ${depositorName}.`;
+    const msg = `Hola, acabo de realizar la transferencia para activar mi Plan ${activePlan.name}.\n\n*Detalles del Profesional:*\n- *Correo:* ${accountEmail}\n- *Teléfono:* ${accountPhone}\n- *Banco Origen:* ${savedBank}\n- *Depositante:* ${savedDepositor}.`;
     window.open(`https://wa.me/18099090455?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   const handleConfirmPayment = async (e, planOverride = null) => {
     if (e && e.preventDefault) e.preventDefault();
     const activePlan = planOverride || selectedPlanForCheckout;
-    if (!activePlan) return;
+    if (!activePlan) return false;
     setLoading(true);
     setCheckoutError('');
     setNoAccountWarning(false);
@@ -355,7 +360,7 @@ export default function HomePage({ onNavigate }) {
         // Mostrar advertencia si el correo no está registrado en la app y no permitir continuar
         setNoAccountWarning(true);
         setLoading(false);
-        return;
+        return false;
       }
 
       if (paymentTab === 'card') {
@@ -413,12 +418,12 @@ export default function HomePage({ onNavigate }) {
 
           document.body.appendChild(form);
           form.submit();
-          return; // Detener la ejecución del flujo local
+          return true; // Detener la ejecución del flujo local
         } catch (azulErr) {
           console.error("Error al generar firma de Azul:", azulErr);
           setCheckoutError("No se pudo iniciar el proceso de pago con Azul. Intente de nuevo.");
           setLoading(false);
-          return;
+          return false;
         }
       }
 
@@ -526,8 +531,11 @@ export default function HomePage({ onNavigate }) {
     } catch (error) {
       console.error("Error en el pago de plan:", error);
       setCheckoutError(error.message || "Ocurrió un error al procesar el pago.");
+      setLoading(false);
+      return false;
     }
     setLoading(false);
+    return true;
   };
 
   const trackAppDownload = (platform) => {
