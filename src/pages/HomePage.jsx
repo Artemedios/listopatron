@@ -25,6 +25,24 @@ const portadaImages = [
 export default function HomePage({ onNavigate }) {
   useListoLogic();
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    const phoneParam = params.get('phone');
+    const nameParam = params.get('name');
+    const categoryParam = params.get('category');
+
+    if (emailParam) setAccountEmail(decodeURIComponent(emailParam));
+    if (phoneParam) setAccountPhone(decodeURIComponent(phoneParam));
+    if (nameParam) {
+      const decodedName = decodeURIComponent(nameParam);
+      setProName(decodedName);
+      setCardName(decodedName);
+      setDepositorName(decodedName);
+    }
+    if (categoryParam) setProCategory(decodeURIComponent(categoryParam));
+  }, []);
+
   // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
   const [showPlanesModal, setShowPlanesModal] = useState(false);
   const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
