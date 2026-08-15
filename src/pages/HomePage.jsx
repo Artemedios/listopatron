@@ -32,15 +32,33 @@ export default function HomePage({ onNavigate }) {
     const nameParam = params.get('name');
     const categoryParam = params.get('category');
 
-    if (emailParam) setAccountEmail(decodeURIComponent(emailParam));
-    if (phoneParam) setAccountPhone(decodeURIComponent(phoneParam));
-    if (nameParam) {
-      const decodedName = decodeURIComponent(nameParam);
-      setProName(decodedName);
-      setCardName(decodedName);
-      setDepositorName(decodedName);
+    let email = emailParam ? decodeURIComponent(emailParam) : localStorage.getItem('matched_pro_email');
+    let phone = phoneParam ? decodeURIComponent(phoneParam) : localStorage.getItem('matched_pro_phone');
+    let name = nameParam ? decodeURIComponent(nameParam) : localStorage.getItem('matched_pro_name');
+    let category = categoryParam ? decodeURIComponent(categoryParam) : localStorage.getItem('matched_pro_category');
+
+    // Autocompletado de prueba si estamos en entorno local y no hay parámetros ni datos guardados
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocalhost && !email && !phone && !name && !category) {
+      email = "pro_prueba@gmail.com";
+      phone = "809-909-0455";
+      name = "Juan Pérez Local";
+      category = "Pintor";
     }
-    if (categoryParam) setProCategory(decodeURIComponent(categoryParam));
+
+    if (emailParam) localStorage.setItem('matched_pro_email', email);
+    if (phoneParam) localStorage.setItem('matched_pro_phone', phone);
+    if (nameParam) localStorage.setItem('matched_pro_name', name);
+    if (categoryParam) localStorage.setItem('matched_pro_category', category);
+
+    if (email) setAccountEmail(email);
+    if (phone) setAccountPhone(phone);
+    if (name) {
+      setProName(name);
+      setCardName(name);
+      setDepositorName(name);
+    }
+    if (category) setProCategory(category);
   }, []);
 
   // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
