@@ -25,6 +25,34 @@ const portadaImages = [
 export default function HomePage({ onNavigate }) {
   useListoLogic();
 
+  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
+  const [showPlanesModal, setShowPlanesModal] = useState(false);
+  const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
+  const [selectedPlanForCheckout, setSelectedPlanForCheckout] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [cardName, setCardName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExp, setCardExp] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [accountEmail, setAccountEmail] = useState('');
+  const [accountPhone, setAccountPhone] = useState('');
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [purchasedPlanDetails, setPurchasedPlanDetails] = useState(null);
+  const [authCode, setAuthCode] = useState(0);
+  const [last4, setLast4] = useState('');
+  const [checkoutError, setCheckoutError] = useState('');
+  const [noAccountWarning, setNoAccountWarning] = useState(false);
+  const [paymentTab, setPaymentTab] = useState('card'); // 'card' | 'transfer'
+  const [selectedTransferBank, setSelectedTransferBank] = useState('');
+  const [depositorName, setDepositorName] = useState('');
+  const [copiedIdx, setCopiedIdx] = useState(null);
+  const [selectedPlanForTransfer, setSelectedPlanForTransfer] = useState(null);
+  const [receiptFile, setReceiptFile] = useState(null);
+  const [proName, setProName] = useState('');
+  const [proCategory, setProCategory] = useState('');
+  const [matchedProPhone, setMatchedProPhone] = useState('');
+  const [matchedProCategory, setMatchedProCategory] = useState('');
+
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email');
@@ -159,34 +187,6 @@ export default function HomePage({ onNavigate }) {
 
     return () => clearTimeout(timer);
   }, [accountPhone]);
-
-  // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
-  const [showPlanesModal, setShowPlanesModal] = useState(false);
-  const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
-  const [selectedPlanForCheckout, setSelectedPlanForCheckout] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [cardName, setCardName] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExp, setCardExp] = useState('');
-  const [cardCvv, setCardCvv] = useState('');
-  const [accountEmail, setAccountEmail] = useState('');
-  const [accountPhone, setAccountPhone] = useState('');
-  const [showReceipt, setShowReceipt] = useState(false);
-  const [purchasedPlanDetails, setPurchasedPlanDetails] = useState(null);
-  const [authCode, setAuthCode] = useState(0);
-  const [last4, setLast4] = useState('');
-  const [checkoutError, setCheckoutError] = useState('');
-  const [noAccountWarning, setNoAccountWarning] = useState(false);
-  const [paymentTab, setPaymentTab] = useState('card'); // 'card' | 'transfer'
-  const [selectedTransferBank, setSelectedTransferBank] = useState('');
-  const [depositorName, setDepositorName] = useState('');
-  const [copiedIdx, setCopiedIdx] = useState(null);
-  const [selectedPlanForTransfer, setSelectedPlanForTransfer] = useState(null);
-  const [receiptFile, setReceiptFile] = useState(null);
-  const [proName, setProName] = useState('');
-  const [proCategory, setProCategory] = useState('');
-  const [matchedProPhone, setMatchedProPhone] = useState('');
-  const [matchedProCategory, setMatchedProCategory] = useState('');
 
   const webPlanes = [
     { 
