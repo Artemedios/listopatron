@@ -61,6 +61,105 @@ export default function HomePage({ onNavigate }) {
     if (category) setProCategory(category);
   }, []);
 
+  // ── BUSQUEDA AUTOMÁTICA DE DATOS DEL PROFESIONAL DESDE FIRESTORE ──
+  // Sincroniza datos cuando cambia el email (por ejemplo, si viene de URL/localStorage o si el usuario lo digita)
+  React.useEffect(() => {
+    const email = accountEmail.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return;
+
+    const timer = setTimeout(async () => {
+      try {
+        const usersRef = collection(db, 'users');
+        const q = query(usersRef, where('email', '==', email));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          const userData = snap.docs[0].data();
+          const name = userData.name || '';
+          const category = userData.category || userData.categoryEs || '';
+          const phone = userData.phone || userData.phoneWhatsApp || '';
+
+          if (name) {
+            setProName(name);
+            setDepositorName(name);
+            setCardName(name);
+            localStorage.setItem('matched_pro_name', name);
+          }
+          if (category) {
+            setProCategory(category);
+            localStorage.setItem('matched_pro_category', category);
+          }
+          if (phone) {
+            setAccountPhone(phone);
+            localStorage.setItem('matched_pro_phone', phone);
+          }
+          localStorage.setItem('matched_pro_email', email);
+        }
+      } catch (err) {
+        console.error("Error al buscar profesional por email en Firestore:", err);
+      }
+    }, 600); // Pequeño debounce para no saturar consultas al escribir
+
+    return () => clearTimeout(timer);
+  }, [accountEmail]);
+
+  // Sincroniza datos cuando cambia el teléfono (en caso de que sea lo primero que digite el usuario)
+  React.useEffect(() => {
+    const phoneClean = accountPhone.replace(/\D/g, '');
+    if (phoneClean.length < 10) return;
+
+    const timer = setTimeout(async () => {
+      try {
+        const usersRef = collection(db, 'users');
+        const q1 = query(usersRef, where('phone', '==', accountPhone.trim()));
+        const snap1 = await getDocs(q1);
+        
+        let foundDoc = null;
+        if (!snap1.empty) {
+          foundDoc = snap1.docs[0];
+        } else {
+          const q2 = query(usersRef, where('phone', '==', phoneClean));
+          const snap2 = await getDocs(q2);
+          if (!snap2.empty) {
+            foundDoc = snap2.docs[0];
+          } else {
+            const q3 = query(usersRef, where('phoneWhatsApp', '==', accountPhone.trim()));
+            const snap3 = await getDocs(q3);
+            if (!snap3.empty) {
+              foundDoc = snap3.docs[0];
+            }
+          }
+        }
+
+        if (foundDoc) {
+          const userData = foundDoc.data();
+          const name = userData.name || '';
+          const category = userData.category || userData.categoryEs || '';
+          const email = userData.email || '';
+
+          if (name) {
+            setProName(name);
+            setDepositorName(name);
+            setCardName(name);
+            localStorage.setItem('matched_pro_name', name);
+          }
+          if (category) {
+            setProCategory(category);
+            localStorage.setItem('matched_pro_category', category);
+          }
+          if (email) {
+            setAccountEmail(email);
+            localStorage.setItem('matched_pro_email', email);
+          }
+        }
+      } catch (err) {
+        console.error("Error al buscar profesional por teléfono en Firestore:", err);
+      }
+    }, 600); // Debounce de 600ms
+
+    return () => clearTimeout(timer);
+  }, [accountPhone]);
+
   // ESTADOS Y MÉTODOS DE COMPRA DE PLANES DESDE WEB
   const [showPlanesModal, setShowPlanesModal] = useState(false);
   const [selectedPlanForBenefits, setSelectedPlanForBenefits] = useState(null);
