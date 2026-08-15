@@ -651,8 +651,8 @@ export default function HomePage({ onNavigate }) {
         onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
       >
         <span>
-          <span className="desktop-text">💳 COMPRAR PLAN AQUÍ</span>
-          <span className="mobile-text">💳 Comprar Plan</span>
+          <span className="desktop-text">💳 COMPRAR UN PLAN</span>
+          <span className="mobile-text">💳 COMPRAR UN PLAN</span>
         </span>
       </button>
     </div>
@@ -688,7 +688,7 @@ export default function HomePage({ onNavigate }) {
         gap: '6px'
       }}
     >
-      <span>💳 COMPRAR PLAN AQUÍ</span>
+      <span>💳 COMPRAR UN PLAN</span>
     </button>
     
     <a href="#servicios">Servicios</a>
@@ -1881,7 +1881,7 @@ export default function HomePage({ onNavigate }) {
           onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
           onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
         >
-          💳 COMPRAR PLAN AQUÍ
+          💳 COMPRAR UN PLAN
         </button>
       </div>
     </div>
