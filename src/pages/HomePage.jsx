@@ -92,6 +92,12 @@ export default function HomePage({ onNavigate }) {
   // ── BUSQUEDA AUTOMÁTICA DE DATOS DEL PROFESIONAL DESDE FIRESTORE ──
   // Sincroniza datos cuando cambia el email (por ejemplo, si viene de URL/localStorage o si el usuario lo digita)
   React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    if (emailParam && accountEmail.trim().toLowerCase() === decodeURIComponent(emailParam).trim().toLowerCase()) {
+      return; // Evitar sobreescribir si viene desde los parámetros de la URL
+    }
+
     const email = accountEmail.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return;
@@ -133,6 +139,12 @@ export default function HomePage({ onNavigate }) {
 
   // Sincroniza datos cuando cambia el teléfono (en caso de que sea lo primero que digite el usuario)
   React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const phoneParam = params.get('phone');
+    if (phoneParam && accountPhone.trim() === decodeURIComponent(phoneParam).trim()) {
+      return; // Evitar sobreescribir si viene desde los parámetros de la URL
+    }
+
     const phoneClean = accountPhone.replace(/\D/g, '');
     if (phoneClean.length < 10) return;
 
