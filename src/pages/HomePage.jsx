@@ -364,67 +364,111 @@ export default function HomePage({ onNavigate }) {
       }
 
       if (paymentTab === 'card') {
-        // ── PAGO REAL CON AZUL ───────────
-        try {
-          const generarFirma = httpsCallable(functions, 'generarFirmaAzul');
-          const planPriceVal = parseFloat(activePlan.price.replace(/[^0-9.]/g, ''));
-          
-          const params = {
-            MerchantName: "Listo Patron",
-            MerchantType: "E-Commerce",
-            CurrencyCode: "214", // DOP
-            OrderNumber: `PLAN_${activePlan.id.toUpperCase()}_${userDocId}_${Date.now()}`,
-            Amount: (planPriceVal * 100).toString(), // Monto en centavos (ej: 100000 para 1000)
-            ApprovedUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
-            DeclinedUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
-            CancelUrl: "https://us-central1-listoapp-52b46.cloudfunctions.net/azulWebHook",
-          };
-
-          const signatureResult = await generarFirma(params);
-          const signatureData = signatureResult.data;
-
-          // Crear un formulario dinámico y enviarlo mediante POST a la pasarela de Azul
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = 'https://pruebas.azul.com.do/paymentpage/post.aspx'; // Usar pasarela de pruebas de Azul
-
-          const formFields = {
-            MerchantId: signatureData.MerchantId,
-            MerchantName: params.MerchantName,
-            MerchantType: params.MerchantType,
-            CurrencyCode: params.CurrencyCode,
-            OrderNumber: params.OrderNumber,
-            Amount: params.Amount,
-            Itbis: signatureData.ITBIS,
-            ApprovedUrl: params.ApprovedUrl,
-            DeclinedUrl: params.DeclinedUrl,
-            CancelUrl: params.CancelUrl,
-            UseCustomField1: "0",
-            CustomField1Label: "",
-            CustomField1Value: "",
-            UseCustomField2: "0",
-            CustomField2Label: "",
-            CustomField2Value: "",
-            AuthHash: signatureData.AuthHash
-          };
-
-          for (const [key, value] of Object.entries(formFields)) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = value;
-            form.appendChild(input);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-          return true; // Detener la ejecución del flujo local
-        } catch (azulErr) {
-          console.error("Error al generar firma de Azul:", azulErr);
-          setCheckoutError("No se pudo iniciar el proceso de pago con Azul. Intente de nuevo.");
+        // ── PAGO CON TARJETA DE CRÉDITO (Simulado/Mocked para Validación) ──
+        if (!cardName.trim() || !cardNumber.trim() || !cardExp.trim() || !cardCvv.trim()) {
+          setCheckoutError("Por favor, completa todos los campos de la tarjeta de crédito.");
           setLoading(false);
           return false;
         }
+
+        const last4Digits = cardNumber.replace(/\s/g, '').slice(-4);
+
+        const purchaseData = {
+          email: accountEmail.trim().toLowerCase(),
+          phone: accountPhone,
+          planId: activePlan.id,
+          planName: activePlan.name,
+          price: activePlan.price,
+          userExists: userExists,
+          userDocId: userDocId,
+          createdAt: serverTimestamp(),
+          proName: proName || cardName || '',
+          proCategory: proCategory || '',
+          paymentMethod: 'card',
+          cardName: cardName,
+          last4: last4Digits,
+          status: 'pending_verification'
+        };
+
+        await addDoc(collection(db, 'plan_purchases'), purchaseData);
+
+        const planContracts = activePlan.id === 'gold' ? 8 : (activePlan.id === 'platinum' ? 12 : (activePlan.id === 'vip' ? 9999 : 3));
+
+        const paymentData = {
+          proId: userDocId || '',
+          proName: proName || cardName || '',
+          proCategory: proCategory || '',
+          email: accountEmail.trim().toLowerCase(),
+          phone: accountPhone,
+          planId: activePlan.id,
+          planName: activePlan.name,
+          planPriceVal: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2500 : 500)),
+          transferAmount: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2500 : 500)),
+          planContracts: planContracts,
+          planBonus: 0,
+          status: 'pending',
+          paymentMethod: 'card',
+          cardName: cardName,
+          last4: last4Digits,
+          createdAt: serverTimestamp()
+        };
+        await addDoc(collection(db, 'payments'), paymentData);
+
+        // Crear notificación de pendiente para el usuario
+        try {
+          await addDoc(collection(db, 'notificaciones'), {
+            userId: userDocId,
+            type: 'plan_pending',
+            title: '💳 Pago con Tarjeta en Proceso',
+            text: `Hemos recibido tu pago con tarjeta para el plan ${activePlan.name}. El administrador verificará la transacción para activarte el plan.`,
+            read: false,
+            createdAt: serverTimestamp()
+          });
+        } catch (errNotif) {
+          console.error("Error guardando notificación de usuario:", errNotif);
+        }
+
+        // Crear notificación para el administrador
+        try {
+          await addDoc(collection(db, 'notificaciones'), {
+            userId: 'admin',
+            type: 'system',
+            title: '💳 NUEVA COMPRA CON TARJETA PLAN WEB',
+            text: `Notificación de pago con tarjeta para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} por ${cardName} (Tarjeta terminada en ${last4Digits}).`,
+            read: false,
+            date: new Date().toISOString(),
+            createdAt: serverTimestamp()
+          });
+        } catch (errNotif) {
+          console.error("Error guardando notificación de administrador:", errNotif);
+        }
+
+        // Mostrar el recibo de éxito
+        setAuthCode(Math.floor(10000 + Math.random() * 90000));
+        setLast4(last4Digits);
+        setPurchasedPlanDetails({
+          ...activePlan,
+          email: accountEmail.trim().toLowerCase(),
+          methodLabel: 'Tarjeta de Crédito',
+          detail1Label: 'Tarjeta',
+          detail1Val: `VISA •••• ${last4Digits}`,
+          detail2Label: 'Titular',
+          detail2Val: cardName,
+          statusLabel: 'Pendiente de Verificación',
+          statusColor: '#F59E0B'
+        });
+        setShowReceipt(true);
+        setSelectedPlanForCheckout(null);
+        setSelectedPlanForTransfer(null);
+        setShowPlanesModal(false);
+        setPaymentTab('card');
+        setCardName('');
+        setCardNumber('');
+        setCardExp('');
+        setCardCvv('');
+        setReceiptFile(null);
+        setLoading(false);
+        return true;
       }
 
       // ── PAGO POR TRANSFERENCIA (Existente) ──
@@ -519,7 +563,17 @@ export default function HomePage({ onNavigate }) {
       // Mostrar el recibo de éxito
       setAuthCode(Math.floor(10000 + Math.random() * 90000));
       setLast4('Transferencia');
-      setPurchasedPlanDetails(activePlan);
+      setPurchasedPlanDetails({
+        ...activePlan,
+        email: accountEmail.trim().toLowerCase(),
+        methodLabel: 'Transferencia Bancaria',
+        detail1Label: 'Banco de Origen',
+        detail1Val: selectedTransferBank,
+        detail2Label: 'Depositante',
+        detail2Val: depositorName,
+        statusLabel: 'Pendiente de Verificación',
+        statusColor: '#F59E0B'
+      });
       setShowReceipt(true);
       setSelectedPlanForCheckout(null);
       setSelectedPlanForTransfer(null);
@@ -2844,14 +2898,85 @@ export default function HomePage({ onNavigate }) {
                 />
               </div>
 
+              {/* --- DATOS DE LA TARJETA DE CRÉDITO --- */}
+              <div style={{ marginTop: '10px', borderTop: '1px solid #E2E8F0', paddingTop: '16px' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 14px 0', textAlign: 'left' }}>Datos de la Tarjeta</h4>
+                
+                {/* Nombre en la Tarjeta */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Nombre en la Tarjeta</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="Ej. Juan Pérez"
+                    value={cardName}
+                    onChange={e => setCardName(e.target.value)}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                {/* Número de Tarjeta */}
+                <div style={{ marginBottom: '14px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Número de Tarjeta</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="4000 1234 5678 9010"
+                    maxLength="19"
+                    value={cardNumber}
+                    onChange={e => {
+                      let val = e.target.value.replace(/\D/g, '');
+                      let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+                      setCardNumber(formatted);
+                    }}
+                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                {/* Vencimiento y CVV */}
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '14px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Vencimiento (MM/YY)</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="MM/YY"
+                      maxLength="5"
+                      value={cardExp}
+                      onChange={e => {
+                        let val = e.target.value.replace(/\D/g, '');
+                        if (val.length > 2) {
+                          val = val.substring(0, 2) + '/' + val.substring(2, 4);
+                        }
+                        setCardExp(val);
+                      }}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>CVV</label>
+                    <input 
+                      type="password" 
+                      required
+                      placeholder="123"
+                      maxLength="4"
+                      value={cardCvv}
+                      onChange={e => setCardCvv(e.target.value.replace(/\D/g, ''))}
+                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Mensaje de Redirección Seguro a Azul */}
               <div style={{
                 background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px',
-                padding: '16px', color: '#0369A1', fontSize: '13.5px', lineHeight: '1.4',
-                fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '8px'
+                padding: '12px 16px', color: '#0369A1', fontSize: '12.5px', lineHeight: '1.4',
+                fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '4px', textAlign: 'left',
+                marginBottom: '4px'
               }}>
-                <span style={{ fontSize: '18px' }}>🛡️ Conexión Segura</span>
-                <span>Al continuar, serás redirigido a la plataforma oficial y segura de <strong>AZUL</strong> para introducir los datos de tu tarjeta de crédito o débito. Ninguno de tus datos bancarios se guardará en nuestros servidores.</span>
+                <span style={{ fontSize: '15px', fontWeight: '700' }}>🛡️ Conexión Segura</span>
+                <span>Tus datos son procesados de forma cifrada de extremo a extremo. Ninguno de tus datos bancarios se guardará en nuestros servidores.</span>
               </div>
 
               <button
@@ -2865,7 +2990,7 @@ export default function HomePage({ onNavigate }) {
                   opacity: loading ? 0.6 : 1
                 }}
               >
-                {loading ? 'Procesando Pago con AZUL...' : `Pagar ${selectedPlanForCheckout.price} con AZUL`}
+                {loading ? 'Procesando Pago...' : `✓ Notificar Pago con Tarjeta de ${selectedPlanForCheckout.price}`}
               </button>
             </form>
           </div>
@@ -3204,46 +3329,35 @@ export default function HomePage({ onNavigate }) {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                 <span style={{ color: '#64748B', fontWeight: '500' }}>Concepto:</span>
-                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>Plan {purchasedPlanDetails.name}</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{purchasedPlanDetails.name}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                 <span style={{ color: '#64748B', fontWeight: '500' }}>Cuenta Listo:</span>
-                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right', wordBreak: 'break-all' }}>{purchasedPlanDetails.email || accountEmail}</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right', wordBreak: 'break-all' }}>{purchasedPlanDetails.email}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                 <span style={{ color: '#64748B', fontWeight: '500' }}>Método de pago:</span>
-                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>
-                  {last4 === 'Transferencia' ? 'Transferencia Bancaria' : `VISA •••• ${last4}`}
-                </span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{purchasedPlanDetails.methodLabel}</span>
               </div>
-              {last4 === 'Transferencia' ? (
-                <>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                    <span style={{ color: '#64748B', fontWeight: '500' }}>Banco de Origen:</span>
-                    <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{selectedTransferBank}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                    <span style={{ color: '#64748B', fontWeight: '500' }}>Depositante:</span>
-                    <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{depositorName}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                    <span style={{ color: '#64748B', fontWeight: '500' }}>Estado:</span>
-                    <span style={{ color: '#F59E0B', fontWeight: '800', textAlign: 'right' }}>Pendiente de Verificación</span>
-                  </div>
-                </>
-              ) : (
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                  <span style={{ color: '#64748B', fontWeight: '500' }}>Autorización AZUL:</span>
-                  <span style={{ color: '#00b050', fontWeight: '800', textAlign: 'right' }}>Aprobado #{authCode}</span>
-                </div>
-              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>{purchasedPlanDetails.detail1Label}:</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{purchasedPlanDetails.detail1Val}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>{purchasedPlanDetails.detail2Label}:</span>
+                <span style={{ color: '#1A1A2E', fontWeight: '700', textAlign: 'right' }}>{purchasedPlanDetails.detail2Val}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                <span style={{ color: '#64748B', fontWeight: '500' }}>Estado:</span>
+                <span style={{ color: purchasedPlanDetails.statusColor, fontWeight: '800', textAlign: 'right' }}>{purchasedPlanDetails.statusLabel}</span>
+              </div>
             </div>
 
             {purchasedPlanDetails && (
               <a
                 href={last4 === 'Transferencia'
-                  ? `https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Banco%20de%20Origen:*%20${encodeURIComponent(selectedTransferBank)}.`
-                  : `https://wa.me/18099090455?text=Hola,%20acabo%20de%20comprar%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}%20con%20tarjeta%20en%20la%20web.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(accountEmail)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}.`
+                  ? `https://wa.me/18099090455?text=Hola,%20acabo%20de%20notificar%20mi%20transferencia%20para%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(purchasedPlanDetails.email)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Banco%20de%20Origen:*%20${encodeURIComponent(purchasedPlanDetails.detail1Val)}.`
+                  : `https://wa.me/18099090455?text=Hola,%20acabo%20de%20comprar%20el%20Plan%20${encodeURIComponent(purchasedPlanDetails.name)}%20con%20tarjeta%20en%20la%20web.%0A%0A*Detalles%20del%20Profesional:*%0A-%20*Correo:*%20${encodeURIComponent(purchasedPlanDetails.email)}%0A-%20*Teléfono:*%20${encodeURIComponent(matchedProPhone || accountPhone)}%0A-%20*Profesión:*%20${encodeURIComponent(matchedProCategory || 'No especificada')}%0A-%20*Tarjeta:*%20${encodeURIComponent(purchasedPlanDetails.detail1Val)}.`
                 }
                 target="_blank"
                 rel="noreferrer"
