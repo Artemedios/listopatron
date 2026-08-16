@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useListoLogic from '../useListoLogic';
 import { db, storage, functions } from '../firebase';
-import { collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { httpsCallable } from 'firebase/functions';
 import ad15 from '../assets/extracted_15.png';
@@ -399,7 +399,7 @@ export default function HomePage({ onNavigate }) {
           paymentMethod: 'card',
           cardName: cardName,
           last4: last4Digits,
-          status: 'pending_verification'
+          status: 'approved' // Aprobado instantáneamente para tarjeta
         };
 
         await addDoc(collection(db, 'plan_purchases'), purchaseData);
@@ -418,7 +418,7 @@ export default function HomePage({ onNavigate }) {
           transferAmount: activePlan.id === 'gold' ? 1000 : (activePlan.id === 'platinum' ? 1500 : (activePlan.id === 'vip' ? 2500 : 500)),
           planContracts: planContracts,
           planBonus: 0,
-          status: 'pending',
+          status: 'paid', // Pagado instantáneamente para tarjeta
           paymentMethod: 'card',
           cardName: cardName,
           last4: last4Digits,
@@ -426,13 +426,36 @@ export default function HomePage({ onNavigate }) {
         };
         await addDoc(collection(db, 'payments'), paymentData);
 
-        // Crear notificación de pendiente para el usuario
+        // Actualizar el documento de usuario en Firestore inmediatamente para activar el plan de inmediato
+        if (userExists && userDocId) {
+          try {
+            const userDocRef = doc(db, 'users', userDocId);
+            const userSnap = await getDoc(userDocRef);
+            let currentContracts = 0;
+            if (userSnap.exists()) {
+              currentContracts = userSnap.data().contracts || 0;
+            }
+            
+            await updateDoc(userDocRef, {
+              contracts: currentContracts + planContracts,
+              planStatus: 'active',
+              planExpirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+              available: true,
+              approved: true, // Asegurar que esté aprobado
+              currentPlan: activePlan.id
+            });
+          } catch (errUserUpdate) {
+            console.error("Error al activar usuario inmediatamente tras pago de tarjeta:", errUserUpdate);
+          }
+        }
+
+        // Crear notificación de activación para el usuario
         try {
           await addDoc(collection(db, 'notificaciones'), {
             userId: userDocId,
-            type: 'plan_pending',
-            title: '💳 Pago con Tarjeta en Proceso',
-            text: `Hemos recibido tu pago con tarjeta para el plan ${activePlan.name}. El administrador verificará la transacción para activarte el plan.`,
+            type: 'system',
+            title: '💎 ¡Plan Activado con Éxito!',
+            text: `Tu pago con tarjeta para el plan ${activePlan.name} fue procesado con éxito. Tu plan ya está activo. ¡Ya puedes ponerte en línea!`,
             read: false,
             createdAt: serverTimestamp()
           });
@@ -445,8 +468,8 @@ export default function HomePage({ onNavigate }) {
           await addDoc(collection(db, 'notificaciones'), {
             userId: 'admin',
             type: 'system',
-            title: '💳 NUEVA COMPRA CON TARJETA PLAN WEB',
-            text: `Notificación de pago con tarjeta para el plan ${activePlan.name} realizada en la web para el correo ${accountEmail.trim().toLowerCase()} por ${cardName} (Tarjeta terminada en ${last4Digits}).`,
+            title: '💳 COMPRA CON TARJETA PROCESADA',
+            text: `El plan ${activePlan.name} fue comprado y activado de forma instantánea por el correo ${accountEmail.trim().toLowerCase()} por ${cardName} (Tarjeta terminada en ${last4Digits}).`,
             read: false,
             date: new Date().toISOString(),
             createdAt: serverTimestamp()
@@ -466,8 +489,8 @@ export default function HomePage({ onNavigate }) {
           detail1Val: `VISA •••• ${last4Digits}`,
           detail2Label: 'Titular',
           detail2Val: cardName,
-          statusLabel: 'Pendiente de Verificación',
-          statusColor: '#F59E0B'
+          statusLabel: 'Aprobado',
+          statusColor: '#10B981' // Verde para aprobado instantáneo
         });
         setShowReceipt(true);
         setSelectedPlanForCheckout(null);
