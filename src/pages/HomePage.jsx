@@ -1002,7 +1002,7 @@ export default function HomePage({ onNavigate }) {
       </p>
     </div>
 
-    <div style={{"display": "grid", "gridTemplateColumns": "repeat(auto-fit,minmax(180px,1fr))", "gap": "20px", "maxWidth": "900px", "margin": "0 auto"}} id="statsGrid">
+    <div className="stats-grid-responsive" id="statsGrid">
 
       {/*  Stat 1  */}
       <div className="stat-card">

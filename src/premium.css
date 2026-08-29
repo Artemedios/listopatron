@@ -1350,3 +1350,33 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 .cat-card:hover, .step:hover, .testi-card:hover, .product-card:hover, .plan-3d-wrap:hover {
   box-shadow: 0 20px 40px rgba(242, 96, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.04) !important;
 }
+
+/* Responsive grid for statistics to fit 6 cards in one line on desktop */
+.stats-grid-responsive {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 16px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+@media (max-width: 991px) {
+  .stats-grid-responsive {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid-responsive {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .stat-card {
+    padding: 16px 10px !important;
+  }
+  .stat-card .stat-counter {
+    font-size: 32px !important;
+  }
+}
