@@ -1315,3 +1315,38 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   color: var(--orange);
   border-bottom-color: var(--orange);
 }
+
+/* ==================== DEPTH & VOLUME STYLES (ORBS & GLOWS) ==================== */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatOrb 8s ease-in-out infinite alternate;
+}
+@keyframes floatOrb {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.1); }
+}
+.glow-orb-orange {
+  background: radial-gradient(circle, var(--orange-light) 0%, transparent 70%);
+}
+.glow-orb-gold {
+  background: radial-gradient(circle, #FFD700 0%, transparent 70%);
+}
+
+/* Adjusting transitions for 3D tilt target cards */
+.pro-row-card, .testi-card, .cat-card, .product-card, .plan-3d-wrap, .step {
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+/* Soft deep shadows for cards to feel elevated, not flat */
+.cat-card, .step, .testi-card, .product-card, .plan-3d-wrap {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+.cat-card:hover, .step:hover, .testi-card:hover, .product-card:hover, .plan-3d-wrap:hover {
+  box-shadow: 0 20px 40px rgba(242, 96, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.04) !important;
+}

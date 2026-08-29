@@ -290,8 +290,8 @@ export default function useListoLogic() {
     }), {threshold: 0.1});
     document.querySelectorAll('.sr').forEach(el => srObs.observe(el));
 
-    // Tilt en tarjetas
-    document.querySelectorAll('.pro-row-card, .testi-card').forEach(card => {
+    // Tilt en tarjetas (Efecto 3D interactivo en hover)
+    document.querySelectorAll('.pro-row-card, .testi-card, .cat-card, .product-card, .plan-3d-wrap, .step').forEach(card => {
       card.addEventListener('mousemove', e => {
         const r = card.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;

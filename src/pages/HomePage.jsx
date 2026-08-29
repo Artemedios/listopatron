@@ -1429,8 +1429,10 @@ export default function HomePage({ onNavigate }) {
 </div>
 
 {/*  CATEGORIAS  */}
-<section className="cats-section" id="servicios">
-  <div className="section-inner">
+<section className="cats-section" id="servicios" style={{ position: 'relative', overflow: 'hidden' }}>
+  <div className="glow-orb glow-orb-orange" style={{ top: '50px', right: '-150px', width: '400px', height: '400px' }}></div>
+  <div className="glow-orb glow-orb-gold" style={{ bottom: '-150px', left: '-150px', width: '400px', height: '400px' }}></div>
+  <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
     <div className="chip sr">✦ Servicios disponibles</div>
     <h2 className="section-title sr sr-delay-1">Todo lo que necesitas<br/><span>en un solo lugar</span></h2>
     <p className="section-sub">Desde plomería hasta niñeras — el profesional que buscas está a minutos de ti.</p>
@@ -1883,8 +1885,10 @@ export default function HomePage({ onNavigate }) {
   </div>
 </section>
 {/*  COMO FUNCIONA  */}
-<section className="how-section" id="como-funciona">
-  <div className="section-inner">
+<section className="how-section" id="como-funciona" style={{ position: 'relative', overflow: 'hidden' }}>
+  <div className="glow-orb glow-orb-gold" style={{ top: '100px', left: '-100px', width: '450px', height: '450px' }}></div>
+  <div className="glow-orb glow-orb-orange" style={{ bottom: '-100px', right: '-150px', width: '400px', height: '400px' }}></div>
+  <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
     <div className="chip sr">⚡ Paso a paso</div>
     <h2 className="section-title sr sr-delay-1">¿Cómo <span>funciona</span>?</h2>
     <p className="section-sub">En minutos tienes un profesional verificado en camino a tu puerta.</p>
@@ -2053,8 +2057,10 @@ export default function HomePage({ onNavigate }) {
 </section>
 
 {/*  PLANES  */}
-<section className="planes-section" id="planes">
-  <div className="section-inner">
+<section className="planes-section" id="planes" style={{ position: 'relative', overflow: 'hidden' }}>
+  <div className="glow-orb glow-orb-orange" style={{ top: '20px', left: '-100px', width: '450px', height: '450px' }}></div>
+  <div className="glow-orb glow-orb-gold" style={{ bottom: '-100px', right: '-150px', width: '400px', height: '400px' }}></div>
+  <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
     <div className="chip sr" style={{"margin": "0 auto 16px", "display": "table"}}>💎 Planes para profesionales</div>
     <h2 className="section-title">Elige tu <span>plan</span></h2>
     <p className="section-sub" style={{"margin": "0 auto 24px"}}>Descarga la app, postúlate como profesional y elige el plan que más te convenga.</p>
