@@ -1380,3 +1380,116 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
     font-size: 32px !important;
   }
 }
+
+/* ==================== PLAN SHOWCASE SHOWN ONE AT A TIME ==================== */
+@keyframes planShowcaseFade {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.plan-animate-in {
+  animation: planShowcaseFade 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.plan-showcase-tab {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.plan-showcase-tab:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.plan-showcase-tab.active-basico {
+  background: #10B981 !important;
+  border-color: #10B981 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.plan-showcase-tab.active-gold {
+  background: #FFD700 !important;
+  border-color: #FFD700 !important;
+  color: #1A1A2E !important;
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.plan-showcase-tab.active-platinum {
+  background: #4B5563 !important;
+  border-color: #4B5563 !important;
+  box-shadow: 0 4px 14px rgba(75, 85, 99, 0.4) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.plan-showcase-tab.active-vip {
+  background: var(--orange) !important;
+  border-color: var(--orange) !important;
+  box-shadow: 0 4px 14px rgba(242, 96, 0, 0.4) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Plan details list styles */
+.plan-details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-details-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #E2E8F0;
+  text-align: left;
+}
+
+.plan-details-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.plan-details-icon.check {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+.plan-details-icon.cross {
+  background: #FEF2F2;
+  color: #EF4444;
+}
+
+/* Grid layout responsiveness for the showcase */
+@media (max-width: 768px) {
+  .plan-showcase-box {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+    padding: 20px !important;
+  }
+}

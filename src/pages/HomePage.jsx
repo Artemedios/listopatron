@@ -54,6 +54,7 @@ export default function HomePage({ onNavigate }) {
   const [matchedProCategory, setMatchedProCategory] = useState('');
   const [dragOver, setDragOver] = useState(false);
   const [cardFocusedField, setCardFocusedField] = useState('');
+  const [activePlanTab, setActivePlanTab] = useState('vip');
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -2099,75 +2100,244 @@ export default function HomePage({ onNavigate }) {
         </button>
       </div>
     </div>
-    <div className="planes-wrap" style={{"gridTemplateColumns": "repeat(auto-fit,minmax(220px,1fr))", "maxWidth": "1100px"}}>
-    {/*  styles extracted  */}
-    <div className="planes-wrap" style={{"gridTemplateColumns": "repeat(auto-fit,minmax(220px,1fr))", "maxWidth": "960px", "margin": "0 auto", "gap": "12px", "display": "grid"}}>
- 
-      {/*  PLAN 1: BÁSICO / ESTÁNDAR  */}
-      <div onClick={() => handleSelectPlanFromCard('basico')} className="plan-3d-wrap plan-3d-standard" style={{ cursor: 'pointer' }}>
-        <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
-        <div className="plan-3d-inner">
-          <div className="plan-3d-shine-top"></div>
-          <div className="plan-3d-badge">BÁSICO</div>
-          <div className="plan-3d-num">1</div>
-          <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🔹</span></div>
-          <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Básico</p>
-          <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 0-3.9 | 3 contratos</p>
-          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>Gratis</p></div>
-          <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
-        </div>
-      </div>
- 
-      {/*  PLAN 2: GOLD  */}
-      <div onClick={() => handleSelectPlanFromCard('gold')} className="plan-3d-wrap plan-3d-gold" style={{ cursor: 'pointer' }}>
-        <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
-        <div className="plan-3d-inner">
-          <div className="plan-3d-shine-top"></div>
-          <div className="plan-3d-badge">POPULAR</div>
-          <div className="plan-3d-num">2</div>
-          <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🥇</span></div>
-          <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Gold</p>
-          <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.0-4.7 | 8 contratos</p>
-          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,000</p></div>
-          <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
-        </div>
-      </div>
- 
-      {/*  PLAN 3: PLATINUM  */}
-      <div onClick={() => handleSelectPlanFromCard('platinum')} className="plan-3d-wrap plan-3d-platinum" style={{ cursor: 'pointer' }}>
-        <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
-        <div className="plan-3d-inner">
-          <div className="plan-3d-shine-top"></div>
-          <div className="plan-3d-badge">ACTIVO</div>
-          <div className="plan-3d-num">3</div>
-          <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🥈</span></div>
-          <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Platinum</p>
-          <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.5-4.7 | 15 contratos</p>
-          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,500</p></div>
-          <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
-        </div>
-      </div>
- 
-      {/*  PLAN 4: VIP  */}
-      <div onClick={() => handleSelectPlanFromCard('vip')} className="plan-3d-wrap plan-3d-vip" style={{ cursor: 'pointer' }}>
-        <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
-        <div className="plan-3d-inner">
-          <div className="plan-3d-shine-top"></div>
-          <div className="plan-3d-badge">ÉLITE</div>
-          <div className="plan-3d-num">4</div>
-          <div style={{"marginTop": "12px", "position": "relative"}}>
-            <span className="plan-3d-emoji">💎</span>
-            <span style={{"position": "absolute", "top": "-8px", "right": "-13px", "fontSize": "13px", "animation": "twinkle 0.8s ease-in-out infinite alternate"}}>✨</span>
-            <span style={{"position": "absolute", "bottom": "-5px", "left": "-11px", "fontSize": "11px", "animation": "twinkle 1.2s ease-in-out infinite alternate"}}>⭐</span>
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
+      <button 
+        type="button"
+        className={`plan-showcase-tab ${activePlanTab === 'basico' ? 'active-basico' : ''}`}
+        onClick={() => setActivePlanTab('basico')}
+      >
+        🔹 Plan Básico
+      </button>
+      <button 
+        type="button"
+        className={`plan-showcase-tab ${activePlanTab === 'gold' ? 'active-gold' : ''}`}
+        onClick={() => setActivePlanTab('gold')}
+      >
+        🥇 Plan Gold
+      </button>
+      <button 
+        type="button"
+        className={`plan-showcase-tab ${activePlanTab === 'platinum' ? 'active-platinum' : ''}`}
+        onClick={() => setActivePlanTab('platinum')}
+      >
+        🥈 Plan Platinum
+      </button>
+      <button 
+        type="button"
+        className={`plan-showcase-tab ${activePlanTab === 'vip' ? 'active-vip' : ''}`}
+        onClick={() => setActivePlanTab('vip')}
+      >
+        💎 Plan VIP
+      </button>
+    </div>
+
+    {/* Contenedor del Showcase del Plan seleccionado */}
+    <div 
+      key={activePlanTab} 
+      className="plan-showcase-box plan-animate-in"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1.2fr',
+        gap: '40px',
+        maxWidth: '920px',
+        margin: '0 auto',
+        alignItems: 'center',
+        background: 'rgba(255, 255, 255, 0.04)',
+        border: '1.5px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: '28px',
+        padding: '40px 30px',
+        backdropFilter: 'blur(20px)',
+        boxSizing: 'border-box',
+        position: 'relative'
+      }}
+    >
+      {/* COLUMNA IZQUIERDA: Tarjeta 3D del Plan */}
+      <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
+        {activePlanTab === 'basico' && (
+          <div onClick={() => handleSelectPlanFromCard('basico')} className="plan-3d-wrap plan-3d-standard" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+            <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+            <div className="plan-3d-inner">
+              <div className="plan-3d-shine-top"></div>
+              <div className="plan-3d-badge">BÁSICO</div>
+              <div className="plan-3d-num">1</div>
+              <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🔹</span></div>
+              <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Básico</p>
+              <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 0-3.9 | 3 contratos</p>
+              <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>Gratis</p></div>
+              <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>REGISTRARSE EN LA APP →</p>
+            </div>
           </div>
-          <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan VIP</p>
-          <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.8-5.0 | ∞ contratos</p>
-          <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$2,500/mes</p></div>
-          <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>TAP PARA VER →</p>
-        </div>
-      </div>
+        )}
+
+        {activePlanTab === 'gold' && (
+          <div onClick={() => handleSelectPlanFromCard('gold')} className="plan-3d-wrap plan-3d-gold" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+            <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+            <div className="plan-3d-inner">
+              <div className="plan-3d-shine-top"></div>
+              <div className="plan-3d-badge">POPULAR</div>
+              <div className="plan-3d-num">2</div>
+              <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🥇</span></div>
+              <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Gold</p>
+              <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.0-4.7 | 8 contratos</p>
+              <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,000</p></div>
+              <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>COMPRAR AHORA →</p>
+            </div>
+          </div>
+        )}
+
+        {activePlanTab === 'platinum' && (
+          <div onClick={() => handleSelectPlanFromCard('platinum')} className="plan-3d-wrap plan-3d-platinum" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+            <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+            <div className="plan-3d-inner">
+              <div className="plan-3d-shine-top"></div>
+              <div className="plan-3d-badge">ACTIVO</div>
+              <div className="plan-3d-num">3</div>
+              <div style={{"marginTop": "12px", "position": "relative"}}><span className="plan-3d-emoji">🥈</span></div>
+              <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan Platinum</p>
+              <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.5-4.7 | 15 contratos</p>
+              <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$1,500</p></div>
+              <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>COMPRAR AHORA →</p>
+            </div>
+          </div>
+        )}
+
+        {activePlanTab === 'vip' && (
+          <div onClick={() => handleSelectPlanFromCard('vip')} className="plan-3d-wrap plan-3d-vip" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+            <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
+            <div className="plan-3d-inner">
+              <div className="plan-3d-shine-top"></div>
+              <div className="plan-3d-badge">ÉLITE</div>
+              <div className="plan-3d-num">4</div>
+              <div style={{"marginTop": "12px", "position": "relative"}}>
+                <span className="plan-3d-emoji">💎</span>
+                <span style={{"position": "absolute", "top": "-8px", "right": "-13px", "fontSize": "13px", "animation": "twinkle 0.8s ease-in-out infinite alternate"}}>✨</span>
+                <span style={{"position": "absolute", "bottom": "-5px", "left": "-11px", "fontSize": "11px", "animation": "twinkle 1.2s ease-in-out infinite alternate"}}>⭐</span>
+              </div>
+              <p style={{"fontSize": "12px", "fontWeight": "800", "color": "white", "margin": "6px 0 0", "textShadow": "0 1px 4px rgba(0,0,0,0.4)", "textAlign": "center", "lineHeight": "1.2"}}>Plan VIP</p>
+              <p style={{"fontSize": "10px", "color": "rgba(255,255,255,0.85)", "margin": "0", "fontWeight": "600"}}>⭐ 4.8-5.0 | ∞ contratos</p>
+              <div className="plan-3d-price-box"><p style={{"fontSize": "13px", "fontWeight": "900", "color": "white", "margin": "0", "textShadow": "0 1px 4px rgba(0,0,0,0.5)"}}>RD$2,500/mes</p></div>
+              <p style={{"fontSize": "8px", "color": "rgba(255,255,255,0.6)", "margin": "4px 0 0", "letterSpacing": "0.5px"}}>COMPRAR AHORA →</p>
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* COLUMNA DERECHA: Detalles del Plan */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <h3 style={{
+          fontSize: '24px',
+          fontWeight: '800',
+          color: 'white',
+          margin: '0 0 6px 0',
+          fontFamily: "'Plus Jakarta Sans', sans-serif"
+        }}>
+          {activePlanTab === 'basico' && 'Plan Básico ⚪'}
+          {activePlanTab === 'gold' && 'Plan Gold 🟡'}
+          {activePlanTab === 'platinum' && 'Plan Platinum ⚫'}
+          {activePlanTab === 'vip' && 'Plan VIP 💎'}
+        </h3>
+        
+        <div style={{ 
+          fontSize: '18px', 
+          fontWeight: '800', 
+          color: activePlanTab === 'basico' ? '#10B981' : activePlanTab === 'gold' ? '#FFD700' : activePlanTab === 'platinum' ? '#9CA3AF' : '#F26000',
+          marginBottom: '20px'
+        }}>
+          {activePlanTab === 'basico' && 'Gratuito'}
+          {activePlanTab === 'gold' && 'RD$ 1,000 / mes'}
+          {activePlanTab === 'platinum' && 'RD$ 1,500 / mes'}
+          {activePlanTab === 'vip' && 'RD$ 2,500 / mes'}
+        </div>
+
+        <ul className="plan-details-list">
+          {activePlanTab === 'basico' && (
+            <>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Hasta 3 contratos al mes</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Visibilidad básica en búsquedas</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Recomendado para calificación: 0 - 3.9 estrellas</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Soporte técnico estándar</li>
+              <li className="plan-details-item" style={{ opacity: 0.5 }}><span className="plan-details-icon cross">✕</span> Sin etiquetas de perfil recomendadas</li>
+              <li className="plan-details-item" style={{ opacity: 0.5 }}><span className="plan-details-icon cross">✕</span> Sin acceso a leads premium</li>
+            </>
+          )}
+          {activePlanTab === 'gold' && (
+            <>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Hasta 8 contratos al mes</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Visibilidad mejorada en listados</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Recomendado para calificación: 4.0 - 4.7 estrellas</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Soporte técnico estándar</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Etiqueta "Recomendado" en tu perfil</li>
+              <li className="plan-details-item" style={{ opacity: 0.5 }}><span className="plan-details-icon cross">✕</span> Sin acceso prioritario a leads corporativos</li>
+            </>
+          )}
+          {activePlanTab === 'platinum' && (
+            <>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Hasta 15 contratos al mes</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Visibilidad alta en resultados de búsqueda</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Recomendado para calificación: 4.5 - 4.7 estrellas</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Soporte técnico prioritario</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Badge Platinum exclusivo de distinción</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Acceso exclusivo a Clientes Premium</li>
+            </>
+          )}
+          {activePlanTab === 'vip' && (
+            <>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Contratos Ilimitados (∞) al mes</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Visibilidad máxima N°1 destacada</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Recomendado para calificación: 4.8 - 5.0 estrellas</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Soporte técnico VIP Inmediato</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> 💎 Distintivo VIP exclusivo en tu perfil</li>
+              <li className="plan-details-item"><span className="plan-details-icon check">✓</span> Leads corporativos VIP y contacto inmediato</li>
+            </>
+          )}
+        </ul>
+
+        {activePlanTab === 'basico' ? (
+          <a 
+            href="https://listopatron.vercel.app/"
+            className="btn-download-app"
+            style={{ 
+              textDecoration: 'none',
+              width: '100%',
+              textAlign: 'center',
+              boxSizing: 'border-box',
+              background: '#10B981',
+              boxShadow: '0 4px 14px rgba(16,185,129,0.3)'
+            }}
+          >
+            🚀 Obtener Gratis en la App
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              const planIdMap = {
+                gold: 'gold',
+                platinum: 'platinum',
+                vip: 'vip'
+              };
+              const planObj = webPlanes.find(p => p.id === planIdMap[activePlanTab]);
+              if (planObj) {
+                setSelectedPlanForCheckout(planObj);
+              }
+            }}
+            style={{
+              width: '100%',
+              background: activePlanTab === 'gold' ? '#FFD700' : activePlanTab === 'platinum' ? '#4B5563' : 'linear-gradient(135deg, var(--orange), var(--orange-dark))',
+              color: activePlanTab === 'gold' ? '#1A1A2E' : 'white',
+              border: 'none',
+              borderRadius: '14px',
+              padding: '14px 20px',
+              fontSize: '14px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              boxShadow: activePlanTab === 'gold' ? '0 4px 14px rgba(255,215,0,0.3)' : activePlanTab === 'platinum' ? '0 4px 14px rgba(75,85,99,0.3)' : '0 4px 14px rgba(242,96,0,0.3)'
+            }}
+          >
+            💳 Comprar Plan {activePlanTab.toUpperCase()}
+          </button>
+        )}
+      </div>
     </div>
 
     {/*  Tabla comparativa  */}
