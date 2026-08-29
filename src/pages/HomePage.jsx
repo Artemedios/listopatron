@@ -1782,7 +1782,7 @@ export default function HomePage({ onNavigate }) {
   </g>
   {/*  La Vega  */}
   <g>
-    
+    <circle cx="317.4" cy="160.7" r="18" fill="#FF8C42" opacity="0.2"><animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" repeatCount="indefinite"/></circle>
     <circle cx="317.4" cy="160.7" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="317.4" cy="160.7" r="4" fill="white"/>
     <rect x="262.4" y="104.69999999999999" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
@@ -1791,7 +1791,7 @@ export default function HomePage({ onNavigate }) {
   </g>
   {/*  La Romana  */}
   <g>
-    
+    <circle cx="652.8" cy="340.1" r="18" fill="#FF8C42" opacity="0.2"><animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" repeatCount="indefinite"/></circle>
     <circle cx="652.8" cy="340.1" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="652.8" cy="340.1" r="4" fill="white"/>
     <rect x="597.8" y="284.1" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
@@ -1800,7 +1800,7 @@ export default function HomePage({ onNavigate }) {
   </g>
   {/*  Puerto Plata  */}
   <g>
-    
+    <circle cx="282.9" cy="31.4" r="18" fill="#FFB380" opacity="0.2"><animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" repeatCount="indefinite"/></circle>
     <circle cx="282.9" cy="31.4" r="11" fill="#FFB380" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="282.9" cy="31.4" r="4" fill="white"/>
     <rect x="227.89999999999998" y="61.4" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
@@ -1809,7 +1809,7 @@ export default function HomePage({ onNavigate }) {
   </g>
   {/*  Punta Cana  */}
   <g>
-    
+    <circle cx="775.0" cy="308.3" r="18" fill="#FFB380" opacity="0.2"><animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" repeatCount="indefinite"/></circle>
     <circle cx="775.0" cy="308.3" r="11" fill="#FFB380" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="775.0" cy="308.3" r="4" fill="white"/>
     <rect x="677" y="252.3" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
@@ -1818,13 +1818,14 @@ export default function HomePage({ onNavigate }) {
   </g>
   {/*  San Pedro  */}
   <g>
-    
+    <circle cx="581.1" cy="332.7" r="18" fill="#FF8C42" opacity="0.2"><animate attributeName="r" values="14;22;14" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" repeatCount="indefinite"/></circle>
     <circle cx="581.1" cy="332.7" r="11" fill="#FF8C42" stroke="white" strokeWidth="2.5" filter="url(#dropshadow)"/>
     <circle cx="581.1" cy="332.7" r="4" fill="white"/>
     <rect x="526.1" y="276.7" width="110" height="32" rx="8" ry="8" fill="white" opacity="0.93" filter="url(#dropshadow)"/>
     <text x="581.1" y="289.7" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="10" fontWeight="800" fill="#C24D00">San Pedro</text>
     <text x="581.1" y="301.7" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="9" fontWeight="600" fill="#F26000">En crecimiento</text>
   </g>
+
 
         {/*  Ocean labels  */}
         <text x="400" y="18" textAnchor="middle" fontFamily="Nunito,sans-serif" fontSize="13" fill="rgba(255,255,255,0.45)" fontStyle={{}} fontWeight="600">Océano Atlántico</text>
