@@ -1398,9 +1398,9 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 }
 
 .plan-showcase-tab {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(242, 96, 0, 0.2);
+  color: #1E293B;
   padding: 10px 24px;
   border-radius: 50px;
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -1411,13 +1411,14 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 }
 
 .plan-showcase-tab:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.9);
   transform: translateY(-2px);
 }
 
 .plan-showcase-tab.active-basico {
   background: #10B981 !important;
   border-color: #10B981 !important;
+  color: white !important;
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
   transform: translateY(-2px) scale(1.05);
 }
@@ -1433,6 +1434,7 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 .plan-showcase-tab.active-platinum {
   background: #4B5563 !important;
   border-color: #4B5563 !important;
+  color: white !important;
   box-shadow: 0 4px 14px rgba(75, 85, 99, 0.4) !important;
   transform: translateY(-2px) scale(1.05);
 }
@@ -1440,6 +1442,7 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 .plan-showcase-tab.active-vip {
   background: var(--orange) !important;
   border-color: var(--orange) !important;
+  color: white !important;
   box-shadow: 0 4px 14px rgba(242, 96, 0, 0.4) !important;
   transform: translateY(-2px) scale(1.05);
 }
@@ -1458,9 +1461,9 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #E2E8F0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1E293B !important;
   text-align: left;
 }
 

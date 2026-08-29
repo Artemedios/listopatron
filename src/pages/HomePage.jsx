@@ -57,6 +57,17 @@ export default function HomePage({ onNavigate }) {
   const [activePlanTab, setActivePlanTab] = useState('vip');
 
   React.useEffect(() => {
+    const plansOrder = ['basico', 'gold', 'platinum', 'vip'];
+    const timer = setInterval(() => {
+      setActivePlanTab(current => {
+        const nextIndex = (plansOrder.indexOf(current) + 1) % plansOrder.length;
+        return plansOrder[nextIndex];
+      });
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [activePlanTab]);
+
+  React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email');
     const phoneParam = params.get('phone');
@@ -2145,7 +2156,7 @@ export default function HomePage({ onNavigate }) {
         background: 'rgba(255, 255, 255, 0.04)',
         border: '1.5px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '28px',
-        padding: '40px 30px',
+        padding: '45px 30px',
         backdropFilter: 'blur(20px)',
         boxSizing: 'border-box',
         position: 'relative'
@@ -2154,7 +2165,7 @@ export default function HomePage({ onNavigate }) {
       {/* COLUMNA IZQUIERDA: Tarjeta 3D del Plan */}
       <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
         {activePlanTab === 'basico' && (
-          <div onClick={() => handleSelectPlanFromCard('basico')} className="plan-3d-wrap plan-3d-standard" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+          <div onClick={() => handleSelectPlanFromCard('basico')} className="plan-3d-wrap plan-3d-standard" style={{ cursor: 'pointer', transform: 'scale(1.38)', margin: '30px 0' }}>
             <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
             <div className="plan-3d-inner">
               <div className="plan-3d-shine-top"></div>
@@ -2170,7 +2181,7 @@ export default function HomePage({ onNavigate }) {
         )}
 
         {activePlanTab === 'gold' && (
-          <div onClick={() => handleSelectPlanFromCard('gold')} className="plan-3d-wrap plan-3d-gold" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+          <div onClick={() => handleSelectPlanFromCard('gold')} className="plan-3d-wrap plan-3d-gold" style={{ cursor: 'pointer', transform: 'scale(1.38)', margin: '30px 0' }}>
             <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
             <div className="plan-3d-inner">
               <div className="plan-3d-shine-top"></div>
@@ -2186,7 +2197,7 @@ export default function HomePage({ onNavigate }) {
         )}
 
         {activePlanTab === 'platinum' && (
-          <div onClick={() => handleSelectPlanFromCard('platinum')} className="plan-3d-wrap plan-3d-platinum" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+          <div onClick={() => handleSelectPlanFromCard('platinum')} className="plan-3d-wrap plan-3d-platinum" style={{ cursor: 'pointer', transform: 'scale(1.38)', margin: '30px 0' }}>
             <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
             <div className="plan-3d-inner">
               <div className="plan-3d-shine-top"></div>
@@ -2202,7 +2213,7 @@ export default function HomePage({ onNavigate }) {
         )}
 
         {activePlanTab === 'vip' && (
-          <div onClick={() => handleSelectPlanFromCard('vip')} className="plan-3d-wrap plan-3d-vip" style={{ cursor: 'pointer', transform: 'scale(1.15)', margin: '20px 0' }}>
+          <div onClick={() => handleSelectPlanFromCard('vip')} className="plan-3d-wrap plan-3d-vip" style={{ cursor: 'pointer', transform: 'scale(1.38)', margin: '30px 0' }}>
             <div className="plan-3d-blur" style={{"position": "absolute", "bottom": "-7px", "left": "7px", "right": "-2px", "height": "100%", "borderRadius": "18px", "opacity": "0.28", "filter": "blur(5px)", "zIndex": "0"}}></div>
             <div className="plan-3d-inner">
               <div className="plan-3d-shine-top"></div>
@@ -2227,7 +2238,7 @@ export default function HomePage({ onNavigate }) {
         <h3 style={{
           fontSize: '24px',
           fontWeight: '800',
-          color: 'white',
+          color: '#1E293B',
           margin: '0 0 6px 0',
           fontFamily: "'Plus Jakarta Sans', sans-serif"
         }}>
@@ -2240,7 +2251,7 @@ export default function HomePage({ onNavigate }) {
         <div style={{ 
           fontSize: '18px', 
           fontWeight: '800', 
-          color: activePlanTab === 'basico' ? '#10B981' : activePlanTab === 'gold' ? '#FFD700' : activePlanTab === 'platinum' ? '#9CA3AF' : '#F26000',
+          color: activePlanTab === 'basico' ? '#10B981' : activePlanTab === 'gold' ? '#FFD700' : activePlanTab === 'platinum' ? '#4B5563' : '#F26000',
           marginBottom: '20px'
         }}>
           {activePlanTab === 'basico' && 'Gratuito'}
