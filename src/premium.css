@@ -1496,3 +1496,152 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
     padding: 20px !important;
   }
 }
+
+/* Mesh gradient background for Hero */
+.mesh-gradient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #FFF3EC 0%, #FFE9D8 25%, #FFE2D0 50%, #FFD7C2 75%, #FFE9D8 100%);
+  background-size: 300% 300%;
+  animation: liquidMesh 18s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.9;
+}
+@keyframes liquidMesh {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating / Levitation animations */
+@keyframes floatPhone {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(0.8deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+.phone-wrap-floating {
+  animation: floatPhone 6s ease-in-out infinite !important;
+}
+@keyframes floatBadgeLeft {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-4px, -6px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes floatBadgeRight {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(4px, -6px); }
+  100% { transform: translate(0, 0); }
+}
+.left-floating {
+  animation: floatBadgeLeft 5s ease-in-out infinite !important;
+}
+.right-floating {
+  animation: floatBadgeRight 5.5s ease-in-out infinite !important;
+}
+
+/* Scroll reveal classes */
+.reveal-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.reveal-element.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Glassmorphism Testimonials Card */
+.testi-card-glass {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 10px 30px rgba(242, 96, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  border-radius: 24px !important;
+  padding: 30px !important;
+}
+.testi-card-glass:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+  border-color: rgba(242, 96, 0, 0.25) !important;
+  box-shadow: 0 20px 40px rgba(242, 96, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Fluid FAQ accordion styles */
+.faq-item-fluid {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(242, 96, 0, 0.08) !important;
+  border-radius: 16px !important;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+.faq-item-fluid:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(242, 96, 0, 0.2) !important;
+  transform: translateY(-2px);
+}
+.faq-item-fluid.active-faq {
+  background: white !important;
+  border-color: var(--orange) !important;
+  box-shadow: 0 10px 25px rgba(242, 96, 0, 0.08) !important;
+}
+.faq-q-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1A1A2E;
+  outline: none;
+}
+.faq-arrow-icon {
+  font-size: 11px;
+  transition: transform 0.3s ease;
+  color: var(--orange);
+}
+.faq-item-fluid.active-faq .faq-arrow-icon {
+  transform: rotate(180deg);
+}
+.faq-a-wrap {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+.faq-item-fluid.active-faq .faq-a-wrap {
+  opacity: 1;
+}
+.faq-a-content {
+  padding: 0 24px 20px 24px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #4A5568;
+}
+

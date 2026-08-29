@@ -43,6 +43,8 @@ export default function HomePage({ onNavigate }) {
   const [checkoutError, setCheckoutError] = useState('');
   const [noAccountWarning, setNoAccountWarning] = useState(false);
   const [paymentTab, setPaymentTab] = useState('card'); // 'card' | 'transfer'
+  const [activeFaqId, setActiveFaqId] = useState(null);
+
   const [selectedTransferBank, setSelectedTransferBank] = useState('');
   const [depositorName, setDepositorName] = useState('');
   const [copiedIdx, setCopiedIdx] = useState(null);
@@ -66,6 +68,27 @@ export default function HomePage({ onNavigate }) {
     }, 5000);
     return () => clearInterval(timer);
   }, [activePlanTab]);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    const elements = document.querySelectorAll('.reveal-element, .reveal-left, .reveal-right');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -1162,18 +1185,19 @@ export default function HomePage({ onNavigate }) {
     </div>
   </div>
 </section>
+
 {/*  HERO  */}
-<section className="hero" id="inicio" aria-label="Sección principal">
-  <div className="hero-dots"></div>
-  <div className="hero-blob1"></div>
-  <div className="hero-blob2"></div>
+<section className="hero" id="inicio" aria-label="Sección principal" style={{ position: 'relative', overflow: 'hidden' }}>
+  {/* Fondo de malla líquida animada */}
+  <div className="mesh-gradient-bg"></div>
 
-  {/*  TETRIS LEFT/RIGHT ahora van dentro del phone-wrap  */}
+  <div className="hero-dots" style={{ zIndex: 1 }}></div>
+  <div className="hero-blob1" style={{ zIndex: 1 }}></div>
+  <div className="hero-blob2" style={{ zIndex: 1 }}></div>
 
-
-  <div style={{"maxWidth": "1200px", "margin": "0 auto", "width": "100%"}}>
+  <div style={{"maxWidth": "1200px", "margin": "0 auto", "width": "100%", "position": "relative", "zIndex": 2}}>
     <div className="hero-inner">
-      <div className="hero-text">
+      <div className="hero-text reveal-left revealed">
         <div className="hero-badge"><span className="hero-dot"></span> República Dominicana · En línea ahora</div>
         <h1>El servicio que<br/>necesitas,<br/><span>cuando lo necesitas</span></h1>
         <p className="hero-sub">Conectamos clientes con los mejores profesionales independientes de RD. Sin esperas, sin complicaciones.</p>
@@ -1182,14 +1206,14 @@ export default function HomePage({ onNavigate }) {
           <a href="#profesionales" className="btn-ghost">🔧 Soy profesional</a>
         </div>
       </div>
-      <div className="hero-phone">
-        <div className="phone-wrap" style={{"position": "relative"}}>
-          {/* Floating badges */}
-          <div className="float-badge left">
+      <div className="hero-phone reveal-right revealed">
+        <div className="phone-wrap phone-wrap-floating" style={{"position": "relative"}}>
+          {/* Floating badges con animación de levitación */}
+          <div className="float-badge left left-floating">
             <span className="float-icon">⭐</span>
             <span>4.9/5 Calificaciones</span>
           </div>
-          <div className="float-badge right">
+          <div className="float-badge right right-floating">
             <span className="float-icon">🛡️</span>
             <span>100% Verificados</span>
           </div>
@@ -1236,29 +1260,28 @@ export default function HomePage({ onNavigate }) {
       </div>
     </div>
 
-    {/*  Stats bar  */}
+    {/*  Stats bar con entrada animada  */}
     <div className="hero-stats">
-      <div className="hero-stat">
+      <div className="hero-stat reveal-element revealed" style={{ transitionDelay: '0.1s' }}>
         <span className="stat-num">500+</span>
         <span className="stat-label">Profesionales activos</span>
       </div>
-      <div className="hero-stat">
+      <div className="hero-stat reveal-element revealed" style={{ transitionDelay: '0.2s' }}>
         <span className="stat-num">20+</span>
         <span className="stat-label">Tipos de servicio</span>
       </div>
-      <div className="hero-stat">
+      <div className="hero-stat reveal-element revealed" style={{ transitionDelay: '0.3s' }}>
         <span className="stat-num">4.9★</span>
         <span className="stat-label">Calificación promedio</span>
       </div>
-      <div className="hero-stat">
+      <div className="hero-stat reveal-element revealed" style={{ transitionDelay: '0.4s' }}>
         <span className="stat-num">~15min</span>
         <span className="stat-label">Tiempo de respuesta</span>
       </div>
     </div>
   </div>
-
-
 </section>
+
 
 {/* SECCIÓN PREVIEW TIENDA CON CARRUSEL DE PRODUCTOS */}
 <section className="shop-preview-section" style={{ "background": "#f3f4f6", "padding": "60px 5%", "position": "relative", "overflow": "hidden" }}>
@@ -1445,10 +1468,10 @@ export default function HomePage({ onNavigate }) {
   <div className="glow-orb glow-orb-orange" style={{ top: '50px', right: '-150px', width: '400px', height: '400px' }}></div>
   <div className="glow-orb glow-orb-gold" style={{ bottom: '-150px', left: '-150px', width: '400px', height: '400px' }}></div>
   <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
-    <div className="chip sr">✦ Servicios disponibles</div>
-    <h2 className="section-title sr sr-delay-1">Todo lo que necesitas<br/><span>en un solo lugar</span></h2>
-    <p className="section-sub">Desde plomería hasta niñeras — el profesional que buscas está a minutos de ti.</p>
-    <div className="cats-grid">
+    <div className="chip reveal-element">✦ Servicios disponibles</div>
+    <h2 className="section-title reveal-element" style={{ transitionDelay: '0.1s' }}>Todo lo que necesitas<br/><span>en un solo lugar</span></h2>
+    <p className="section-sub reveal-element" style={{ transitionDelay: '0.2s' }}>Desde plomería hasta niñeras — el profesional que buscas está a minutos de ti.</p>
+    <div className="cats-grid reveal-element" style={{ transitionDelay: '0.3s' }}>
       <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/MECANICO.png" alt="Mantenimiento" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Mantenimiento</span></a>
       <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/limpiesa.png" alt="Limpieza" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Limpieza</span></a>
       <a href="https://listopatron.vercel.app/" className="cat-card"><span className="cat-icon"><img src="./assets/profesionales/masajes.png" alt="Cuidado personal" style={{"width": "48px", "height": "48px", "objectFit": "contain"}}/></span><span className="cat-name">Cuidado personal</span></a>
@@ -1902,29 +1925,29 @@ export default function HomePage({ onNavigate }) {
   <div className="glow-orb glow-orb-gold" style={{ top: '100px', left: '-100px', width: '450px', height: '450px' }}></div>
   <div className="glow-orb glow-orb-orange" style={{ bottom: '-100px', right: '-150px', width: '400px', height: '400px' }}></div>
   <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
-    <div className="chip sr">⚡ Paso a paso</div>
-    <h2 className="section-title sr sr-delay-1">¿Cómo <span>funciona</span>?</h2>
-    <p className="section-sub">En minutos tienes un profesional verificado en camino a tu puerta.</p>
+    <div className="chip reveal-element">⚡ Paso a paso</div>
+    <h2 className="section-title reveal-element" style={{ transitionDelay: '0.1s' }}>¿Cómo <span>funciona</span>?</h2>
+    <p className="section-sub reveal-element" style={{ transitionDelay: '0.2s' }}>En minutos tienes un profesional verificado en camino a tu puerta.</p>
     <div className="steps-grid">
-      <div className="step sr sr-delay-1">
+      <div className="step reveal-element" style={{ transitionDelay: '0.1s' }}>
         <div className="step-num">01</div>
         <span className="step-icon">🔍</span>
         <h3>Busca el servicio</h3>
         <p>Elige la categoría y explora profesionales verificados cerca de ti en tiempo real.</p>
       </div>
-      <div className="step sr sr-delay-2">
+      <div className="step reveal-element" style={{ transitionDelay: '0.2s' }}>
         <div className="step-num">02</div>
         <span className="step-icon">📅</span>
         <h3>Reserva al instante</h3>
         <p>Selecciona fecha, hora y dirección. Sin llamadas, sin esperas innecesarias.</p>
       </div>
-      <div className="step sr sr-delay-3">
+      <div className="step reveal-element" style={{ transitionDelay: '0.3s' }}>
         <div className="step-num">03</div>
         <span className="step-icon">📍</span>
         <h3>Seguimiento en vivo</h3>
         <p>Ve en el mapa cómo el profesional se dirige a tu ubicación en tiempo real.</p>
       </div>
-      <div className="step sr sr-delay-4">
+      <div className="step reveal-element" style={{ transitionDelay: '0.4s' }}>
         <div className="step-num">04</div>
         <span className="step-icon">✅</span>
         <h3>¡Listo, patrón!</h3>
@@ -2000,74 +2023,78 @@ export default function HomePage({ onNavigate }) {
 {/*  TESTIMONIOS  */}
 <section className="testi-section" id="testimonios">
   <div className="section-inner">
-    <div className="chip sr">💬 Testimonios reales</div>
-    <h2 className="section-title">Lo que dicen<br/><span>nuestros usuarios</span></h2>
-    <p className="section-sub">Más de 500 profesionales y clientes satisfechos en toda la República Dominicana.</p>
+    <div className="chip reveal-element">💬 Testimonios reales</div>
+    <h2 className="section-title reveal-element" style={{ transitionDelay: '0.1s' }}>Lo que dicen<br/><span>nuestros usuarios</span></h2>
+    <p className="section-sub reveal-element" style={{ transitionDelay: '0.2s' }}>Más de 500 profesionales y clientes satisfechos en toda la República Dominicana.</p>
 
     {/*  Stats strip  */}
-    <div style={{"display": "flex", "flexWrap": "wrap", "gap": "16px", "marginBottom": "10px", "justifyContent": "center"}}>
-      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "#fff", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
+    <div style={{"display": "flex", "flexWrap": "wrap", "gap": "16px", "marginBottom": "30px", "justifyContent": "center"}} className="reveal-element" style={{ transitionDelay: '0.3s' }}>
+      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "rgba(255, 255, 255, 0.6)", "backdropFilter": "blur(10px)", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
         <span style={{"fontSize": "22px"}}>⭐</span>
-        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>4.9/5</div><div style={{"fontSize": "11px", "color": "#888"}}>Calificación promedio</div></div>
+        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>4.9/5</div><div style={{"fontSize": "11px", "color": "#1E293B", "fontWeight": "700"}}>Calificación promedio</div></div>
       </div>
-      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "#fff", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
+      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "rgba(255, 255, 255, 0.6)", "backdropFilter": "blur(10px)", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
         <span style={{"fontSize": "22px"}}>💬</span>
-        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>1,200+</div><div style={{"fontSize": "11px", "color": "#888"}}>Reseñas verificadas</div></div>
+        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>1,200+</div><div style={{"fontSize": "11px", "color": "#1E293B", "fontWeight": "700"}}>Reseñas verificadas</div></div>
       </div>
-      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "#fff", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
+      <div style={{"display": "flex", "alignItems": "center", "gap": "10px", "background": "rgba(255, 255, 255, 0.6)", "backdropFilter": "blur(10px)", "border": "1.5px solid var(--orange-pale2)", "borderRadius": "14px", "padding": "12px 20px"}}>
         <span style={{"fontSize": "22px"}}>🔄</span>
-        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>94%</div><div style={{"fontSize": "11px", "color": "#888"}}>Clientes regresan</div></div>
+        <div><div style={{"fontFamily": "'Fredoka One',cursive", "fontSize": "22px", "color": "var(--orange)", "lineHeight": "1"}}>94%</div><div style={{"fontSize": "11px", "color": "#1E293B", "fontWeight": "700"}}>Clientes regresan</div></div>
       </div>
     </div>
+    
     <div className="testi-grid">
-      <div className="testi-card">
+      <div className="testi-card testi-card-glass reveal-element" style={{ transitionDelay: '0.1s' }}>
         <div style={{"display": "flex", "gap": "6px", "marginBottom": "10px"}}>
           <span style={{"color": "var(--orange)", "fontSize": "18px"}}>★★★★★</span>
           <span style={{"background": "var(--orange-pale)", "color": "var(--orange)", "fontSize": "11px", "fontWeight": "800", "padding": "3px 10px", "borderRadius": "50px", "alignSelf": "center"}}>CLIENTE</span>
         </div>
-        <p className="testi-text">"En menos de 20 minutos tenía un plomero en mi casa. La app es facilísima y el seguimiento en el mapa me dio mucha tranquilidad. 10/10."</p>
+        <p className="testi-text" style={{ color: '#1E293B', fontWeight: '600' }}>"En menos de 20 minutos tenía un plomero en mi casa. La app es facilísima y el seguimiento en el mapa me dio mucha tranquilidad. 10/10."</p>
         <div className="testi-author">
           <div className="testi-av"><img src="./assets/extracted_29.jpeg" alt="María Altagracia" loading="lazy"/></div>
           <div>
-            <div className="testi-name">María Altagracia</div>
-            <div className="testi-role">Cliente · Santo Domingo</div>
-            <div style={{"fontSize": "11px", "color": "#aaa", "marginTop": "2px"}}>hace 2 días</div>
+            <div className="testi-name" style={{ color: '#1E293B', fontWeight: '800' }}>María Altagracia</div>
+            <div className="testi-role" style={{ color: '#475569' }}>Cliente · Santo Domingo</div>
+            <div style={{"fontSize": "11px", "color": "#888", "marginTop": "2px"}}>hace 2 días</div>
           </div>
         </div>
       </div>
-      <div className="testi-card">
+      
+      <div className="testi-card testi-card-glass reveal-element" style={{ transitionDelay: '0.2s' }}>
         <div style={{"display": "flex", "gap": "6px", "marginBottom": "10px"}}>
           <span style={{"color": "var(--orange)", "fontSize": "18px"}}>★★★★★</span>
           <span style={{"background": "#E8F5E9", "color": "#2E7D32", "fontSize": "11px", "fontWeight": "800", "padding": "3px 10px", "borderRadius": "50px", "alignSelf": "center"}}>PROFESIONAL</span>
         </div>
-        <p className="testi-text">"Desde que me uní tengo trabajo todos los días. La comisión es justa y el sistema de pagos es transparente. Gané RD$47,000 el mes pasado."</p>
+        <p className="testi-text" style={{ color: '#1E293B', fontWeight: '600' }}>"Desde que me uní tengo trabajo todos los días. La comisión es justa y el sistema de pagos es transparente. Gané RD$47,000 el mes pasado."</p>
         <div className="testi-author">
           <div className="testi-av"><img src="./assets/extracted_30.jpeg" alt="Juan Rosario" loading="lazy"/></div>
           <div>
-            <div className="testi-name">Juan Rosario</div>
-            <div className="testi-role">Albañil · Santiago ✓ Verificado</div>
-            <div style={{"fontSize": "11px", "color": "#aaa", "marginTop": "2px"}}>hace 5 días</div>
+            <div className="testi-name" style={{ color: '#1E293B', fontWeight: '800' }}>Juan Rosario</div>
+            <div className="testi-role" style={{ color: '#475569' }}>Albañil · Santiago ✓ Verificado</div>
+            <div style={{"fontSize": "11px", "color": "#888", "marginTop": "2px"}}>hace 5 días</div>
           </div>
         </div>
       </div>
-      <div className="testi-card">
+
+      <div className="testi-card testi-card-glass reveal-element" style={{ transitionDelay: '0.3s' }}>
         <div style={{"display": "flex", "gap": "6px", "marginBottom": "10px"}}>
           <span style={{"color": "var(--orange)", "fontSize": "18px"}}>★★★★★</span>
           <span style={{"background": "var(--orange-pale)", "color": "var(--orange)", "fontSize": "11px", "fontWeight": "800", "padding": "3px 10px", "borderRadius": "50px", "alignSelf": "center"}}>CLIENTE</span>
         </div>
-        <p className="testi-text">"El chat con el profesional antes de que llegue es increíble. Todo queda acordado y sin sorpresas al pagar. Ya lo usé 3 veces."</p>
+        <p className="testi-text" style={{ color: '#1E293B', fontWeight: '600' }}>"El chat con el profesional antes de que llegue es increíble. Todo queda acordado y sin sorpresas al pagar. Ya lo usé 3 veces."</p>
         <div className="testi-author">
           <div className="testi-av"><img src="./assets/extracted_31.jpeg" alt="Carmen Pérez" loading="lazy"/></div>
           <div>
-            <div className="testi-name">Carmen Pérez</div>
-            <div className="testi-role">Cliente · La Romana</div>
-            <div style={{"fontSize": "11px", "color": "#aaa", "marginTop": "2px"}}>hace 1 semana</div>
+            <div className="testi-name" style={{ color: '#1E293B', fontWeight: '800' }}>Carmen Pérez</div>
+            <div className="testi-role" style={{ color: '#475569' }}>Cliente · La Romana</div>
+            <div style={{"fontSize": "11px", "color": "#888", "marginTop": "2px"}}>hace 1 semana</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 {/*  PLANES  */}
 <section className="planes-section" id="planes" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -2524,63 +2551,76 @@ export default function HomePage({ onNavigate }) {
 {/*  FAQ  */}
 <section className="faq-section" id="faq">
   <div className="section-inner">
-    <div className="chip sr" style={{"margin": "0 auto 16px", "display": "table"}}>❓ Preguntas frecuentes</div>
-    <h2 className="section-title sr sr-delay-1" style={{"textAlign": "center"}}>¿Tienes <span>dudas?</span></h2>
-    <p className="section-sub sr sr-delay-2" style={{"margin": "0 auto 56px", "textAlign": "center"}}>Todo lo que necesitas saber sobre Listo.</p>
+    <div className="chip reveal-element" style={{"margin": "0 auto 16px", "display": "table"}}>❓ Preguntas frecuentes</div>
+    <h2 className="section-title reveal-element" style={{"textAlign": "center", "transitionDelay": "0.1s"}}>¿Tienes <span>dudas?</span></h2>
+    <p className="section-sub reveal-element" style={{"margin": "0 auto 56px", "textAlign": "center", "transitionDelay": "0.2s"}}>Todo lo que necesitas saber sobre Listo.</p>
 
-    <div className="faq-grid sr sr-delay-2">
+    <div className="faq-grid reveal-element" style={{ "transitionDelay": "0.3s" }}>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 0 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 0 ? null : 0)}>
           <span>¿Cómo funciona Listo?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 0 ? '200px' : '0' }}>
+          <div className="faq-a-content">Busca el servicio que necesitas, elige un profesional verificado cerca de ti y coordina directamente. En minutos tienes a alguien en camino.</div>
         </div>
-        <div className="faq-a">Busca el servicio que necesitas, elige un profesional verificado cerca de ti y coordina directamente. En minutos tienes a alguien en camino.</div>
       </div>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 1 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 1 ? null : 1)}>
           <span>¿Los profesionales están verificados?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 1 ? '200px' : '0' }}>
+          <div className="faq-a-content">Sí. Todos los profesionales pasan por un proceso de verificación antes de aparecer en la plataforma. También puedes ver sus calificaciones y reseñas de otros clientes.</div>
         </div>
-        <div className="faq-a">Sí. Todos los profesionales pasan por un proceso de verificación antes de aparecer en la plataforma. También puedes ver sus calificaciones y reseñas de otros clientes.</div>
       </div>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 2 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 2 ? null : 2)}>
           <span>¿Cómo se realiza el pago?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 2 ? '200px' : '0' }}>
+          <div className="faq-a-content">El pago se coordina directamente con el profesional. Puedes pagar en efectivo o por transferencia bancaria según el acuerdo con el profesional.</div>
         </div>
-        <div className="faq-a">El pago se coordina directamente con el profesional. Puedes pagar en efectivo o por transferencia bancaria según el acuerdo con el profesional.</div>
       </div>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 3 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 3 ? null : 3)}>
           <span>¿Qué pasa si tengo un problema con el servicio?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 3 ? '200px' : '0' }}>
+          <div className="faq-a-content">Puedes contactarnos directamente por WhatsApp o email. Nuestro equipo estará disponible para ayudarte a resolver cualquier inconveniente.</div>
         </div>
-        <div className="faq-a">Puedes contactarnos directamente por WhatsApp o email. Nuestro equipo estará disponible para ayudarte a resolver cualquier inconveniente.</div>
       </div>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 4 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 4 ? null : 4)}>
           <span>¿En qué ciudades está disponible?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 4 ? '200px' : '0' }}>
+          <div className="faq-a-content">Listo está disponible en toda República Dominicana, con mayor cobertura en Santo Domingo, Santiago, La Romana y San Pedro de Macorís.</div>
         </div>
-        <div className="faq-a">Listo está disponible en toda República Dominicana, con mayor cobertura en Santo Domingo, Santiago, La Romana y San Pedro de Macorís.</div>
       </div>
 
-      <div className="faq-item" onClick={(e) => e.currentTarget.classList.toggle('open')}>
-        <div className="faq-q">
+      <div className={`faq-item-fluid ${activeFaqId === 5 ? 'active-faq' : ''}`}>
+        <button type="button" className="faq-q-btn" onClick={() => setActiveFaqId(activeFaqId === 5 ? null : 5)}>
           <span>¿Cómo me registro como profesional?</span>
-          <span className="faq-arrow">▼</span>
+          <span className="faq-arrow-icon">▼</span>
+        </button>
+        <div className="faq-a-wrap" style={{ maxHeight: activeFaqId === 5 ? '200px' : '0' }}>
+          <div className="faq-a-content">Entra a la app, selecciona "Soy profesional", completa tu perfil con tus datos y especialidad, y elige el plan que mejor se adapte a ti. El primer mes es gratis.</div>
         </div>
-        <div className="faq-a">Entra a la app, selecciona "Soy profesional", completa tu perfil con tus datos y especialidad, y elige el plan que mejor se adapte a ti. El primer mes es gratis.</div>
       </div>
 
     </div>
   </div>
 </section>
+
 
 {/*  APP DOWNLOAD BANNER  */}
 <div className="app-banner">
