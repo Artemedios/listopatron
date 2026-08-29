@@ -536,7 +536,9 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 .cart-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 10000;
   opacity: 0;
   visibility: hidden;
@@ -555,7 +557,10 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   bottom: 0;
   width: 100%;
   max-width: 420px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.4) !important;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
   z-index: 10001;
   transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -1033,3 +1038,280 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
+/* ==================== VIRTUAL CREDIT CARD STYLES ==================== */
+.credit-card-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 320px;
+  height: 190px;
+  margin: 15px auto 25px;
+}
+.credit-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  color: white;
+}
+.credit-card.flipped {
+  transform: rotateY(180deg);
+}
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-front {
+  background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+.credit-card.standard .card-front {
+  background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
+}
+.credit-card.gold .card-front {
+  background: linear-gradient(135deg, #D4A017 0%, #7A5C0C 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.credit-card.platinum .card-front {
+  background: linear-gradient(135deg, #6E829B 0%, #3B4D61 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.credit-card.vip .card-front {
+  background: linear-gradient(135deg, #F26000 0%, #8A2500 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(242, 96, 0, 0.3);
+}
+.card-back {
+  background: linear-gradient(135deg, #1A202C 0%, #0F1219 100%);
+  transform: rotateY(180deg);
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-chip {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+  border-radius: 6px;
+  position: relative;
+}
+.card-chip::after {
+  content: '';
+  position: absolute;
+  inset: 5px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+}
+.card-contactless {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+.card-number {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  text-align: center;
+  margin: 12px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+}
+.card-holder-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.card-holder-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+.card-holder-val {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-exp-val {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Courier New', Courier, monospace;
+}
+.card-brand {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 18px;
+  opacity: 0.85;
+}
+.card-magnetic-strip {
+  width: 100%;
+  height: 35px;
+  background: #000;
+}
+.card-signature-area {
+  background: #fff;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 12px;
+  color: #333;
+  margin: 10px 15px 5px;
+  border-radius: 4px;
+}
+.card-signature-val {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.card-back-text {
+  font-size: 7px;
+  color: #718096;
+  text-align: center;
+  line-height: 1.2;
+  padding: 0 15px;
+}
+
+/* ==================== DRAG AND DROP ZONE ==================== */
+.file-upload-zone {
+  border: 2px dashed #CBD5E0;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  background: #F7FAFC;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  outline: none;
+}
+.file-upload-zone:hover, .file-upload-zone.dragover {
+  border-color: var(--orange);
+  background: var(--orange-pale);
+}
+.upload-icon {
+  font-size: 28px;
+  animation: pulse 2s infinite;
+}
+.file-upload-info {
+  font-size: 12px;
+  color: #718096;
+  font-weight: 500;
+}
+.file-upload-info strong {
+  color: var(--orange);
+}
+.file-upload-preview-container {
+  margin-top: 10px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.file-upload-preview {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+.remove-file-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  transition: background 0.2s;
+}
+.remove-file-btn:hover {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+/* ==================== MODAL TICKET DESIGN ==================== */
+.receipt-ticket {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  border: 1px solid #E2E8F0;
+  position: relative;
+}
+.receipt-ticket::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 10px;
+  right: 10px;
+  height: 12px;
+  background-image: radial-gradient(circle, transparent 60%, #fff 60%);
+  background-size: 12px 12px;
+  z-index: 100;
+}
+
+/* Tab buttons for payment modal */
+.payment-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #E2E8F0;
+  padding-bottom: 10px;
+}
+.payment-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  color: #718096;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-align: center;
+}
+.payment-tab.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}

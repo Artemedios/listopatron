@@ -52,6 +52,8 @@ export default function HomePage({ onNavigate }) {
   const [proCategory, setProCategory] = useState('');
   const [matchedProPhone, setMatchedProPhone] = useState('');
   const [matchedProCategory, setMatchedProCategory] = useState('');
+  const [dragOver, setDragOver] = useState(false);
+  const [cardFocusedField, setCardFocusedField] = useState('');
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -1170,6 +1172,15 @@ export default function HomePage({ onNavigate }) {
       </div>
       <div className="hero-phone">
         <div className="phone-wrap" style={{"position": "relative"}}>
+          {/* Floating badges */}
+          <div className="float-badge left">
+            <span className="float-icon">⭐</span>
+            <span>4.9/5 Calificaciones</span>
+          </div>
+          <div className="float-badge right">
+            <span className="float-icon">🛡️</span>
+            <span>100% Verificados</span>
+          </div>
           {/*  TETRIS IZQUIERDA: LISTO  */}
           <div className="tetris-side tetris-left" id="tetrisLeft"></div>
           {/*  TETRIS DERECHA: PATRON  */}
@@ -2786,13 +2797,13 @@ export default function HomePage({ onNavigate }) {
                 onMouseDown={e => e.currentTarget.style.transform = 'scale(0.97)'}
                 onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
               >
-                💳 Adquirir con AZUL
+                💳 Adquirir con Pasarela AZUL
               </button>
 
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedPlanForTransfer(selectedPlanForBenefits);
+                  setSelectedPlanForCheckout(selectedPlanForBenefits);
                   setSelectedPlanForBenefits(null);
                   setPaymentTab('transfer');
                   setSelectedTransferBank('');
@@ -2835,7 +2846,7 @@ export default function HomePage({ onNavigate }) {
         </div>
       )}
 
-      {/* ── MODAL FORMULARIO CHECKOUT AZUL ── */}
+      {/* ── MODAL FORMULARIO CHECKOUT UNIFICADO (TARJETA/TRANSFERENCIA) ── */}
       {selectedPlanForCheckout && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 10000,
@@ -2843,214 +2854,17 @@ export default function HomePage({ onNavigate }) {
           display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
         }}>
           <div style={{
-            width: '100%', maxWidth: '440px', background: 'white', borderRadius: '28px',
+            width: '100%', maxWidth: '460px', background: 'white', borderRadius: '28px',
             padding: '30px', boxSizing: 'border-box', boxShadow: '0 25px 60px rgba(0,0,0,0.25)',
-            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Syne', sans-serif"
+            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Plus Jakarta Sans', sans-serif"
           }}>
             <button 
+              type="button"
               onClick={() => {
                 setSelectedPlanForCheckout(null);
                 setCheckoutError('');
                 setNoAccountWarning(false);
-              }}
-              style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
-            >
-              ✕
-            </button>
-
-            {/* Logo o Título */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ background: '#002F6C', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', fontStyle: 'italic', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(0,47,108,0.2)' }}>
-                AZUL
-              </div>
-              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pasarela de Pagos Segura</span>
-            </div>
-
-            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
-              Pagar {selectedPlanForCheckout.name} ({selectedPlanForCheckout.price})
-            </h3>
-
-            {checkoutError && (
-              <div style={{ padding: '12px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#991B1B', fontSize: '13px', marginBottom: '16px', fontWeight: '500' }}>
-                ⚠️ {checkoutError}
-              </div>
-            )}
-
-            <form onSubmit={handleConfirmPayment} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              
-              {/* Nombre del Profesional */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre Completo del Profesional</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Juan Pérez"
-                  value={proName}
-                  onChange={e => setProName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Profesión / Categoría */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Profesión / Oficio</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Pintor, Jardinero, Mecánico..."
-                  value={proCategory}
-                  onChange={e => setProCategory(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Email de la cuenta Listo */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
-                <input 
-                  type="email" 
-                  required
-                  placeholder="ejemplo@correo.com"
-                  value={accountEmail}
-                  onChange={e => setAccountEmail(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-                <span style={{ fontSize: '10.5px', color: '#94A3B8', marginTop: '4px', display: 'block' }}>
-                  ⚠️ Introduce el correo exacto con el que te registraste en la app.
-                </span>
-              </div>
-
-              {/* Teléfono */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Teléfono / WhatsApp</label>
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="809-909-0455"
-                  value={accountPhone}
-                  onChange={e => setAccountPhone(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* --- DATOS DE LA TARJETA DE CRÉDITO --- */}
-              <div style={{ marginTop: '10px', borderTop: '1px solid #E2E8F0', paddingTop: '16px' }}>
-                <h4 style={{ fontSize: '14px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 14px 0', textAlign: 'left' }}>Datos de la Tarjeta</h4>
-                
-                {/* Nombre en la Tarjeta */}
-                <div style={{ marginBottom: '14px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Nombre en la Tarjeta</label>
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="Ej. Juan Pérez"
-                    value={cardName}
-                    onChange={e => setCardName(e.target.value)}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                  />
-                </div>
-
-                {/* Número de Tarjeta */}
-                <div style={{ marginBottom: '14px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Número de Tarjeta</label>
-                  <input 
-                    type="text" 
-                    required
-                    placeholder="4000 1234 5678 9010"
-                    maxLength="19"
-                    value={cardNumber}
-                    onChange={e => {
-                      let val = e.target.value.replace(/\D/g, '');
-                      let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
-                      setCardNumber(formatted);
-                    }}
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                  />
-                </div>
-
-                {/* Vencimiento y CVV */}
-                <div style={{ display: 'flex', gap: '12px', marginBottom: '14px' }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>Vencimiento (MM/YY)</label>
-                    <input 
-                      type="text" 
-                      required
-                      placeholder="MM/YY"
-                      maxLength="5"
-                      value={cardExp}
-                      onChange={e => {
-                        let val = e.target.value.replace(/\D/g, '');
-                        if (val.length > 2) {
-                          val = val.substring(0, 2) + '/' + val.substring(2, 4);
-                        }
-                        setCardExp(val);
-                      }}
-                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                    />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px', textAlign: 'left' }}>CVV</label>
-                    <input 
-                      type="password" 
-                      required
-                      placeholder="123"
-                      maxLength="4"
-                      value={cardCvv}
-                      onChange={e => setCardCvv(e.target.value.replace(/\D/g, ''))}
-                      style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Mensaje de Redirección Seguro a Azul */}
-              <div style={{
-                background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px',
-                padding: '12px 16px', color: '#0369A1', fontSize: '12.5px', lineHeight: '1.4',
-                fontWeight: '500', display: 'flex', flexDirection: 'column', gap: '4px', textAlign: 'left',
-                marginBottom: '4px'
-              }}>
-                <span style={{ fontSize: '15px', fontWeight: '700' }}>🛡️ Conexión Segura</span>
-                <span>Tus datos son procesados de forma cifrada de extremo a extremo. Ninguno de tus datos bancarios se guardará en nuestros servidores.</span>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  background: 'linear-gradient(135deg, #10B981, #059669)',
-                  color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
-                  fontSize: '15px', fontWeight: '700', cursor: 'pointer',
-                  boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
-                  opacity: loading ? 0.6 : 1
-                }}
-              >
-                {loading ? 'Procesando Pago...' : `✓ Notificar Pago con Tarjeta de ${selectedPlanForCheckout.price}`}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ── MODAL FORMULARIO CHECKOUT TRANSFERENCIA ── */}
-      {selectedPlanForTransfer && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 10000,
-          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
-        }}>
-          <div style={{
-            width: '100%', maxWidth: '440px', background: 'white', borderRadius: '28px',
-            padding: '30px', boxSizing: 'border-box', boxShadow: '0 25px 60px rgba(0,0,0,0.25)',
-            maxHeight: '90vh', overflowY: 'auto', position: 'relative', fontFamily: "'Syne', sans-serif"
-          }}>
-            <button 
-              onClick={() => {
-                setSelectedPlanForTransfer(null);
-                setCheckoutError('');
-                setNoAccountWarning(false);
-                setSelectedTransferBank('');
-                setDepositorName('');
+                setReceiptFile(null);
               }}
               style={{ position: 'absolute', top: '20px', right: '20px', background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '18px', cursor: 'pointer', fontWeight: 'bold' }}
             >
@@ -3059,15 +2873,14 @@ export default function HomePage({ onNavigate }) {
 
             {/* Header del modal */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ background: '#F26000', color: 'white', padding: '8px 18px', borderRadius: '10px', fontWeight: '900', letterSpacing: '1px', fontSize: '20px', boxShadow: '0 4px 10px rgba(242,96,0,0.2)' }}>
-                TRANSFERENCIA
-              </div>
-              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: '600', marginTop: '6px' }}>Pago Directo / Interbancario</span>
+              <img src="./assets/logo_listo.png" alt="Listo Patrón" style={{ height: '36px', marginBottom: '8px' }} />
+              <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1A1A2E', margin: '0', textAlign: 'center' }}>
+                Pagar {selectedPlanForCheckout.name}
+              </h3>
+              <span style={{ fontSize: '14px', color: 'var(--orange)', fontWeight: '800', marginTop: '4px' }}>
+                {selectedPlanForCheckout.price} / mes
+              </span>
             </div>
-
-            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E', margin: '0 0 16px 0', textAlign: 'center' }}>
-              Pagar {selectedPlanForTransfer.name} ({selectedPlanForTransfer.price})
-            </h3>
 
             {checkoutError && (
               <div style={{ padding: '12px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#991B1B', fontSize: '13px', marginBottom: '16px', fontWeight: '500' }}>
@@ -3075,224 +2888,375 @@ export default function HomePage({ onNavigate }) {
               </div>
             )}
 
-            <form onSubmit={(e) => handleConfirmPayment(e, selectedPlanForTransfer)} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              
-              {/* Nombre del Profesional */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre Completo del Profesional</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Juan Pérez"
-                  value={proName}
-                  onChange={e => setProName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Profesión / Categoría */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Profesión / Oficio</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Pintor, Jardinero, Mecánico..."
-                  value={proCategory}
-                  onChange={e => setProCategory(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Email de la cuenta Listo */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu cuenta Listo Patrón</label>
-                <input 
-                  type="email" 
-                  required
-                  placeholder="ejemplo@correo.com"
-                  value={accountEmail}
-                  onChange={e => setAccountEmail(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-                <span style={{ fontSize: '10.5px', color: '#94A3B8', marginTop: '4px', display: 'block' }}>
-                  ⚠️ Introduce el correo exacto con el que te registraste en la app.
-                </span>
-              </div>
-
-              {/* Teléfono */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Teléfono / WhatsApp</label>
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="809-909-0455"
-                  value={accountPhone}
-                  onChange={e => setAccountPhone(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Dropdown de bancos del país */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Banco desde el que transfieres (Origen)</label>
-                <select
-                  required
-                  value={selectedTransferBank}
-                  onChange={e => setSelectedTransferBank(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box', color: '#1A1A2E' }}
-                >
-                  <option value="" disabled>Selecciona tu banco...</option>
-                  <option value="Banco de Reservas">Banco de Reservas (Banreservas)</option>
-                  <option value="Banco BHD">Banco BHD</option>
-                  <option value="Banco Popular">Banco Popular Dominicano</option>
-                  <option value="Scotiabank">Scotiabank</option>
-                  <option value="Asociacion Popular">Asoc. Popular (APAP)</option>
-                  <option value="Banco Promerica">Banco Promerica</option>
-                  <option value="Bancaribe">Bancaribe</option>
-                  <option value="Banco Vimenca">Banco Vimenca</option>
-                  <option value="Otro">Otro Banco / Interbancario</option>
-                </select>
-              </div>
-
-              {/* Cuentas receptoras de Listo Patrón */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px', background: '#FFF7ED', border: '1px solid #FFEDD5', borderRadius: '16px', padding: '14px', boxSizing: 'border-box' }}>
-                <p style={{ margin: '0 0 6px 0', fontWeight: '800', color: '#C2410C', fontSize: '12.5px' }}>Cuentas receptoras de Listo Patrón:</p>
-                
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #FED7AA', paddingBottom: '8px', marginBottom: '6px', textAlign: 'left', alignItems: 'center',
-                  opacity: (selectedTransferBank && selectedTransferBank !== 'Banco Popular' && selectedTransferBank !== 'Otro') ? 0.5 : 1,
-                  transition: 'opacity 0.2s'
-                }}>
-                  <div>
-                    <strong style={{ color: '#00843D' }}>Banco Popular</strong><br/>
-                    Cuenta: 746424456 (Ahorros)<br/>
-                    Titular: Julio de Jesús Francisco
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText('746424456');
-                      setCopiedIdx(1);
-                      setTimeout(() => setCopiedIdx(null), 1800);
-                    }}
-                    style={{ background: copiedIdx === 1 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', color: copiedIdx === 1 ? 'white' : '#475569' }}
-                  >
-                    {copiedIdx === 1 ? '✓ Copiado' : 'Copiar'}
-                  </button>
-                </div>
-                
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between', textAlign: 'left', alignItems: 'center',
-                  opacity: (selectedTransferBank && selectedTransferBank !== 'Banco de Reservas' && selectedTransferBank !== 'Otro') ? 0.5 : 1,
-                  transition: 'opacity 0.2s'
-                }}>
-                  <div>
-                    <strong style={{ color: '#003087' }}>Banreservas</strong><br/>
-                    Cuenta: 9607282472 (Ahorros)<br/>
-                    Titular: Julio de Jesús Francisco
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText('9607282472');
-                      setCopiedIdx(2);
-                      setTimeout(() => setCopiedIdx(null), 1800);
-                    }}
-                    style={{ background: copiedIdx === 2 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', color: copiedIdx === 2 ? 'white' : '#475569' }}
-                  >
-                    {copiedIdx === 2 ? '✓ Copiado' : 'Copiar'}
-                  </button>
-                </div>
-              </div>
-
-              <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0', lineHeight: '1.4', textAlign: 'left' }}>
-                💡 Realiza la transferencia por valor de <strong>{selectedPlanForTransfer.price}</strong> y luego completa los datos del titular para notificar la activación:
-              </p>
-
-              {/* Nombre de quien transfiere */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre de quien hizo el depósito / transferencia</label>
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Ej. Juan Pérez"
-                  value={depositorName}
-                  onChange={e => setDepositorName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
-                />
-              </div>
-
-              {/* Subir Comprobante de Banco */}
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Subir Comprobante de Pago (Foto o PDF)</label>
-                <div style={{
-                  border: '2px dashed #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  textAlign: 'center',
-                  background: '#FAFAFA',
-                  cursor: 'pointer',
-                  position: 'relative',
-                  transition: 'border-color 0.2s',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '6px'
+            {/* Pestañas de Selección de Pago */}
+            <div className="payment-tabs">
+              <button 
+                type="button"
+                className={`payment-tab ${paymentTab === 'card' ? 'active' : ''}`}
+                onClick={() => {
+                  setPaymentTab('card');
+                  setCheckoutError('');
                 }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = '#F26000'}
-                onMouseLeave={e => e.currentTarget.style.borderColor = '#E2E8F0'}
-                >
-                  <span style={{ fontSize: '24px' }}>📁</span>
-                  <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#64748B' }}>
-                    {receiptFile ? `✓ ${receiptFile.name}` : 'Seleccionar comprobante...'}
-                  </span>
-                  <span style={{ fontSize: '10.5px', color: '#94A3B8' }}>Formatos aceptados: JPG, PNG, PDF</span>
+              >
+                💳 Tarjeta de Crédito
+              </button>
+              <button 
+                type="button"
+                className={`payment-tab ${paymentTab === 'transfer' ? 'active' : ''}`}
+                onClick={() => {
+                  setPaymentTab('transfer');
+                  setCheckoutError('');
+                }}
+              >
+                🏦 Transferencia Bancaria
+              </button>
+            </div>
+
+            <form onSubmit={handleConfirmPayment} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* --- DATOS COMUNES DEL PROFESIONAL --- */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre en Listo</label>
                   <input 
-                    type="file" 
+                    type="text" 
                     required
-                    accept="image/*,application/pdf"
-                    onChange={e => setReceiptFile(e.target.files[0])}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      opacity: 0,
-                      cursor: 'pointer',
-                      width: '100%',
-                      height: '100%'
-                    }}
+                    placeholder="Ej. Juan Pérez"
+                    value={proName}
+                    onChange={e => setProName(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Profesión / Oficio</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="Ej. Pintor, Mecánico..."
+                    value={proCategory}
+                    onChange={e => setProCategory(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
-                <button
-                  type="button"
-                  onClick={(e) => handleWhatsAppSubmit(e, selectedPlanForTransfer)}
-                  disabled={loading}
-                  style={{
-                    background: '#25D366', textAlign: 'center',
-                    color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
-                    fontSize: '14px', fontWeight: '700', cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(37,211,102,0.3)', outline: 'none',
-                    opacity: loading ? 0.6 : 1
-                  }}
-                >
-                  💬 Enviar Comprobante por WhatsApp
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    background: 'linear-gradient(135deg, #F26000, #FF8533)',
-                    color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
-                    fontSize: '15px', fontWeight: '700', cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
-                    opacity: loading ? 0.6 : 1
-                  }}
-                >
-                  {loading ? 'Procesando...' : `✓ Notificar Transferencia de ${selectedPlanForTransfer.price}`}
-                </button>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Correo de tu Cuenta</label>
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="ejemplo@correo.com"
+                    value={accountEmail}
+                    onChange={e => setAccountEmail(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Teléfono / WhatsApp</label>
+                  <input 
+                    type="tel" 
+                    required
+                    placeholder="809-909-0455"
+                    value={accountPhone}
+                    onChange={e => setAccountPhone(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                </div>
               </div>
+
+              {/* --- CONTENIDO ESPECÍFICO SEGÚN PESTAÑA --- */}
+              {paymentTab === 'card' ? (
+                <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '16px' }}>
+                  
+                  {/* SIMULADOR INTERACTIVO 3D DE TARJETA */}
+                  <div className="credit-card-container">
+                    <div className={`credit-card ${selectedPlanForCheckout.id} ${cardFocusedField === 'cvv' ? 'flipped' : ''}`}>
+                      <div className="card-front">
+                        <div className="card-row">
+                          <div className="card-chip"></div>
+                          <div className="card-brand">
+                            {cardNumber.startsWith('4') ? 'VISA' : cardNumber.startsWith('5') ? 'MASTERCARD' : 'Listo'}
+                          </div>
+                        </div>
+                        <div className="card-number">
+                          {cardNumber || '•••• •••• •••• ••••'}
+                        </div>
+                        <div className="card-holder-info">
+                          <div>
+                            <div className="card-holder-label">Titular</div>
+                            <div className="card-holder-val">{cardName || 'JUAN PEREZ'}</div>
+                          </div>
+                          <div>
+                            <div className="card-holder-label">Expira</div>
+                            <div className="card-exp-val">{cardExp || 'MM/YY'}</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="card-back">
+                        <div className="card-magnetic-strip"></div>
+                        <div className="card-signature-area">
+                          <span className="card-signature-val">{cardCvv ? '•'.repeat(cardCvv.length) : '•••'}</span>
+                        </div>
+                        <div className="card-back-text">
+                          Esta tarjeta es procesada de forma segura por la pasarela de pagos cifrada de AZUL.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Inputs de Tarjeta */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '4px' }}>Nombre en la Tarjeta</label>
+                      <input 
+                        type="text" 
+                        required={paymentTab === 'card'}
+                        placeholder="Ej. Juan Pérez"
+                        value={cardName}
+                        onChange={e => setCardName(e.target.value)}
+                        onFocus={() => setCardFocusedField('')}
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '4px' }}>Número de Tarjeta</label>
+                      <input 
+                        type="text" 
+                        required={paymentTab === 'card'}
+                        placeholder="4000 1234 5678 9010"
+                        maxLength="19"
+                        value={cardNumber}
+                        onFocus={() => setCardFocusedField('')}
+                        onChange={e => {
+                          let val = e.target.value.replace(/\D/g, '');
+                          let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+                          setCardNumber(formatted);
+                        }}
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '4px' }}>Vencimiento (MM/YY)</label>
+                        <input 
+                          type="text" 
+                          required={paymentTab === 'card'}
+                          placeholder="MM/YY"
+                          maxLength="5"
+                          value={cardExp}
+                          onFocus={() => setCardFocusedField('')}
+                          onChange={e => {
+                            let val = e.target.value.replace(/\D/g, '');
+                            if (val.length > 2) {
+                              val = val.substring(0, 2) + '/' + val.substring(2, 4);
+                            }
+                            setCardExp(val);
+                          }}
+                          style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '4px' }}>CVV</label>
+                        <input 
+                          type="password" 
+                          required={paymentTab === 'card'}
+                          placeholder="123"
+                          maxLength="4"
+                          value={cardCvv}
+                          onFocus={() => setCardFocusedField('cvv')}
+                          onBlur={() => setCardFocusedField('')}
+                          onChange={e => setCardCvv(e.target.value.replace(/\D/g, ''))}
+                          style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px', padding: '12px', color: '#0369A1', fontSize: '12px', marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <strong style={{ fontSize: '13px' }}>🛡️ Transacción Encriptada</strong>
+                    <span>Tus datos bancarios se transmiten cifrados de forma segura. No almacenamos tus credenciales de pago.</span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      width: '100%', background: 'linear-gradient(135deg, #10B981, #059669)',
+                      color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                      fontSize: '15px', fontWeight: '700', cursor: 'pointer', marginTop: '16px',
+                      boxShadow: '0 4px 16px rgba(16,185,129,0.3)', outline: 'none',
+                      opacity: loading ? 0.6 : 1
+                    }}
+                  >
+                    {loading ? 'Procesando Pago...' : `✓ Pagar con Tarjeta (AZUL)`}
+                  </button>
+
+                </div>
+              ) : (
+                <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  
+                  {/* Dropdown Bancos */}
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Banco de Origen</label>
+                    <select
+                      required={paymentTab === 'transfer'}
+                      value={selectedTransferBank}
+                      onChange={e => setSelectedTransferBank(e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box', color: '#1A1A2E' }}
+                    >
+                      <option value="" disabled>Selecciona tu banco...</option>
+                      <option value="Banco de Reservas">Banco de Reservas (Banreservas)</option>
+                      <option value="Banco BHD">Banco BHD</option>
+                      <option value="Banco Popular">Banco Popular Dominicano</option>
+                      <option value="Scotiabank">Scotiabank</option>
+                      <option value="Asociacion Popular">Asoc. Popular (APAP)</option>
+                      <option value="Otro">Otro Banco / Interbancario</option>
+                    </select>
+                  </div>
+
+                  {/* Cuentas Receptoras */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px', background: '#FFF7ED', border: '1px solid #FFEDD5', borderRadius: '14px', padding: '12px' }}>
+                    <p style={{ margin: '0 0 4px 0', fontWeight: '800', color: '#C2410C', fontSize: '12px' }}>Cuentas de Listo Patrón:</p>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: (selectedTransferBank && selectedTransferBank !== 'Banco Popular') ? 0.5 : 1 }}>
+                      <div>
+                        <strong style={{ color: '#00843D' }}>Banco Popular:</strong> Ahorros 746424456 (Julio de Jesús)
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('746424456');
+                          setCopiedIdx(1);
+                          setTimeout(() => setCopiedIdx(null), 1800);
+                        }}
+                        style={{ background: copiedIdx === 1 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '6px', padding: '3px 8px', fontSize: '10px', cursor: 'pointer', color: copiedIdx === 1 ? 'white' : '#475569' }}
+                      >
+                        {copiedIdx === 1 ? '✓' : 'Copiar'}
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: (selectedTransferBank && selectedTransferBank !== 'Banco de Reservas') ? 0.5 : 1 }}>
+                      <div>
+                        <strong style={{ color: '#003087' }}>Banreservas:</strong> Ahorros 9607282472 (Julio de Jesús)
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('9607282472');
+                          setCopiedIdx(2);
+                          setTimeout(() => setCopiedIdx(null), 1800);
+                        }}
+                        style={{ background: copiedIdx === 2 ? '#10B981' : '#E2E8F0', border: 'none', borderRadius: '6px', padding: '3px 8px', fontSize: '10px', cursor: 'pointer', color: copiedIdx === 2 ? 'white' : '#475569' }}
+                      >
+                        {copiedIdx === 2 ? '✓' : 'Copiar'}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Nombre del Depositante</label>
+                    <input 
+                      type="text" 
+                      required={paymentTab === 'transfer'}
+                      placeholder="Ej. Juan Pérez"
+                      value={depositorName}
+                      onChange={e => setDepositorName(e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: '#FAFAFA', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+
+                  {/* Drag-and-drop file upload zone */}
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '6px' }}>Comprobante de Pago</label>
+                    <div 
+                      className={`file-upload-zone ${dragOver ? 'dragover' : ''}`}
+                      onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                      onDragLeave={() => setDragOver(false)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setDragOver(false);
+                        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                          setReceiptFile(e.dataTransfer.files[0]);
+                        }
+                      }}
+                      onClick={() => document.getElementById('receipt-file-input-unified').click()}
+                    >
+                      <span className="upload-icon">📁</span>
+                      <span className="file-upload-info">
+                        {receiptFile ? (
+                          <>Comprobante: <strong>{receiptFile.name}</strong></>
+                        ) : (
+                          <>Arrastra el comprobante aquí o <strong>haz clic</strong></>
+                        )}
+                      </span>
+                      <span style={{ fontSize: '10px', color: '#94A3B8' }}>JPG, PNG o PDF</span>
+                      
+                      <input 
+                        type="file" 
+                        id="receipt-file-input-unified"
+                        required={paymentTab === 'transfer'}
+                        accept="image/*,application/pdf"
+                        onChange={e => setReceiptFile(e.target.files[0])}
+                        style={{ display: 'none' }}
+                      />
+                    </div>
+
+                    {receiptFile && receiptFile.type.startsWith('image/') && (
+                      <div className="file-upload-preview-container">
+                        <img 
+                          src={URL.createObjectURL(receiptFile)} 
+                          alt="Vista previa" 
+                          className="file-upload-preview"
+                        />
+                        <button 
+                          type="button" 
+                          className="remove-file-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReceiptFile(null);
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={(e) => handleWhatsAppSubmit(e, selectedPlanForCheckout)}
+                      disabled={loading}
+                      style={{
+                        background: '#25D366', textAlign: 'center',
+                        color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                        fontSize: '14px', fontWeight: '700', cursor: 'pointer',
+                        boxShadow: '0 4px 16px rgba(37,211,102,0.3)', outline: 'none',
+                        opacity: loading ? 0.6 : 1
+                      }}
+                    >
+                      💬 Enviar Comprobante por WhatsApp
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      style={{
+                        background: 'linear-gradient(135deg, var(--orange), var(--orange-dark))',
+                        color: 'white', border: 'none', borderRadius: '14px', padding: '14px',
+                        fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+                        boxShadow: '0 4px 16px rgba(242,96,0,0.3)', outline: 'none',
+                        opacity: loading ? 0.6 : 1
+                      }}
+                    >
+                      {loading ? 'Procesando...' : `✓ Notificar Transferencia`}
+                    </button>
+                  </div>
+
+                </div>
+              )}
             </form>
           </div>
         </div>
@@ -3305,14 +3269,12 @@ export default function HomePage({ onNavigate }) {
           background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(10px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
         }}>
-          <div style={{
-            width: '100%', maxWidth: '380px', background: '#FFFFFF',
-            borderRadius: '24px', overflow: 'hidden',
-            boxShadow: '0 24px 50px rgba(0,0,0,0.3)',
+          <div className="receipt-ticket" style={{
+            width: '100%', maxWidth: '385px',
             borderTop: last4 === 'Transferencia' ? '8px solid #F26000' : '8px solid #002F6C',
             display: 'flex', flexDirection: 'column', alignItems: 'center',
-            padding: '30px 24px', boxSizing: 'border-box', color: '#1a1a2e',
-            fontFamily: "'Syne', sans-serif"
+            boxSizing: 'border-box', color: '#1a1a2e',
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
           }}>
             
             {/* Logo de pago */}
@@ -3344,7 +3306,7 @@ export default function HomePage({ onNavigate }) {
             }}>✓</div>
 
             {/* Title / Subtitle */}
-            <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 4px', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '22px', fontWeight: '800', margin: '0 0 4px', textAlign: 'center', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {last4 === 'Transferencia' ? '¡Solicitud Recibida!' : '¡Pago Exitoso!'}
             </h2>
             <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 20px', textAlign: 'center' }}>
@@ -3352,7 +3314,7 @@ export default function HomePage({ onNavigate }) {
             </p>
 
             {/* Amount */}
-            <div style={{ fontSize: '28px', fontWeight: '900', color: '#1A1A2E', marginBottom: '24px', letterSpacing: '-0.5px' }}>
+            <div style={{ fontSize: '28px', fontWeight: '900', color: '#1A1A2E', marginBottom: '24px', letterSpacing: '-0.5px', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               {purchasedPlanDetails.price}
             </div>
 
@@ -3426,10 +3388,10 @@ export default function HomePage({ onNavigate }) {
                 setNoAccountWarning(false);
               }}
               style={{
-                width: '100%', background: last4 === 'Transferencia' ? 'linear-gradient(135deg, #F26000, #FF8533)' : 'linear-gradient(135deg, #002F6C, #004BAB)',
+                width: '100%', background: last4 === 'Transferencia' ? 'linear-gradient(135deg, var(--orange), var(--orange-light))' : 'linear-gradient(135deg, #002F6C, #004BAB)',
                 color: 'white', border: 'none', borderRadius: '14px', padding: '16px',
                 fontSize: '15px', fontWeight: '700', cursor: 'pointer', outline: 'none',
-                boxShadow: last4 === 'Transferencia' ? '0 4px 16px rgba(242,96,0,0.3)' : '0 4px 16px rgba(0,47,108,0.3)', fontFamily: "'Syne', sans-serif"
+                boxShadow: last4 === 'Transferencia' ? '0 4px 16px rgba(242,96,0,0.3)' : '0 4px 16px rgba(0,47,108,0.3)', fontFamily: "'Plus Jakarta Sans', sans-serif"
               }}
             >
               Cerrar y Volver
