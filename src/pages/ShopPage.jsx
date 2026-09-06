@@ -451,11 +451,28 @@ export default function ShopPage({ onNavigate }) {
                       </div>
                     </div>
                     <div style={{ "display": "flex", "gap": "8px", "marginTop": "5px" }}>
-                      <button className="add-to-cart-btn" onClick={() => addToCart(product)} style={{ "flex": "1", "padding": "10px 4px", "fontSize": "12px", "whiteSpace": "nowrap" }}>
-                        Agregar 🛒
-                      </button>
-                      <button className="buy-now-btn" onClick={() => buyNow(product)}>
-                        Comprar 🚀
+                      <button 
+                        type="button"
+                        disabled
+                        style={{ 
+                          "flex": "1", 
+                          "padding": "12px 8px", 
+                          "fontSize": "13px", 
+                          "fontWeight": "800",
+                          "borderRadius": "12px",
+                          "border": "none",
+                          "background": "#94A3B8", 
+                          "color": "#FFFFFF",
+                          "cursor": "not-allowed", 
+                          "opacity": "0.7",
+                          "boxShadow": "none",
+                          "display": "flex",
+                          "alignItems": "center",
+                          "justifyContent": "center",
+                          "gap": "6px"
+                        }}
+                      >
+                        🔒 Compra Bloqueada
                       </button>
                     </div>
                   </div>
