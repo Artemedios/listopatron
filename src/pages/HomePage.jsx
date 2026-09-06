@@ -935,9 +935,9 @@ export default function HomePage({ onNavigate }) {
 </nav>
 
 
-{/*  PORTADA PRINCIPAL / BANNER HORIZONAL DE PLANES  */}
-<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "80px", "paddingBottom": "30px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
-    <div className="hero-plan-container" style={{"position": "relative", "width": "98%", "maxWidth": "1280px", "boxShadow": "0 24px 60px rgba(0,0,0,0.35)", "overflow": "hidden", "borderRadius": "28px", "margin": "0 15px 15px"}}>
+{/*  PORTADA PRINCIPAL / BANNER HORIZONAL DE PLANES FULL WIDTH  */}
+<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "paddingBottom": "0px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
+    <div className="hero-plan-container" style={{"position": "relative", "width": "100%", "maxWidth": "100%", "overflow": "hidden", "borderRadius": "0px", "margin": "0"}}>
       
       {/* Carrusel de Planes Horizontal con sus respectivos colores, animaciones y badges */}
       <div className="hero-plan-slide-wrap">
