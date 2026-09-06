@@ -692,13 +692,13 @@ export default function ShopPage({ onNavigate }) {
                     <div className="bank-account-card">
                       <span className="bank-badge popular">Banco Popular</span>
                       <div className="account-number">Número de Cuenta: <strong>746424456</strong></div>
-                      <div className="account-owner">Titular: <strong>Listo Patrón</strong></div>
+                      <div className="account-owner">Titular: <strong>Julio de Jesus Francisco Huseta</strong></div>
                     </div>
 
                     <div className="bank-account-card">
                       <span className="bank-badge banreservas">Banreservas</span>
                       <div className="account-number">Número de Cuenta: <strong>9607282472</strong></div>
-                      <div className="account-owner">Titular: <strong>Listo Patrón</strong></div>
+                      <div className="account-owner">Titular: <strong>Julio de Jesus Francisco Huseta</strong></div>
                     </div>
                   </div>
 
