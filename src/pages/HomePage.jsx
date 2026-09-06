@@ -962,10 +962,13 @@ export default function HomePage({ onNavigate }) {
               </div>
 
               <div className="hero-plan-right">
-                <p className="hero-plan-desc">{plan.desc}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ffffff', fontWeight: '800', fontSize: '15px' }}>
-                  <span>⭐</span>
-                  <span>{plan.subText}</span>
+                <div className="hero-plan-checklist">
+                  {plan.benefits && plan.benefits.slice(0, 4).map((benefit, bIdx) => (
+                    <div key={bIdx} className="hero-plan-check-item">
+                      <span className="hero-plan-check-icon is-check">✓</span>
+                      <span>{benefit}</span>
+                    </div>
+                  ))}
                 </div>
                 <button
                   onClick={() => handleSelectPlanFromCard(plan.id)}
