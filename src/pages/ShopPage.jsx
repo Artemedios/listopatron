@@ -461,10 +461,10 @@ export default function ShopPage({ onNavigate }) {
                           "fontWeight": "800",
                           "borderRadius": "12px",
                           "border": "none",
-                          "background": "#94A3B8", 
+                          "background": "#F26000", 
                           "color": "#FFFFFF",
                           "cursor": "not-allowed", 
-                          "opacity": "0.7",
+                          "opacity": "0.75",
                           "boxShadow": "none",
                           "display": "flex",
                           "alignItems": "center",
@@ -472,7 +472,7 @@ export default function ShopPage({ onNavigate }) {
                           "gap": "6px"
                         }}
                       >
-                        🔒 Compra Bloqueada
+                        ⏳ Próximamente
                       </button>
                     </div>
                   </div>
