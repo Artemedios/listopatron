@@ -935,39 +935,47 @@ export default function HomePage({ onNavigate }) {
 </nav>
 
 
-{/*  PORTADA PRINCIPAL / INTRO ESTATICO  */}
-<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "70px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
-    <div style={{"position": "relative", "width": "100%", "maxWidth": "1000px", "boxShadow": "0 0 40px rgba(0,0,0,0.3)", "overflow": "hidden", "background": "#000", "borderRadius": "16px", "margin": "0 15px 15px"}}>
+{/*  PORTADA PRINCIPAL / BANNER HORIZONAL DE PLANES  */}
+<div id="intro-portada-container" style={{"width": "100%", "background": "#F26000", "paddingTop": "80px", "paddingBottom": "30px", "display": "flex", "flexDirection": "column", "alignItems": "center", "position": "relative"}}>
+    <div className="hero-plan-container" style={{"position": "relative", "width": "92%", "maxWidth": "1050px", "boxShadow": "0 20px 60px rgba(0,0,0,0.35)", "overflow": "hidden", "borderRadius": "24px", "margin": "0 15px 15px"}}>
       
-      {/* Carrusel de imágenes con transición suave (cross-fade) adaptada a cada aspecto sin recortar */}
-      <div style={{"position": "relative", "width": "100%", "height": "auto", "overflow": "hidden"}}>
-        {portadaImages.map((src, idx) => {
+      {/* Carrusel de Planes Horizontal con sus respectivos colores, animaciones y badges */}
+      <div className="hero-plan-slide-wrap">
+        {webPlanes.map((plan, idx) => {
           const isActive = idx === portadaIndex;
+          const slideThemeClass = plan.id === 'standard' ? 'slide-standard' : (plan.id === 'gold' ? 'slide-gold' : (plan.id === 'platinum' ? 'slide-platinum' : 'slide-vip'));
+          
           return (
-            <img
-              key={src}
-              src={src}
-              style={isActive ? {
-                "width": "100%",
-                "height": "auto",
-                "display": "block",
-                "transition": "opacity 1.2s ease-in-out",
-                "opacity": "1",
-                "zIndex": "2"
-              } : {
-                "position": "absolute",
-                "top": "0",
-                "left": "0",
-                "width": "100%",
-                "height": "100%",
-                "objectFit": "cover",
-                "display": "block",
-                "transition": "opacity 1.2s ease-in-out",
-                "opacity": "0",
-                "zIndex": "1"
-              }}
-              alt={`Portada Listo Patrón ${idx + 1}`}
-            />
+            <div
+              key={plan.id}
+              className={`hero-plan-slide ${slideThemeClass} ${isActive ? 'active-slide' : ''}`}
+            >
+              <div className="hero-plan-left">
+                <div className="hero-plan-badge-tag">
+                  <span>{plan.emoji}</span>
+                  <span>{plan.badge}</span>
+                </div>
+                <h2 className="hero-plan-title">{plan.name}</h2>
+                <div className="hero-plan-price-tag">
+                  {plan.price}<sub>{plan.period}</sub>
+                </div>
+              </div>
+
+              <div className="hero-plan-right">
+                <p className="hero-plan-desc">{plan.desc}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ffffff', fontWeight: '800', fontSize: '15px' }}>
+                  <span>⭐</span>
+                  <span>{plan.subText}</span>
+                </div>
+                <button
+                  onClick={() => handleSelectPlanFromCard(plan.id)}
+                  className="hero-plan-btn-action"
+                >
+                  <span>Obtener {plan.name}</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </div>
           );
         })}
       </div>
@@ -975,30 +983,35 @@ export default function HomePage({ onNavigate }) {
       {/* Puntos indicadores interactivos (dots) estilo pastilla expansible */}
       <div style={{
         "position": "absolute",
-        "bottom": "5%",
+        "bottom": "14px",
         "left": "50%",
         "transform": "translateX(-50%)",
         "display": "flex",
-        "gap": "8px",
-        "zIndex": "6"
+        "gap": "10px",
+        "zIndex": "10"
       }}>
-        {portadaImages.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setPortadaIndex(idx)}
-            style={{
-              "width": idx === portadaIndex ? "24px" : "8px",
-              "height": "8px",
-              "borderRadius": "4px",
-              "border": "none",
-              "background": idx === portadaIndex ? "#F26000" : "rgba(255,255,255,0.6)",
-              "cursor": "pointer",
-              "transition": "all 0.3s ease",
-              "padding": "0"
-            }}
-            aria-label={`Ir a imagen de portada ${idx + 1}`}
-          />
-        ))}
+        {webPlanes.map((plan, idx) => {
+          const isSelected = idx === portadaIndex;
+          const dotColor = plan.id === 'standard' ? '#2E7D32' : (plan.id === 'gold' ? '#D4A017' : (plan.id === 'platinum' ? '#6E829B' : '#FFFFFF'));
+          return (
+            <button
+              key={plan.id}
+              onClick={() => setPortadaIndex(idx)}
+              style={{
+                "width": isSelected ? "28px" : "10px",
+                "height": "10px",
+                "borderRadius": "5px",
+                "border": "none",
+                "background": isSelected ? dotColor : "rgba(255,255,255,0.4)",
+                "cursor": "pointer",
+                "transition": "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                "padding": "0",
+                "boxShadow": isSelected ? '0 2px 8px rgba(0,0,0,0.3)' : 'none'
+              }}
+              aria-label={`Ver ${plan.name}`}
+            />
+          );
+        })}
       </div>
       
       {/* El logo circular en la esquina superior derecha */}
