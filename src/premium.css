@@ -1645,3 +1645,57 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
   color: #4A5568;
 }
 
+/* --- Mamey Executive Enhancements --- */
+.mamey-hero-gradient {
+  background: linear-gradient(135deg, #F26000 0%, #E05200 60%, #C24D00 100%) !important;
+}
+
+.mamey-badge {
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mamey-glow-btn {
+  background: linear-gradient(135deg, #F26000 0%, #FF771C 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(242, 96, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.mamey-glow-btn:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 12px 30px rgba(242, 96, 0, 0.5) !important;
+  background: linear-gradient(135deg, #FF771C 0%, #F26000 100%) !important;
+}
+
+.mamey-card-elevated {
+  background: #ffffff !important;
+  border: 1px solid rgba(242, 96, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.mamey-card-elevated:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 45px rgba(242, 96, 0, 0.15) !important;
+  border-color: rgba(242, 96, 0, 0.3) !important;
+}
+
+/* Insignias de Planes 3D */
+.plan-3d-vip {
+  background: linear-gradient(145deg, #ffffff 0%, #fff7f2 100%) !important;
+  border: 2px solid #F26000 !important;
+  box-shadow: 0 15px 40px rgba(242, 96, 0, 0.25) !important;
+}
+
+.plan-3d-vip .plan-badge {
+  background: linear-gradient(90deg, #F26000, #FF771C) !important;
+  box-shadow: 0 4px 14px rgba(242, 96, 0, 0.4) !important;
+}
+
+

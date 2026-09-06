@@ -1,19 +1,31 @@
 
-:root{
-  --orange:#F26000;
-  --orange-dark:#C24D00;
-  --orange-light:#FF8533;
-  --orange-pale:#FFF3EC;
-  --orange-pale2:#FFE8D6;
-  --black:#F26000;
-  --dark:#C24D00;
-  --gray:#6B7280;
-  --light:#F9FAFB;
-  --white:#ffffff;
+:root {
+  --orange: #F26000;         /* Mamey principal de Listo Patrón */
+  --orange-dark: #D45000;    /* Mamey profundo */
+  --orange-light: #FF771C;   /* Mamey brillante resplandeciente */
+  --orange-pale: #FFF4ED;    /* Fondo suave mamey */
+  --orange-pale2: #FFE6D6;   /* Fondo destacado mamey */
+  --black: #0F172A;          /* Slate corporativo muy oscuro para lectura y contraste */
+  --dark: #1E293B;           /* Slate corporativo oscuro */
+  --gray: #64748B;           /* Gris neutro refinado */
+  --light: #F8FAFC;          /* Fondo claro limpio */
+  --white: #ffffff;
+  --mamey-glow: 0 10px 30px rgba(242, 96, 0, 0.25);
+  --mamey-glow-lg: 0 15px 40px rgba(242, 96, 0, 0.4);
+  --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --card-shadow-hover: 0 20px 45px rgba(242, 96, 0, 0.15);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Nunito',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;overflow-y:auto}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 /* ===== NAV ===== */
 nav{
