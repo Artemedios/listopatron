@@ -217,10 +217,17 @@ export default function ShopPage({ onNavigate }) {
   // Checkout Form State
   const [formData, setFormData] = useState({
     name: '',
+    nickname: '',
     phone: '',
+    secondaryPhone: '',
     city: 'Santo Domingo',
+    sector: '',
     address: '',
-    paymentMethod: 'contraentrega'
+    reference: '',
+    deliveryNotes: '',
+    paymentMethod: 'contraentrega',
+    receiptFileName: '',
+    receiptFileData: null
   });
 
   // Save cart to localStorage
@@ -270,6 +277,29 @@ export default function ShopPage({ onNavigate }) {
     setCart(prevCart => prevCart.filter(item => item.id !== id));
   };
 
+  const handleReceiptUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          receiptFileName: file.name,
+          receiptFileData: reader.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveReceipt = () => {
+    setFormData(prev => ({
+      ...prev,
+      receiptFileName: '',
+      receiptFileData: null
+    }));
+  };
+
   const handleCheckoutSubmit = (e) => {
     e.preventDefault();
     setIsCheckoutOpen(false);
@@ -278,8 +308,37 @@ export default function ShopPage({ onNavigate }) {
 
   const getWhatsAppLink = () => {
     const orderId = Math.floor(100000 + Math.random() * 900000);
-    const cartDetails = cart.map(item => `• ${item.name} (${item.quantity}x)`).join('%0A');
-    const text = `¡Hola Listo Patrón! He realizado un pedido en la tienda:%0A%0A*Orden:* %23LP-${orderId}%0A*Nombre:* ${formData.name}%0A*Teléfono:* ${formData.phone}%0A*Dirección:* ${formData.address}, ${formData.city}%0A*Método de Pago:* ${formData.paymentMethod === 'contraentrega' ? 'Contra Entrega' : 'Tarjeta / Transferencia'}%0A%0A*Productos:*%0A${cartDetails}%0A%0A*Total General:* RD$ ${cartTotal.toLocaleString()}`;
+    const cartDetails = cart.map(item => `• ${item.name} (${item.quantity}x) - RD$ ${(item.price * item.quantity).toLocaleString()}`).join('%0A');
+    
+    const nicknameStr = formData.nickname ? ` (Apodo: ${formData.nickname})` : '';
+    const phoneAltStr = formData.secondaryPhone ? ` | Tel Alt: ${formData.secondaryPhone}` : '';
+    const notesStr = formData.deliveryNotes ? `%0A📝 *Notas de Entrega:* ${formData.deliveryNotes}` : '';
+    
+    let paymentStr = formData.paymentMethod === 'contraentrega' 
+      ? 'Pago Contra Entrega (Efectivo / Transferencia al recibir)'
+      : 'Transferencia Bancaria Previa (Banreservas / Popular / BHD)';
+    
+    if (formData.paymentMethod === 'transferencia') {
+      paymentStr += formData.receiptFileName 
+        ? `%0A📄 *Comprobante Adjuntado en Web:* Sí (${formData.receiptFileName}) - *Nota:* Se adjunta imagen por este chat.`
+        : `%0A📄 *Comprobante:* Enviaré la captura/recibo por este chat.`;
+    }
+
+    const text = `¡Hola Listo Patrón! He realizado un pedido en la tienda:%0A%0A` +
+      `📦 *Orden:* %23LP-${orderId}%0A` +
+      `👤 *Cliente:* ${formData.name}${nicknameStr}%0A` +
+      `📱 *Teléfono:* ${formData.phone}${phoneAltStr}%0A` +
+      `📍 *Ciudad:* ${formData.city}%0A` +
+      `🏡 *Sector/Barrio:* ${formData.sector}%0A` +
+      `🏠 *Dirección Exacta:* ${formData.address}%0A` +
+      `🚩 *Punto de Referencia:* ${formData.reference}${notesStr}%0A%0A` +
+      `💳 *Método de Pago:* ${paymentStr}%0A%0A` +
+      `🛒 *Productos:*%0A${cartDetails}%0A%0A` +
+      `💰 *Subtotal:* RD$ ${cartSubtotal.toLocaleString()}%0A` +
+      `🏛️ *ITBIS (18%):* RD$ ${itbis.toLocaleString()}%0A` +
+      `🚚 *Envío:* RD$ ${deliveryFee.toLocaleString()}%0A` +
+      `⭐ *TOTAL GENERAL:* RD$ ${cartTotal.toLocaleString()}`;
+
     return `https://wa.me/18099090455?text=${text}`;
   };
 
@@ -477,66 +536,154 @@ export default function ShopPage({ onNavigate }) {
         <div className="checkout-modal-backdrop" onClick={() => setIsCheckoutOpen(false)}>
           <div className="checkout-modal" onClick={(e) => e.stopPropagation()}>
             <div className="checkout-modal-header">
-              <h3>Datos de Entrega 🚚</h3>
+              <div>
+                <h3>Datos de Entrega y Pago 🚚</h3>
+                <span className="checkout-subtitle">Completa tus datos para procesar la orden</span>
+              </div>
               <button className="close-modal-btn" onClick={() => setIsCheckoutOpen(false)}>✕</button>
             </div>
             
             <form onSubmit={handleCheckoutSubmit} className="checkout-form">
-              <div className="form-group">
-                <label htmlFor="name">Nombre Completo</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  required 
-                  value={formData.name} 
-                  onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                  placeholder="Ej. Carlos Pérez" 
-                />
+              
+              {/* SECCIÓN 1: DATOS PERSONALES */}
+              <div className="form-section">
+                <h4 className="form-section-title"><span>1</span> Datos Personales</h4>
+                
+                <div className="form-row-2col">
+                  <div className="form-group">
+                    <label htmlFor="name">Nombre Completo *</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      required 
+                      value={formData.name} 
+                      onChange={(e) => setFormData({...formData, name: e.target.value})} 
+                      placeholder="Ej. Carlos Pérez" 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="nickname">Apodo / Cómo te dicen</label>
+                    <input 
+                      type="text" 
+                      id="nickname" 
+                      value={formData.nickname} 
+                      onChange={(e) => setFormData({...formData, nickname: e.target.value})} 
+                      placeholder="Ej. Carlitos / El Rubio" 
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row-2col">
+                  <div className="form-group">
+                    <label htmlFor="phone">Teléfono / WhatsApp *</label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      required 
+                      value={formData.phone} 
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})} 
+                      placeholder="Ej. 809-909-0455" 
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="secondaryPhone">Teléfono Secundario (Opcional)</label>
+                    <input 
+                      type="tel" 
+                      id="secondaryPhone" 
+                      value={formData.secondaryPhone} 
+                      onChange={(e) => setFormData({...formData, secondaryPhone: e.target.value})} 
+                      placeholder="Ej. 829-555-0199" 
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="phone">Teléfono / WhatsApp</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  required 
-                  value={formData.phone} 
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})} 
-                  placeholder="Ej. 809-909-0455" 
-                />
+              {/* SECCIÓN 2: UBICACIÓN DE ENTREGA */}
+              <div className="form-section">
+                <h4 className="form-section-title"><span>2</span> Dirección de Entrega</h4>
+
+                <div className="form-row-2col">
+                  <div className="form-group">
+                    <label htmlFor="city">Ciudad / Provincia *</label>
+                    <select 
+                      id="city" 
+                      value={formData.city} 
+                      onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    >
+                      <option value="Santo Domingo">Santo Domingo (D.N. / Este / Norte / Oeste)</option>
+                      <option value="Santiago">Santiago de los Caballeros</option>
+                      <option value="San Cristóbal">San Cristóbal</option>
+                      <option value="La Romana">La Romana</option>
+                      <option value="Punta Cana / Bávaro">Punta Cana / Bávaro</option>
+                      <option value="San Pedro de Macorís">San Pedro de Macorís</option>
+                      <option value="Baní">Baní (Peravia)</option>
+                      <option value="Puerto Plata">Puerto Plata</option>
+                      <option value="Bonao">Bonao</option>
+                      <option value="La Vega">La Vega</option>
+                      <option value="Moca">Moca</option>
+                      <option value="San Francisco de Macorís">San Francisco de Macorís</option>
+                      <option value="Barahona">Barahona</option>
+                      <option value="Azua">Azua</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="sector">Sector / Barrio *</label>
+                    <input 
+                      type="text" 
+                      id="sector" 
+                      required 
+                      value={formData.sector} 
+                      onChange={(e) => setFormData({...formData, sector: e.target.value})} 
+                      placeholder="Ej. Ensanche Naco, Los Mameyes, Piantini" 
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="address">Dirección Exacta (Calle y Número) *</label>
+                  <textarea 
+                    id="address" 
+                    required 
+                    rows="2"
+                    value={formData.address} 
+                    onChange={(e) => setFormData({...formData, address: e.target.value})} 
+                    placeholder="Ej. Calle Duarte #45, Edificio Don Juan, Apto 2B"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="reference">Punto de Referencia *</label>
+                  <input 
+                    type="text" 
+                    id="reference" 
+                    required 
+                    value={formData.reference} 
+                    onChange={(e) => setFormData({...formData, reference: e.target.value})} 
+                    placeholder="Ej. Frente al Colmado Don Pedro, al lado de la banca de lotería" 
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="deliveryNotes">Notas de Entrega / Horario Preferido</label>
+                  <input 
+                    type="text" 
+                    id="deliveryNotes" 
+                    value={formData.deliveryNotes} 
+                    onChange={(e) => setFormData({...formData, deliveryNotes: e.target.value})} 
+                    placeholder="Ej. Entregar después de las 2:00 PM / Llamar 10 min antes" 
+                  />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="city">Ciudad</label>
-                <select 
-                  id="city" 
-                  value={formData.city} 
-                  onChange={(e) => setFormData({...formData, city: e.target.value})}
-                >
-                  <option value="Santo Domingo">Santo Domingo</option>
-                  <option value="Santiago">Santiago</option>
-                  <option value="La Romana">La Romana</option>
-                  <option value="San Cristóbal">San Cristóbal</option>
-                  <option value="Punta Cana">Punta Cana / Bávaro</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="address">Dirección Exacta</label>
-                <textarea 
-                  id="address" 
-                  required 
-                  rows="3"
-                  value={formData.address} 
-                  onChange={(e) => setFormData({...formData, address: e.target.value})} 
-                  placeholder="Ej. Calle Duarte #45, Apto 2B, Ensanche Naco"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Método de Pago</label>
+              {/* SECCIÓN 3: MÉTODO DE PAGO */}
+              <div className="form-section">
+                <h4 className="form-section-title"><span>3</span> Método de Pago</h4>
+                
                 <div className="radio-options">
-                  <label className="radio-label">
+                  <label className={`radio-card ${formData.paymentMethod === 'contraentrega' ? 'active' : ''}`}>
                     <input 
                       type="radio" 
                       name="paymentMethod" 
@@ -544,23 +691,95 @@ export default function ShopPage({ onNavigate }) {
                       checked={formData.paymentMethod === 'contraentrega'}
                       onChange={() => setFormData({...formData, paymentMethod: 'contraentrega'})}
                     />
-                    <span>Pago Contra Entrega (Efectivo/Transferencia)</span>
+                    <div className="radio-card-info">
+                      <strong>💵 Pago Contra Entrega</strong>
+                      <span>Pagas en efectivo o transferencia al momento de recibir tus productos.</span>
+                    </div>
                   </label>
-                  <label className="radio-label">
+
+                  <label className={`radio-card ${formData.paymentMethod === 'transferencia' ? 'active' : ''}`}>
                     <input 
                       type="radio" 
                       name="paymentMethod" 
-                      value="online" 
-                      checked={formData.paymentMethod === 'online'}
-                      onChange={() => setFormData({...formData, paymentMethod: 'online'})}
+                      value="transferencia" 
+                      checked={formData.paymentMethod === 'transferencia'}
+                      onChange={() => setFormData({...formData, paymentMethod: 'transferencia'})}
                     />
-                    <span>Tarjeta de Crédito / Depósito Previo</span>
+                    <div className="radio-card-info">
+                      <strong>🏦 Transferencia Bancaria Previa / Depósito</strong>
+                      <span>Realiza tu pago vía Banreservas, Banco Popular o BHD y adjunta tu recibo.</span>
+                    </div>
                   </label>
                 </div>
+
+                {/* DETALLES DE CUENTAS BANCARIAS Y SUBIDA DE COMPROBANTE */}
+                {formData.paymentMethod === 'transferencia' && (
+                  <div className="transfer-details-box">
+                    <h5>Cuentas Bancarias Autorizadas de Listo Patrón:</h5>
+                    
+                    <div className="bank-accounts-grid">
+                      <div className="bank-account-card">
+                        <span className="bank-badge banreservas">Banreservas</span>
+                        <div className="account-number">Cta. Ahorros: <strong>960-012345-6</strong></div>
+                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
+                      </div>
+
+                      <div className="bank-account-card">
+                        <span className="bank-badge popular">Banco Popular</span>
+                        <div className="account-number">Cta. Corriente: <strong>802-123456-7</strong></div>
+                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
+                      </div>
+
+                      <div className="bank-account-card">
+                        <span className="bank-badge bhd">Banco BHD</span>
+                        <div className="account-number">Cta. Ahorros: <strong>045-987654-3</strong></div>
+                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
+                      </div>
+                    </div>
+
+                    <div className="receipt-upload-box">
+                      <label className="receipt-upload-label">
+                        <span>📎 Adjuntar Recibo o Captura del Pago:</span>
+                        <input 
+                          type="file" 
+                          accept="image/*,.pdf" 
+                          onChange={handleReceiptUpload} 
+                          style={{ display: 'none' }}
+                          id="receipt-file-input"
+                        />
+                      </label>
+
+                      {formData.receiptFileName ? (
+                        <div className="receipt-preview-card">
+                          {formData.receiptFileData && formData.receiptFileData.startsWith('data:image') && (
+                            <img src={formData.receiptFileData} alt="Comprobante" className="receipt-thumb" />
+                          )}
+                          <div className="receipt-info">
+                            <span className="receipt-status">✅ Recibo Adjuntado</span>
+                            <span className="receipt-name">{formData.receiptFileName}</span>
+                          </div>
+                          <button type="button" onClick={handleRemoveReceipt} className="remove-receipt-btn">
+                            🗑️ Quitar
+                          </button>
+                        </div>
+                      ) : (
+                        <label htmlFor="receipt-file-input" className="upload-dropzone">
+                          <span className="upload-icon">📤</span>
+                          <span className="upload-text">Haz clic aquí para seleccionar tu comprobante</span>
+                          <span className="upload-subtext">Acepta imágenes (JPG, PNG) y PDF</span>
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
+              {/* RESUMEN FINAL */}
               <div className="checkout-modal-summary">
-                <span>Total a Pagar:</span>
+                <div>
+                  <span>Total a Pagar (Con Envío e ITBIS):</span>
+                  <div className="summary-breakdown-sub">Envío gratis / estándar incluido</div>
+                </div>
                 <strong>RD$ {cartTotal.toLocaleString()}</strong>
               </div>
 
