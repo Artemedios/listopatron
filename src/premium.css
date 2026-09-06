@@ -1900,23 +1900,41 @@ h1, h2, h3, th, .section-title, .pro-title, .plan-name, .plan-price, .stat-num, 
 
 /* Mobile responsive horizontal slide adjustments */
 @media (max-width: 768px) {
+  .hero-plan-slide-wrap {
+    min-height: auto !important;
+  }
   .hero-plan-slide {
     flex-direction: column !important;
-    padding: 24px 20px !important;
+    padding: 24px 18px 36px 18px !important;
     text-align: center !important;
     gap: 16px !important;
+    min-height: auto !important;
+    position: relative !important;
   }
   .hero-plan-left {
     align-items: center !important;
+    max-width: 100% !important;
+  }
+  .hero-plan-title {
+    font-size: clamp(22px, 6vw, 32px) !important;
   }
   .hero-plan-right {
     align-items: center !important;
     width: 100% !important;
     padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+  .hero-plan-checklist {
+    text-align: left !important;
+    width: 100% !important;
+  }
+  .hero-plan-check-item {
+    font-size: 13.5px !important;
   }
   .hero-plan-btn-action {
     width: 100% !important;
     justify-content: center !important;
+    padding: 14px 20px !important;
   }
 }
 
