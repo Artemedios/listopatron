@@ -225,7 +225,7 @@ export default function ShopPage({ onNavigate }) {
     address: '',
     reference: '',
     deliveryNotes: '',
-    paymentMethod: 'contraentrega',
+    paymentMethod: 'transferencia',
     receiptFileName: '',
     receiptFileData: null
   });
@@ -314,15 +314,10 @@ export default function ShopPage({ onNavigate }) {
     const phoneAltStr = formData.secondaryPhone ? ` | Tel Alt: ${formData.secondaryPhone}` : '';
     const notesStr = formData.deliveryNotes ? `%0A📝 *Notas de Entrega:* ${formData.deliveryNotes}` : '';
     
-    let paymentStr = formData.paymentMethod === 'contraentrega' 
-      ? 'Pago Contra Entrega (Efectivo / Transferencia al recibir)'
-      : 'Transferencia Bancaria Previa (Banreservas / Popular / BHD)';
-    
-    if (formData.paymentMethod === 'transferencia') {
-      paymentStr += formData.receiptFileName 
-        ? `%0A📄 *Comprobante Adjuntado en Web:* Sí (${formData.receiptFileName}) - *Nota:* Se adjunta imagen por este chat.`
-        : `%0A📄 *Comprobante:* Enviaré la captura/recibo por este chat.`;
-    }
+    let paymentStr = 'Pago Online / Transferencia Bancaria (Banco Popular / Banreservas)';
+    paymentStr += formData.receiptFileName 
+      ? `%0A📄 *Comprobante Adjuntado en Web:* Sí (${formData.receiptFileName}) - *Nota:* Se adjunta captura por este chat.`
+      : `%0A📄 *Comprobante:* Enviaré la captura/recibo de la transferencia por este chat.`;
 
     const text = `¡Hola Listo Patrón! He realizado un pedido en la tienda:%0A%0A` +
       `📦 *Orden:* %23LP-${orderId}%0A` +
@@ -678,100 +673,69 @@ export default function ShopPage({ onNavigate }) {
                 </div>
               </div>
 
-              {/* SECCIÓN 3: MÉTODO DE PAGO */}
+              {/* SECCIÓN 3: MÉTODO DE PAGO ONLINE */}
               <div className="form-section">
-                <h4 className="form-section-title"><span>3</span> Método de Pago</h4>
+                <h4 className="form-section-title"><span>3</span> Método de Pago Online</h4>
                 
-                <div className="radio-options">
-                  <label className={`radio-card ${formData.paymentMethod === 'contraentrega' ? 'active' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value="contraentrega" 
-                      checked={formData.paymentMethod === 'contraentrega'}
-                      onChange={() => setFormData({...formData, paymentMethod: 'contraentrega'})}
-                    />
-                    <div className="radio-card-info">
-                      <strong>💵 Pago Contra Entrega</strong>
-                      <span>Pagas en efectivo o transferencia al momento de recibir tus productos.</span>
-                    </div>
-                  </label>
-
-                  <label className={`radio-card ${formData.paymentMethod === 'transferencia' ? 'active' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value="transferencia" 
-                      checked={formData.paymentMethod === 'transferencia'}
-                      onChange={() => setFormData({...formData, paymentMethod: 'transferencia'})}
-                    />
-                    <div className="radio-card-info">
-                      <strong>🏦 Transferencia Bancaria Previa / Depósito</strong>
-                      <span>Realiza tu pago vía Banreservas, Banco Popular o BHD y adjunta tu recibo.</span>
-                    </div>
-                  </label>
-                </div>
-
-                {/* DETALLES DE CUENTAS BANCARIAS Y SUBIDA DE COMPROBANTE */}
-                {formData.paymentMethod === 'transferencia' && (
-                  <div className="transfer-details-box">
-                    <h5>Cuentas Bancarias Autorizadas de Listo Patrón:</h5>
-                    
-                    <div className="bank-accounts-grid">
-                      <div className="bank-account-card">
-                        <span className="bank-badge banreservas">Banreservas</span>
-                        <div className="account-number">Cta. Ahorros: <strong>960-012345-6</strong></div>
-                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
-                      </div>
-
-                      <div className="bank-account-card">
-                        <span className="bank-badge popular">Banco Popular</span>
-                        <div className="account-number">Cta. Corriente: <strong>802-123456-7</strong></div>
-                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
-                      </div>
-
-                      <div className="bank-account-card">
-                        <span className="bank-badge bhd">Banco BHD</span>
-                        <div className="account-number">Cta. Ahorros: <strong>045-987654-3</strong></div>
-                        <div className="account-owner">Titular: <strong>Listo Patrón S.R.L.</strong></div>
-                      </div>
-                    </div>
-
-                    <div className="receipt-upload-box">
-                      <label className="receipt-upload-label">
-                        <span>📎 Adjuntar Recibo o Captura del Pago:</span>
-                        <input 
-                          type="file" 
-                          accept="image/*,.pdf" 
-                          onChange={handleReceiptUpload} 
-                          style={{ display: 'none' }}
-                          id="receipt-file-input"
-                        />
-                      </label>
-
-                      {formData.receiptFileName ? (
-                        <div className="receipt-preview-card">
-                          {formData.receiptFileData && formData.receiptFileData.startsWith('data:image') && (
-                            <img src={formData.receiptFileData} alt="Comprobante" className="receipt-thumb" />
-                          )}
-                          <div className="receipt-info">
-                            <span className="receipt-status">✅ Recibo Adjuntado</span>
-                            <span className="receipt-name">{formData.receiptFileName}</span>
-                          </div>
-                          <button type="button" onClick={handleRemoveReceipt} className="remove-receipt-btn">
-                            🗑️ Quitar
-                          </button>
-                        </div>
-                      ) : (
-                        <label htmlFor="receipt-file-input" className="upload-dropzone">
-                          <span className="upload-icon">📤</span>
-                          <span className="upload-text">Haz clic aquí para seleccionar tu comprobante</span>
-                          <span className="upload-subtext">Acepta imágenes (JPG, PNG) y PDF</span>
-                        </label>
-                      )}
+                <div className="transfer-details-box">
+                  <div className="payment-method-header" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '24px' }}>💳</span>
+                    <div>
+                      <strong style={{ fontSize: '15px', color: '#111', display: 'block' }}>Pago Online por Transferencia Bancaria</strong>
+                      <span style={{ fontSize: '12px', color: '#666' }}>Realiza tu depósito o transferencia y adjunta tu comprobante a continuación.</span>
                     </div>
                   </div>
-                )}
+
+                  <h5 style={{ fontSize: '13px', fontWeight: '800', color: '#1a1a1a', marginBottom: '10px' }}>Cuentas Bancarias Oficiales de Listo Patrón:</h5>
+                  
+                  <div className="bank-accounts-grid">
+                    <div className="bank-account-card">
+                      <span className="bank-badge popular">Banco Popular</span>
+                      <div className="account-number">Número de Cuenta: <strong>746424456</strong></div>
+                      <div className="account-owner">Titular: <strong>Listo Patrón</strong></div>
+                    </div>
+
+                    <div className="bank-account-card">
+                      <span className="bank-badge banreservas">Banreservas</span>
+                      <div className="account-number">Número de Cuenta: <strong>9607282472</strong></div>
+                      <div className="account-owner">Titular: <strong>Listo Patrón</strong></div>
+                    </div>
+                  </div>
+
+                  <div className="receipt-upload-box">
+                    <label className="receipt-upload-label">
+                      <span>📎 Adjuntar Comprobante o Captura del Pago:</span>
+                      <input 
+                        type="file" 
+                        accept="image/*,.pdf" 
+                        onChange={handleReceiptUpload} 
+                        style={{ display: 'none' }}
+                        id="receipt-file-input"
+                      />
+                    </label>
+
+                    {formData.receiptFileName ? (
+                      <div className="receipt-preview-card">
+                        {formData.receiptFileData && formData.receiptFileData.startsWith('data:image') && (
+                          <img src={formData.receiptFileData} alt="Comprobante" className="receipt-thumb" />
+                        )}
+                        <div className="receipt-info">
+                          <span className="receipt-status">✅ Recibo Adjuntado</span>
+                          <span className="receipt-name">{formData.receiptFileName}</span>
+                        </div>
+                        <button type="button" onClick={handleRemoveReceipt} className="remove-receipt-btn">
+                          🗑️ Quitar
+                        </button>
+                      </div>
+                    ) : (
+                      <label htmlFor="receipt-file-input" className="upload-dropzone">
+                        <span className="upload-icon">📤</span>
+                        <span className="upload-text">Haz clic aquí para seleccionar tu comprobante</span>
+                        <span className="upload-subtext">Acepta imágenes (JPG, PNG) y PDF</span>
+                      </label>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* RESUMEN FINAL */}
