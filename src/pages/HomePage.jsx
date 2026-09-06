@@ -1984,7 +1984,7 @@ export default function HomePage({ onNavigate }) {
             <span style={{"width": "8px", "height": "8px", "borderRadius": "50%", "background": "var(--orange)", "display": "inline-block"}}></span>
             🔧 Para profesionales
           </div>
-        <h2 className="pro-title">Gana más trabajando<br/>con Listo</h2>
+        <h2 className="pro-title">Gana más trabajando<br/>con Listo Patrón</h2>
         <p className="pro-sub">Únete a la red de profesionales más confiable de República Dominicana y consigue clientes todos los días.</p>
         <div className="free-tag">🎉 &nbsp;1 mes GRATIS · Plan Básico incluido</div>
         <div className="pro-perks">
